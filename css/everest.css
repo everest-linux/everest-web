@@ -1,0 +1,19 @@
+body {
+color: white;
+background-color: #2C2C2C;
+border: 2px solid SteelBlue;
+border-radius: 16px;
+font-family: sans-serif;
+margin-left: auto;
+margin-right: auto;
+max-width: 1024px;
+min-width: 256px;
+padding-top: 8px;
+padding-bottom: 24px;
+padding-left: 24px;
+padding-right: 24px;
+}
+html {
+background: black;
+background-size: 8px 8px;
+}
