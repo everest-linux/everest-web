@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Install Everest</title>
+<link type="text/css" rel="stylesheet" href="css/everest.css"/>
+</head>
+<body>
+<h1>Installation Handbook</h1>
+<p>This guide goes into detail on how to install Everest.</p>
+<h2>Prerequisites</h2>
+<p>There are 2 officially supported ways of installing Everest, systemd/glibc/GNU or sysv/musl/busybox. This guide covers the musl/busybox installation as it recieves the most support and is the intended way. For the GNU installation, it may be a good idea to read the Linux from Scratch wiki.</p>
+<p></p>
+<p>For highly customized installations (such as a custom init), it is recommended to know exactly what you're doing.</p>
+<p></p>
+<p>Everest may be installed through 2 methods:</p>
+<p>	- ISO: can be flashed to a usb and booted</p>
+<p>	- rootfs tarball (RECOMMENDED): unpacked to a directory (usually /mnt) and instaled through an existing distribution.</p>
+<p></p>
+<p> Note that no matter what option you choose, you will need the rootfs tarball.</p>
+<p></p>
+<p>If you wish to install Everest Hike instead of Everest Summit, you can run <code>setup-everest</code>.</p>
+<p></p>
+<h2>First Steps</h2>
+<p>Create a disk partition for your root filesystem, a boot partition, and any other partitions you may want to make.</p>
+<p></p>
+<p>Create valid filesystems on the partitions (FAT32 for boot, and Ext4/Btrfs/XFS/ZFS on root).</p>
+<p><code># mkfs.vfat -F32 /dev/boot</code></p>
+<p><code># mkfs.ext4 /dev/root</code></p>
+<p></p>
+<p>Mount the newly created root partition to /mnt/everest.</p>
+<p><code># mkdir /mnt/everest</code></p>
+<p><code># mount /dev/root /mnt/everest</code></p>
+<p></p>
+<p>Create the "EV" variable, which will save some typing down the road.</p>
+<p><code># export EV=/mnt/everest</code></p>
+<p>Ensure the variable was created correctly. It will be <strong>very</strong> important to check this multiple times during installation.</p>
+<p><code># echo $EV</code></p>
+<p></p>
+<h2>Unpacking Tarball</h2>
+<p>To install Everest, you will need the rootfs tarball containing the necessary toolchain.</p>
+<p><code># wget https://github.com/everest-linux/everest/releases/download/vX.X.X-systemd-rc/everestlinux-summit-X.X.X-systemd-rc.tar.xz</code></p>
+<p></p>
+<p>To unpack the tarball:</p>
+<p><code># tar xpvf everestlinux-summit-X.X.X-systemd.tar.xz --xattrs-include='*.*' --numeric-owner</code></p>
+<p>Enter the chroot environment. This will allow you to install system packages.</p>
+<p><code># chroot "$EV" /usr/bin/env -i \</code></p>
+<p><code>	HOME=/root \</code></p>
+<p><code>	TERM="$TERM" \</code></p>
+<p><code>	PS1='[everest-chroot] \u:\w \$ ' \</code></p>
+<p><code>	PATH=/usr/bin:/usr/sbin \</code></p>
+<p><code>	/bin/bash --login</code></p>
+<p></p>
+<h2>Installing System Packages</h2>
+<p>Now that we are inside the chroot environment, we can install packages to the system.</p>
+<p>Before we start, creating <code>/etc/make.conf</code> is recommended. This is so you can specify extra makeflags, most notably, the <code>-jX</code> flag will allow <code>make</code> to utilize more than 1 core.</p>
+<p><code># /etc/make.conf</code></p>
+<p>
+<p><code>MAKEFLAGS=-jX</code></p>
+<p></p>
+<p>The following symbols will be used to describe packages</p>
+<p> -(!) Vital system package, <strong>do not omit.</strong></p>
+<p> -(S) Source package</p>
+<p> -(B) Binary package</p>
+<p> -(L) Long installation time</p>
+<p></p>
+<p><strong>(!) (B) Glacier</strong></p>
+<p>This package contains the Glacier package manager, which manages installed packages on the system. It uses wget and tar as its backens, both of which are included in the tarball.</p>
+<p><strong>To install Glacier:</strong><code> # rm -rf /tmp/glacier && cd /tmp && git clone https://github.com/everest-linux/glacier &&
+cd glacier/install && chmod +x INSTALL-GLACIER.sh && sudo ./INSTALL-GLACIER.sh || doas ./INSTALL-GLACIER.sh</code></p>
+<p></p>
+<p>Note that Glacier cannot manage itself, so you will need to update every month or so.</p>
+<p></p>
+<p><strong>(S) Man-pages</strong></p>
+<p>This package contains 2,000+ manpages for the system.</p>
+<p><strong>To install man-pages:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] man-pages</code></p>
+<p></p>
+<p><strong>(!) (B) Iana-Etc</strong></p>
+<p>This package contains vital networking protocols.</p>
+<p><strong>To install Iana-Etc:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] iana-etc</code></p>
+<p></p>
+<p><strong>(!) (S) libgcc</strong></p>
+<p>This package contains libraries for GCC.</p>
+<p><strong>To install libgcc:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] libgcc</code></p>
+<p></p>
+<p><strong>(!) (S) (L) musl</strong></p>
+<p>This package contains the musl standard C library.</p>
+<p><strong>To install musl:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] musl</code></p>
+<p></p>
+<p><strong>(!) (S) busybox</strong></p>
+<p>This package contains common UNIX utilities in a single binary.</p>
+<p><strong>To install busybox:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] busybox</code></p>
+<p></p>
+<p><strong>(!) (S) (L) vim</strong></p>
+<p>This package contains the Vim text editor.</p>
+<p><strong>To install vim:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] vim</code></p>
+<p></p>
+<p><strong>(!) (S) (L) Linux</strong></p>
+<p>This package contains the Linux kernel</p>
+<p><i>You will need to cache this package if you wish to build a custom kernel. Prebuilt kernels are available under the names 'linux', 'linux-zen', 'linux-lts', etc. For a custom configuration, the package is called 'linux-custom'.</i></p>
+<p><strong>To install a prebuilt kernel:</strong></p>
+<p><code># glacier -f</code></p>
+<p><code>[ ? ] linux-{zen,lts,hardened,rt}</code></p>
+<p><strong>To install and configure a custom kernel:</strong></p>
+<p><code># glacier -c</code></p>
+<p><code>[ ? ] linux-custom</code></p>
+<p>Change directory into the Glacier cache and move the package to /tmp</p>
+<p><code># cd /var/cache/glacier && mv linux-custom.tar.gz /tmp</code></p>
+<p>Unpack the package</p>
+<p><code># tar xvf linux-custom.tar.gz</code></p>
+<p>Ensure the kernel's source tree is clean</p>
+<p><code># make mrproper</code></p>
+<p>Make desired configurations to the kernel</p>
+<p><code># make menuconfig</code></p>
+<p><i>If using systemd as the init system, 'The IPv6 protocol [CONFIG_IPV6] is highly recommended.</i></p>
+<p><code>Networking support ---></code></p>
+<p><code>&nbsp&nbsp&nbsp&nbsp Networking options ---></code></p>
+<p><code>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <*> The IPv6 protocol [CONFIG_IPV6]</code></p>
+<p><a href="https://linuxfromscratch.org/lfs/view/stable-systemd/chapter10/kernel.html">See this page from Linux From Scratch on other recommended kernel customizations.</a></p>
+<p>Compile the kernel</p>
+<p><code># make</code></p>
+<p>If you enabled support for modules, compile them</p>
+<p><code># make modules_install</code></p>
+<p><i>If you intend on dual booting and are using an external boot partition, run the following command from <strong>OUTSIDE THE CHROOT ENVIRONMENT</strong></i></p>
+<p><code># mount --bind /boot /mnt/ev/boot</code></p>
+<p>Change the kernel image</p>
+<p><code># cp -iv arch/x86/boot/bzImage /boot/vmlinuz-X.XX.X</code></p>
+<p>Install the system map file</p>
+<p><code># cp -iv System.map /boot/System.map-X.XX.X</code></p>
+<p>Save your kernel's configuration</p>
+<p><code># cp -iv .config/boot/config-X.XX.X</code></p>
+<p>Install kernel documentation</p>
+<p><code># install -d /usr/share/doc/linux-X.XX.X</code></p>
+<p><code># cp -r DOcumentation/* /usr/share/doc/linux-X.XX.X</code></p>
+<p>If you wish to retain the kernel's source tree</p>
+<p><code># chown -R 0:0 /path/to/linux-X.XX.X</code></p>
+<p><i>Warning: Some documentation for the kernel recommends symlinking /usr/src/linux to the kernel source tree, however this is specific to 2.6 series kernels and <strong>MUST NOT BE CREATED</strong> as it can cause conflics with Glacier.</i></p>
+<p><i>Warning: The headers in /usr/include should <strong>ALWAYS</strong> be the ones against which your standard C library was compiled. They should <strong>NEVER</strong> be replaced by either the raw kernel headers or the sanitized headers of any other kernel.</i></p>
+<p>Create /etc/modprobe.d/usb.conf, which will ensure USB modules are started in the correct order</p>
+<p><code>install -v -m755 -d /etc/modprobe.d</code></p>
+<p><code>cat > /etc/modprobe.d/usb.conf</code></p>
+<p><code># Begin /etc/modprobe.d/usb.conf << "EOF"</code></p>
+<p><code>&nbsp</code></p>
+<p><code>install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true</code></p>
+<p><code>install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true</code></p>
+<p><code>&nbsp</code></p>
+<p><code># End /etc/modprobe.d/usb.conf</code></p>
+<p><code>EOF</code></p>
+<p></p>
+<h2>Configuring the System</h2>
+<p>Now we must configure the system so it will boot correctly</p>
+<p>As a recommendation for easy access to the root account, installing <code>sudo</code> or <code>doas</code> is highly recommended, as it will remove the need to log in as root with <code>su</code> and will only require invoking <code>sudo</code> or <code>doas</code>.
+<p>In the case of <code>sudo</code>, the following line will need to be uncommented from <code>/etc/sudoers</code></p>
+<p><code>%wheel	ALL=(ALL) ALL</code></p>
+<p>In the case of <code>doas</code>, <code>/etc/doas.conf</code> will need to be created, containing the following:</p>
+<p><code>permit :wheel</code></p>
+<p>Create <code>/etc/hostname</code> and enter the desired hostname for the system</p>
+<p>Create <code>/etc/hosts</code> and enter the following</p>
+<p><code>127.0.0.1 localhost</code></p>
+<p><code>::1 localhost</code></p>
+<p><code>127.0.1.1 localdomain hostname</code></p>
+<p>Install a bootloader capable of loading a Linux system (such as <code>grub</code>)</p>
+<p>In the case of <code>grub</code>, install <code>os-prober</code> and <code>efibootmgr</code> (for UEFI systems), then install grub:</p>
+<p><i>Warning: Highly customized configurations may cause the bootloader to break. It is recommended to edit </i><code>/etc/make.conf</code><i> before building this package.</i></p>
+<p><code># grub-install /dev/sdX (BIOS/MBR)</code></p>
+<p><code># grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub (UEFI)</code></p>
+<p>Create the GRUB configuration file</p>
+<p><code># grub-mkconfig -o /boot/grub/grub.cfg</code></p>
+<p>Once the bootloader has been installed, power off the system.</p>
+<p></p>
+<h2>The End</h2>
+<p>You should be greeted by a shell prompt on first boot.</p>
+<p>If you need assistaince with your installation, we have both IRC channels, a Revolt server, and a Discord server.</p>
