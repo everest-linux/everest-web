@@ -11,6 +11,7 @@
         <li><a href="install.html">Handbook</a></li>
         <li><a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a></li>
         <li><a href="download.html">Downloads</a></li>
+	<li><a href="https://git.everestlinux.org">Git</a></li>
 </ul>
 <img src="img/banner-hb.jpg" alt="banner-hb"/>
 <h1>Installation Handbook</h1>
@@ -31,27 +32,33 @@
 <p>Commands prefixed with <code><mark>#</mark></code> should be run as the root user.</p>
 <p>Commands prefixed with <code><mark>(chroot)$</mark></code> should be run as the normal user inside the chroot environment.</p>
 <p>Commands prefixed with <code><mark>(chroot)#</mark></code> should be run as the root user inside the chroot environment.</p>
+<p>This guide assumes your system has access to the internet. There are no tools for configuring the network in the iso. Use of a hardwired ethernet connection is recommended.</p>
 <p></p>
 <h2>First Steps</h2>
+<h3>Prepare the disk</h3>
 <p>Create a disk partition for your root filesystem, a boot partition, and any other partitions you may want to make.</p>
-<p></p>
 <p>Create valid filesystems on the partitions (FAT32 for boot, and Ext4/Btrfs/XFS/ZFS on root).</p>
 <p><code><mark># mkfs.vfat -F32 /dev/boot</mark></code></p>
 <p><code><mark># mkfs.ext4 /dev/root</mark></code></p>
 <p>Mount the newly created root partition to /mnt/everest.</p>
 <p><code><mark># mkdir /mnt/everest</mark></code></p>
 <p><code><mark># mount /dev/root /mnt/everest</mark></code></p>
+<h3>Create the EV variable</h3>
 <p>Create the "EV" variable, which will save some typing down the road.</p>
 <p><code><mark># export EV=/mnt/everest</mark></code></p>
 <p>Ensure the variable was created correctly. It will be <strong>very</strong> important to check this multiple times during installation.</p>
 <p><code><mark># echo $EV</mark></code></p>
 <p></p>
 <h2>Unpacking Tarball</h2>
+<h3>Download the rootfs tarball</h3>
 <p>To install Everest, you will need the rootfs tarball containing the necessary toolchain.</p>
 <p><code><mark># wget https://github.com/everest-linux/everest/releases/download/vX.X.X-systemd-rc/everestlinux-summit-X.X.X-systemd-rc.tar.xz</mark></code></p>
 <p></p>
+<h3>Unpack the rootfs tarball</h3>
 <p>To unpack the tarball:</p>
 <p><code><mark># tar xpvf everestlinux-summit-X.X.X-systemd.tar.xz --xattrs-include='*.*' --numeric-owner</mark></code></p>
+<p>The tarball must be unpacked with the command above. Using only <code><mark>tar xpvf</mark></code> will not retain ownership and some binaries will refuse to execute.</p>
+<h3>Enter the chroot environemnt</h3>
 <p>Enter the chroot environment. This will allow you to install system packages.</p>
 <p><code><mark># chroot "$EV" /usr/bin/env -i \</mark></code></p>
 <p><code><mark>	HOME=/root \</mark></code></p>
@@ -60,22 +67,25 @@
 <p><code><mark>	PATH=/usr/bin:/usr/sbin \</mark></code></p>
 <p><code><mark>	/bin/bash --login</mark></code></p>
 <p></p>
-<h2>Installing System Packages</h2>
+<h2>Building the System</h2>
 <p>Now that we are inside the chroot environment, we can install packages to the system.</p>
+<h3>Configure the Glacier build environment</h3>
 <p>Before we start, creating <code>/etc/make.conf</code> is recommended. This is so you can specify extra makeflags, most notably, the <code>-jX</code> flag will allow <code>make</code> to utilize more than 1 core.</p>
 <p><code># /etc/make.conf</code></p>
 <p>
 <p><code>MAKEFLAGS=-jX</code></p>
 <p></p>
+<h3>Symbolism</h3>
 <p>The following symbols will be used to describe packages</p>
 <p> -(!) Vital system package, <strong>do not omit.</strong></p>
 <p> -(S) Source package</p>
 <p> -(B) Binary package</p>
 <p> -(L) Long installation time</p>
 <p></p>
+<h3>Install system packages</h3>
 <p><strong>(!) (B) Glacier</strong></p>
 <p>This package contains the Glacier package manager, which manages installed packages on the system. It uses wget and tar as its backens, both of which are included in the tarball.</p>
-<p><strong>To install Glacier:</strong><code><mark>(chroot)# rm -rf /tmp/glacier && cd /tmp && git clone https://github.com/everest-linux/glacier &&
+<p><strong>To install Glacier:</strong><code><mark>(chroot)# rm -rf /tmp/glacier && cd /tmp && git clone https://git.everestlinux.org/EverestLinux/glacier &&
 cd glacier/install && chmod +x INSTALL-GLACIER.sh && sudo ./INSTALL-GLACIER.sh || doas ./INSTALL-GLACIER.sh</mark></code></p>
 <p></p>
 <p>Note that Glacier cannot manage itself, so you will need to update every month or so.</p>
@@ -157,6 +167,7 @@ cd glacier/install && chmod +x INSTALL-GLACIER.sh && sudo ./INSTALL-GLACIER.sh |
 <p><code><mark>(chroot)# chown -R 0:0 /path/to/linux-X.XX.X</mark></code></p>
 <p><i>Warning: Some documentation for the kernel recommends symlinking /usr/src/linux to the kernel source tree, however this is specific to 2.6 series kernels and <strong>MUST NOT BE CREATED</strong> as it can cause conflics with Glacier.</i></p>
 <p><i>Warning: The headers in /usr/include should <strong>ALWAYS</strong> be the ones against which your standard C library was compiled. They should <strong>NEVER</strong> be replaced by either the raw kernel headers or the sanitized headers of any other kernel.</i></p>
+<p>Move the kernel source tree into <code><mark>/usr/src/linux</mark></code> for easy access later on.</p>
 <p>Create /etc/modprobe.d/usb.conf, which will ensure USB modules are started in the correct order</p>
 <p><code><mark>install -v -m755 -d /etc/modprobe.d</mark></code></p>
 <p><code><mark>cat > /etc/modprobe.d/usb.conf</mark></code></p>
@@ -170,26 +181,46 @@ cd glacier/install && chmod +x INSTALL-GLACIER.sh && sudo ./INSTALL-GLACIER.sh |
 <p></p>
 <h2>Configuring the System</h2>
 <p>Now we must configure the system so it will boot correctly</p>
+<h3>Install optional administration tools</h3>
 <p>As a recommendation for easy access to the root account, installing <code><mark>sudo</mark></code> or <code><mark>doas</mark></code> is highly recommended, as it will remove the need to log in as root with <code><mark>su</mark></code> and will only require invoking <code><mark>sudo</mark></code> or <code><mark>doas</mark></code>.
 <p>In the case of <code><mark>sudo</mark></code>, the following line will need to be uncommented from <code><mark>/etc/sudoers</mark></code></p>
 <p><code><mark>%wheel	ALL=(ALL) ALL</mark></code></p>
 <p>In the case of <code><mark>doas</mark></code>, <code><mark>/etc/doas.conf</mark></code> will need to be created, containing the following:</p>
 <p><code><mark>permit :wheel</mark></code></p>
+<h3>Configure the network</h3>
+<p>Install NetworkManager</p>
+<p><code><mark>(chroot)# glacier -f</mark></code></p>
+<p><code><mark>[ ? ] networkmanager</mark></code></p>
+<p>Set the default network interface up</p>
+<p><code><mark>(chroot)# ip link</mark></code></p>
+<p><code><mark>(chroot)# ip link set interface_name up</mark></code></p>
+<p>If using systemd, enable the service</p>
+<p><code><mark>(chroot)# systemctl enable NetworkManager</mark></code></p>
+<p>You will be unable to start the service from inside the chroot environment.</p>
 <p>Create <code><mark>/etc/hostname</mark></code> and enter the desired hostname for the system</p>
 <p>Create <code><mark>/etc/hosts</mark></code> and enter the following</p>
 <p><code><mark>127.0.0.1 localhost</mark></code></p>
 <p><code><mark>::1 localhost</mark></code></p>
 <p><code><mark>127.0.1.1 localdomain hostname</mark></code></p>
+<h3>Install a bootloader</h3>
 <p>Install a bootloader capable of loading a Linux system (such as <code><mark>grub</mark></code>)</p>
 <p>In the case of <code><mark>grub</mark></code>, install <code><mark>os-prober</mark></code> and <code><mark>efibootmgr</mark></code> (for UEFI systems), then install either <code><mark>grub-bios</mark><code>, <code><mark>grub-uefi</mark></code>, <code><mark>lib32-grub-bios</mark></code>, or <code><mark>lib32-grub-uefi</mark></code>, then run the following commands to install: </p>
 <p><i>Warning: Highly customized configurations may cause the bootloader to break. It is recommended to edit </i><code><mark>/etc/make.conf</mark></code><i> before building this package.</i></p>
-<p><code><mark># grub-install /dev/sdX (BIOS/MBR)</mark></code></p>
-<p><code><mark># grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub (UEFI)</mark></code></p>
+<p><code><mark>(chroot)# grub-install /dev/sdX (BIOS/MBR)</mark></code></p>
+<p><code><mark>(chroot)# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub (UEFI)</mark></code></p>
 <p>Create the GRUB configuration file</p>
-<p><code><mark># grub-mkconfig -o /boot/grub/grub.cfg</mark></code></p>
-<p>Once the bootloader has been installed, power off the system.</p>
-<p></p>
+<p><code><mark>(chroot)# grub-mkconfig -o /boot/grub/grub.cfg</mark></code></p>
+<h3>Power off the system</h3>
+<p>Exit the chroot environment</p>
+<p><code><mark>(chroot)# exit</mark></code></p>
+<p>Unmount all drives</p>
+<p><code><mark># umount -R /mnt/everest</mark></code></p>
+<p>Power off the system</p>
+<p><code><mark># poweroff</mark></code></p>
 <h2>The End</h2>
 <p>Power on the system. If all went well, the GRUB boot screen should appear, followed by a shell prompt.</p>
+<p>If using systemd, start NetworkManager and connect to a network</p>
+<p><code><mark># systemctl start NetworkManager</mark></code></p>
+<p><code><mark># nmtui</mark></code></p>
 <p>Congratgulations! Everest has successfully been installed.</p>
 <p>Most users will want to configure sound, a graphical environment, or multiple users. See post installation recommendations for details.</p>
