@@ -17,7 +17,7 @@
 <h1>Installation Handbook</h1>
 <p>This guide goes into detail on how to install Everest.</p>
 <h2>Prerequisites</h2>
-<p>There are 2 officially supported ways of installing Everest, systemd/glibc/GNU or sysv/musl/busybox. This guide covers the musl/busybox installation as it recieves the most support and is the intended way. For the GNU installation, it may be a good idea to read the Linux from Scratch wiki.</p>
+<p>There are 2 officially supported ways of installing Everest, systemd/glibc/GNU or init/musl/busybox. This guide covers the init/musl/busybox installation as it recieves the most support and is the intended way. For the GNU installation, it may be a good idea to read the Linux from Scratch wiki.</p>
 <p></p>
 <p>For highly customized installations (such as a custom init), it is recommended to know exactly what you're doing.</p>
 <p></p>
@@ -27,200 +27,64 @@
 <p></p>
 <p> Note that no matter what option you choose, you will need the rootfs tarball.</p>
 <p></p>
-<p>If you wish to install Everest Hike instead of Everest Summit, you can run <code><mark>setup-everest</mark></code>.</p>
-<p>Commands prefixed with <code><mark>$</mark></code> should be run as the normal user.</p>
-<p>Commands prefixed with <code><mark>#</mark></code> should be run as the root user.</p>
+<p>Commands prefixed with <code><mark>(user)$</mark></code> should be run as the normal user.</p>
+<p>Commands prefixed with <code><mark>(root)#</mark></code> should be run as the root user.</p>
 <p>Commands prefixed with <code><mark>(chroot)$</mark></code> should be run as the normal user inside the chroot environment.</p>
 <p>Commands prefixed with <code><mark>(chroot)#</mark></code> should be run as the root user inside the chroot environment.</p>
 <p>This guide assumes your system has access to the internet. There are no tools for configuring the network in the iso. Use of a hardwired ethernet connection is recommended.</p>
-<p></p>
-<h2>First Steps</h2>
-<h3>Prepare the disk</h3>
-<p>Create a disk partition for your root filesystem, a boot partition, and any other partitions you may want to make.</p>
-<p>Create valid filesystems on the partitions (FAT32 for boot, and Ext4/Btrfs/XFS/ZFS on root).</p>
-<p><code><mark># mkfs.vfat -F32 /dev/boot</mark></code></p>
-<p><code><mark># mkfs.ext4 /dev/root</mark></code></p>
-<p>Mount the newly created root partition to /mnt/everest.</p>
-<p><code><mark># mkdir /mnt/everest</mark></code></p>
-<p><code><mark># mount /dev/root /mnt/everest</mark></code></p>
-<h3>Create the EV variable</h3>
-<p>Create the "EV" variable, which will save some typing down the road.</p>
-<p><code><mark># export EV=/mnt/everest</mark></code></p>
-<p>Ensure the variable was created correctly. It will be <strong>very</strong> important to check this multiple times during installation.</p>
-<p><code><mark># echo $EV</mark></code></p>
-<p></p>
-<h2>Unpacking Tarball</h2>
-<h3>Download the rootfs tarball</h3>
-<p>To install Everest, you will need the rootfs tarball containing the necessary toolchain.</p>
-<p><code><mark># wget https://github.com/everest-linux/everest/releases/download/vX.X.X-systemd-rc/everestlinux-summit-X.X.X-systemd-rc.tar.xz</mark></code></p>
-<p></p>
-<h3>Unpack the rootfs tarball</h3>
-<p>To unpack the tarball:</p>
-<p><code><mark># tar xpvf everestlinux-summit-X.X.X-systemd.tar.xz --xattrs-include='*.*' --numeric-owner</mark></code></p>
-<p>The tarball must be unpacked with the command above. Using only <code><mark>tar xpvf</mark></code> will not retain ownership and some binaries will refuse to execute.</p>
-<h3>Enter the chroot environemnt</h3>
-<p>Enter the chroot environment. This will allow you to install system packages.</p>
-<p><code><mark># chroot "$EV" /usr/bin/env -i \</mark></code></p>
-<p><code><mark>	HOME=/root \</mark></code></p>
-<p><code><mark>	TERM="$TERM" \</mark></code></p>
-<p><code><mark>	PS1='[everest-chroot] \u:\w \$ ' \</mark></code></p>
-<p><code><mark>	PATH=/usr/bin:/usr/sbin \</mark></code></p>
-<p><code><mark>	/bin/bash --login</mark></code></p>
-<p></p>
-<h2>Building the System</h2>
-<p>Now that we are inside the chroot environment, we can install packages to the system.</p>
-<h3>Configure the Glacier build environment</h3>
-<p>Before we start, creating <code>/etc/make.conf</code> is recommended. This is so you can specify extra makeflags, most notably, the <code>-jX</code> flag will allow <code>make</code> to utilize more than 1 core.</p>
-<p><code># /etc/make.conf</code></p>
-<p>
-<p><code>MAKEFLAGS=-jX</code></p>
-<p></p>
-<h3>Symbolism</h3>
-<p>The following symbols will be used to describe packages</p>
-<p> -(!) Vital system package, <strong>do not omit.</strong></p>
-<p> -(S) Source package</p>
-<p> -(B) Binary package</p>
-<p> -(L) Long installation time</p>
-<p></p>
-<h3>Install system packages</h3>
-<p><strong>(!) (B) Glacier</strong></p>
-<p>This package contains the Glacier package manager, which manages installed packages on the system. It uses wget and tar as its backens, both of which are included in the tarball.</p>
-<p><strong>To install Glacier:</strong><code><mark>(chroot)# rm -rf /tmp/glacier && cd /tmp && git clone https://git.everestlinux.org/EverestLinux/glacier &&
-cd glacier/install && chmod +x INSTALL-GLACIER.sh && sudo ./INSTALL-GLACIER.sh || doas ./INSTALL-GLACIER.sh</mark></code></p>
-<p></p>
-<p>Note that Glacier cannot manage itself, so you will need to update every month or so.</p>
-<p></p>
-<p><strong>(S) Man-pages</strong></p>
-<p>This package contains 2,000+ manpages for the system.</p>
-<p><strong>To install man-pages:</strong></p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] man-pages</mark></code></p>
-<p></p>
-<p><strong>(!) (B) Iana-Etc</strong></p>
-<p>This package contains vital networking protocols.</p>
-<p><strong>To install Iana-Etc:</strong></p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] iana-etc</mark></code></p>
-<p></p>
-<p><strong>(!) (S) libgcc</strong></p>
-<p>This package contains libraries for GCC.</p>
-<p><strong>To install libgcc:</strong></p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] libgcc</mark></code></p>
-<p></p>
-<p><strong>(!) (S) (L) musl</strong></p>
-<p>This package contains the musl standard C library.</p>
-<p><strong>To install musl:</strong></p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] musl</mark></code></p>
-<p></p>
-<p><strong>(!) (S) busybox</strong></p>
-<p>This package contains common UNIX utilities in a single binary.</p>
-<p><strong>To install busybox:</strong></p>
-<p><code><mark>(chroot)# glacier -</mark>f</code></p>
-<p><code><mark>[ ? ] busybox<mark></code></p>
-<p></p>
-<p><strong>(!) (S) (L) vim</strong></p>
-<p>This package contains the Vim text editor.</p>
-<p><strong>To install vim:</strong></p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] vim</mark></code></p>
-<p></p>
-<p><strong>(!) (S) (L) Linux</strong></p>
-<p>This package contains the Linux kernel</p>
-<p><i>You will need to cache this package if you wish to build a custom kernel. Prebuilt kernels are available under the names 'linux', 'linux-zen', 'linux-lts', etc. For a custom configuration, the package is called 'linux-custom'.</i></p>
-<p><strong>To install a prebuilt kernel:</strong></p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] linux-{zen,lts,hardened,rt}</mark></code></p>
-<p><strong>To install and configure a custom kernel:</strong></p>
-<p><code><mark>(chroot)# glacier -c</mark></code></p>
-<p><code><mark>[ ? ] linux-custom</mark></code></p>
-<p>Change directory into the Glacier cache and move the package to /tmp</p>
-<p><code><mark>(chroot)# cd /var/cache/glacier && mv linux-custom.tar.gz /tmp</mark></code></p>
-<p>Unpack the package</p>
-<p><code><mark>(chroot)# tar xpvf linux-custom.tar.gz</mark></code></p>
-<p>Ensure the kernel's source tree is clean</p>
-<p><code><mark>(chroot)# make mrproper</mark></code></p>
-<p>Make desired configurations to the kernel</p>
-<p><code><mark>(chroot)# make menuconfig<mark></code></p>
-<p><i>If using systemd as the init system, 'The IPv6 protocol [CONFIG_IPV6] is highly recommended.</i></p>
-<p><code>Networking support ---></code></p>
-<p><code>&nbsp&nbsp&nbsp&nbsp Networking options ---></code></p>
-<p><code>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp <*> The IPv6 protocol [CONFIG_IPV6]</code></p>
-<p><a href="https://linuxfromscratch.org/lfs/view/stable-systemd/chapter10/kernel.html">See this page from Linux From Scratch on other recommended kernel customizations.</a></p>
-<p>Compile the kernel</p>
-<p><code><mark>(chroot)# make</mark></code></p>
-<p>If you enabled support for modules, compile them</p>
-<p><code><mark>(chroot)# make modules_install</mark></code></p>
-<p><i>If you intend on dual booting and are using an external boot partition, run the following command from <strong>OUTSIDE THE CHROOT ENVIRONMENT</strong></i></p>
-<p><code><mark># mount --bind /boot /mnt/ev/boot</mark></code></p>
-<p>Change the kernel image</p>
-<p><code><mark>(chroot)# cp -iv arch/x86/boot/bzImage /boot/vmlinuz-X.XX.X</mark></code></p>
-<p>Install the system map file</p>
-<p><code><mark>(chroot)# cp -iv System.map /boot/System.map-X.XX.X</mark></code></p>
-<p>Save your kernel's configuration</p>
-<p><code><mark>(chroot)# cp -iv .config/boot/config-X.XX.X</mark></code></p>
-<p>Install kernel documentation</p>
-<p><code><mark>(chroot)# install -d /usr/share/doc/linux-X.XX.X</mark></code></p>
-<p><code><mark>(chroot)# cp -r Documentation/* /usr/share/doc/linux-X.XX.X</mark></code></p>
-<p>If you wish to retain the kernel's source tree</p>
-<p><code><mark>(chroot)# chown -R 0:0 /path/to/linux-X.XX.X</mark></code></p>
-<p><i>Warning: Some documentation for the kernel recommends symlinking /usr/src/linux to the kernel source tree, however this is specific to 2.6 series kernels and <strong>MUST NOT BE CREATED</strong> as it can cause conflics with Glacier.</i></p>
-<p><i>Warning: The headers in /usr/include should <strong>ALWAYS</strong> be the ones against which your standard C library was compiled. They should <strong>NEVER</strong> be replaced by either the raw kernel headers or the sanitized headers of any other kernel.</i></p>
-<p>Move the kernel source tree into <code><mark>/usr/src/linux</mark></code> for easy access later on.</p>
-<p>Create /etc/modprobe.d/usb.conf, which will ensure USB modules are started in the correct order</p>
-<p><code><mark>install -v -m755 -d /etc/modprobe.d</mark></code></p>
-<p><code><mark>cat > /etc/modprobe.d/usb.conf</mark></code></p>
-<p><code><mark># Begin /etc/modprobe.d/usb.conf << "EOF"</mark></code></p>
-<p><code>&nbsp</code></p>
-<p><code><mark>install ohci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i ohci_hcd ; true</mark></code></p>
-<p><code><mark>install uhci_hcd /sbin/modprobe ehci_hcd ; /sbin/modprobe -i uhci_hcd ; true</mark></code></p>
-<p><code>&nbsp</code></p>
-<p><code><mark># End /etc/modprobe.d/usb.conf</mark></code></p>
-<p><code><mark>EOF</mark></code></p>
-<p></p>
-<h2>Configuring the System</h2>
-<p>Now we must configure the system so it will boot correctly</p>
-<h3>Install optional administration tools</h3>
-<p>As a recommendation for easy access to the root account, installing <code><mark>sudo</mark></code> or <code><mark>doas</mark></code> is highly recommended, as it will remove the need to log in as root with <code><mark>su</mark></code> and will only require invoking <code><mark>sudo</mark></code> or <code><mark>doas</mark></code>.
-<p>In the case of <code><mark>sudo</mark></code>, the following line will need to be uncommented from <code><mark>/etc/sudoers</mark></code></p>
-<p><code><mark>%wheel	ALL=(ALL) ALL</mark></code></p>
-<p>In the case of <code><mark>doas</mark></code>, <code><mark>/etc/doas.conf</mark></code> will need to be created, containing the following:</p>
-<p><code><mark>permit :wheel</mark></code></p>
-<h3>Configure the network</h3>
-<p>Install NetworkManager</p>
-<p><code><mark>(chroot)# glacier -f</mark></code></p>
-<p><code><mark>[ ? ] networkmanager</mark></code></p>
-<p>Set the default network interface up</p>
-<p><code><mark>(chroot)# ip link</mark></code></p>
-<p><code><mark>(chroot)# ip link set interface_name up</mark></code></p>
-<p>If using systemd, enable the service</p>
-<p><code><mark>(chroot)# systemctl enable NetworkManager</mark></code></p>
-<p>You will be unable to start the service from inside the chroot environment.</p>
-<p>Create <code><mark>/etc/hostname</mark></code> and enter the desired hostname for the system</p>
-<p>Create <code><mark>/etc/hosts</mark></code> and enter the following</p>
-<p><code><mark>127.0.0.1 localhost</mark></code></p>
-<p><code><mark>::1 localhost</mark></code></p>
-<p><code><mark>127.0.1.1 localdomain hostname</mark></code></p>
-<h3>Install a bootloader</h3>
-<p>Install a bootloader capable of loading a Linux system (such as <code><mark>grub</mark></code>)</p>
-<p>In the case of <code><mark>grub</mark></code>, install <code><mark>os-prober</mark></code> and <code><mark>efibootmgr</mark></code> (for UEFI systems), then install either <code><mark>grub-bios</mark><code>, <code><mark>grub-uefi</mark></code>, <code><mark>lib32-grub-bios</mark></code>, or <code><mark>lib32-grub-uefi</mark></code>, then run the following commands to install: </p>
-<p><i>Warning: Highly customized configurations may cause the bootloader to break. It is recommended to edit </i><code><mark>/etc/make.conf</mark></code><i> before building this package.</i></p>
-<p><code><mark>(chroot)# grub-install /dev/sdX (BIOS/MBR)</mark></code></p>
-<p><code><mark>(chroot)# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub (UEFI)</mark></code></p>
-<p>Create the GRUB configuration file</p>
-<p><code><mark>(chroot)# grub-mkconfig -o /boot/grub/grub.cfg</mark></code></p>
-<h3>Power off the system</h3>
-<p>Exit the chroot environment</p>
-<p><code><mark>(chroot)# exit</mark></code></p>
-<p>Unmount all drives</p>
-<p><code><mark># umount -R /mnt/everest</mark></code></p>
-<p>Power off the system</p>
-<p><code><mark># poweroff</mark></code></p>
-<h2>The End</h2>
-<p>Power on the system. If all went well, the GRUB boot screen should appear, followed by a shell prompt.</p>
-<p>If using systemd, start NetworkManager and connect to a network</p>
-<p><code><mark># systemctl start NetworkManager</mark></code></p>
-<p><code><mark># nmtui</mark></code></p>
-<p>Congratgulations! Everest has successfully been installed.</p>
-<p>Most users will want to configure sound, a graphical environment, or multiple users. See post installation recommendations for details.</p>
+
+<h2>Setup the environment</h2>
+<p>Obtain the ELIF source tree. This is required for the initial setup.</p>
+<code><mark>(user)$ git clone https://git.everestlinux.org/EverestLinux/elif</mark></code>
+<code><mark>(user)$ cd elif</mark></code>
+<p>Run the setup script, defining your intended method of install.</p>
+<code><mark>(root)# elif setup live</mark></code>
+<code><mark>(root)# elif setup tar</mark></code>
+<p>A new file will be created, called <code><mark>build.conf</mark></code>.Edit this file and change any settings you wish.</p>
+<p>Once you are happy with your configuration, run the build script.</p>
+<code><mark>(user)# elif build</mark></code>
+<p>This will set up a partial Everest installation at your specified mountpoint.</p>
+<p>Chroot into the new installation.</p>
+<code><mark>(root)# chroot /mnt/everest</mark></code>
+
+<h2>Install the kernel</h2>
+<p>Download the kernel source tree to the Glacier cache.</p>
+<code><mark>(chroot)# glacier -f linux</mark></code>
+<p>Move the source tree to its correct location.</p>
+<code><mark>(chroot)# cd /var/cache/glacier</mark></code>
+<code><mark>(chroot)# mv linux.tar.gz /usr/src</mark></code>
+<code><mark>(chroot)# cd /usr/src</mark></code>
+<code><mark>(chroot)# mkdir linux</mark></code>
+<code><mark>(chroot)# mv linux.tar.gz linux</mark></code>
+<code><mark>(chroot)# cd linux</mark></code>
+<p>Unpack the tarball.</p>
+<code><mark>(chroot)# tar -xvf linux.tar.gz</mark></code>
+<p>Ensure the source tree is clean.</p>
+<code><mark>(chroot)# make mrproper</mark></code>
+<p>Configure the kernel.</p>
+<code><mark>(chroot)# ./autobuild.sh</mark></code>
+<p>OR<p>
+<code><mark>(chroot)# make menuconfig</mark></code>
+<p>Build the kernel and modules.</p>
+<code><mark>(chroot)# make && make modules_install</mark></code>
+<p>Copy the kernel image to /boot.</p>
+<code><mark>(chroot)# make install</mark></code>
+<p>Build an initramfs.</p>
+<code><mark>(chroot)# glacier -f dracut</mark></code>
+<code><mark>(chroot)# dracut</mark></code>
+
+<h2>Configure the system</h2>
+<p>The following system daemons are recommended to install:</p>
+<p> - system logger (sysklogd, syslog-ng, etc)</p>
+<p> - cron daemon (cronie)</p>
+<p> - ssh daemon (sshd)</p>
+<p> - time sync (chrony)</p>
+<p>In this example, we will be installing all of these.</p>
+<p>Install the packages.</p>
+<code><mark>(chroot)# glacier -f sysklogd</mark></code>
+<code><mark>(chroot)# glacier -f cronie</mark></code>
+<code><mark>(chroot)# glacier -f chrony</mark></code>
+<p>Start the services.</p>
+<p>On busybox init:<code><mark> (chroot)# esv start sysklogd && esv start cronie && esv start chronyd</mark></code></p>
+<p>On systemd:<code><mark> (chroot)# systemctl enable sysklogd cronie chronyd</mark></code></p>
+
