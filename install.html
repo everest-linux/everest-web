@@ -11,80 +11,32 @@
         <li><a href="install.html">Handbook</a></li>
         <li><a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a></li>
         <li><a href="download.html">Downloads</a></li>
-	<li><a href="https://git.everestlinux.org">Git</a></li>
+        <li><a href="https://git.everestlinux.org">Git</a></li>
 </ul>
 <img src="img/banner-hb.jpg" alt="banner-hb"/>
 <h1>Installation Handbook</h1>
-<p>This guide goes into detail on how to install Everest.</p>
+<p>This guide will go into depth on how to install Everest Linux.</p>
+<p>If you nedd assistance, feel free to reach out on IRC (#everestlinux), or Discord.</p>
 <h2>Prerequisites</h2>
-<p>There are 2 officially supported ways of installing Everest, systemd/glibc/GNU or init/musl/busybox. This guide covers the init/musl/busybox installation as it recieves the most support and is the intended way. For the GNU installation, it may be a good idea to read the Linux from Scratch wiki.</p>
-<p></p>
-<p>For highly customized installations (such as a custom init), it is recommended to know exactly what you're doing.</p>
-<p></p>
-<p>Everest may be installed through 2 methods:</p>
-<p>	- ISO: can be flashed to a usb and booted</p>
-<p>	- rootfs tarball (RECOMMENDED): unpacked to a directory (usually /mnt) and instaled through an existing distribution.</p>
-<p></p>
-<p> Note that no matter what option you choose, you will need the rootfs tarball.</p>
-<p></p>
-<p>Commands prefixed with <code><mark>(user)$</mark></code> should be run as the normal user.</p>
+<p>The following steps will be used to complete the installation:</p>
+<p> - Set up the environment by creating proper mountpoints and users</p>
+<p> - Download the Everest Linux rootfs image</p>
+<p> - Unpack the rootfs image onto the previously set up mountpoint</p>
+<p> - Chroot into the new system</p>
+<p> - Set up Glacier</p>
+<p> - Install system software</p>
+<p> - Install the Linux kernel</p>
+<p> - Set up init scripts/services</p>
+<p> - Reboot the system</p>
+<p><i>Note: Everest is highly flexible, and every aspect of the system can be changed.</i></p>
+<p><i>If you are changing anything, it is assumed you know exactly what you're doing.</i></p>
+<p>Commands prefixed with <code><mark>(user)$</mark></code> should be run as an unprivileged user.</p>
 <p>Commands prefixed with <code><mark>(root)#</mark></code> should be run as the root user.</p>
-<p>Commands prefixed with <code><mark>(chroot)$</mark></code> should be run as the normal user inside the chroot environment.</p>
 <p>Commands prefixed with <code><mark>(chroot)#</mark></code> should be run as the root user inside the chroot environment.</p>
-<p>This guide assumes your system has access to the internet. There are no tools for configuring the network in the iso. Use of a hardwired ethernet connection is recommended.</p>
-
-<h2>Setup the environment</h2>
-<p>Obtain the ELIF source tree. This is required for the initial setup.</p>
-<code><mark>(user)$ git clone https://git.everestlinux.org/EverestLinux/elif</mark></code>
-<code><mark>(user)$ cd elif</mark></code>
-<p>Run the setup script, defining your intended method of install.</p>
-<code><mark>(root)# elif setup live</mark></code>
-<code><mark>(root)# elif setup tar</mark></code>
-<p>A new file will be created, called <code><mark>build.conf</mark></code>.Edit this file and change any settings you wish.</p>
-<p>Once you are happy with your configuration, run the build script.</p>
-<code><mark>(user)# elif build</mark></code>
-<p>This will set up a partial Everest installation at your specified mountpoint.</p>
-<p>Chroot into the new installation.</p>
-<code><mark>(root)# chroot /mnt/everest</mark></code>
-
-<h2>Install the kernel</h2>
-<p>Download the kernel source tree to the Glacier cache.</p>
-<code><mark>(chroot)# glacier -c linux</mark></code>
-<p>Move the source tree to its correct location.</p>
-<code><mark>(chroot)# cd /var/cache/glacier</mark></code>
-<code><mark>(chroot)# mv linux.tar.gz /usr/src</mark></code>
-<code><mark>(chroot)# cd /usr/src</mark></code>
-<code><mark>(chroot)# mkdir linux</mark></code>
-<code><mark>(chroot)# mv linux.tar.gz linux</mark></code>
-<code><mark>(chroot)# cd linux</mark></code>
-<p>Unpack the tarball.</p>
-<code><mark>(chroot)# tar -xvf linux.tar.gz</mark></code>
-<p>Ensure the source tree is clean.</p>
-<code><mark>(chroot)# make mrproper</mark></code>
-<p>Configure the kernel.</p>
-<code><mark>(chroot)# ./autobuild.sh</mark></code>
-<p>OR<p>
-<code><mark>(chroot)# make menuconfig</mark></code>
-<p>Build the kernel and modules.</p>
-<code><mark>(chroot)# make && make modules_install</mark></code>
-<p>Copy the kernel image to /boot.</p>
-<code><mark>(chroot)# make install</mark></code>
-<p>Build an initramfs.</p>
-<code><mark>(chroot)# glacier -f dracut</mark></code>
-<code><mark>(chroot)# dracut</mark></code>
-
-<h2>Configure the system</h2>
-<p>The following system daemons are recommended to install:</p>
-<p> - system logger (sysklogd, syslog-ng, etc)</p>
-<p> - cron daemon (cronie)</p>
-<p> - ssh daemon (sshd)</p>
-<p> - time sync (chrony)</p>
-<p>In this example, we will be installing all of these.</p>
-<p>Install the packages.</p>
-<code><mark>(chroot)# glacier -f sysklogd</mark></code>
-<code><mark>(chroot)# glacier -f cronie</mark></code>
-<code><mark>(chroot)# glacier -f chrony</mark></code>
-<p>Start the services.</p>
-<p>On busybox init:<code><mark> (chroot)# esv start sysklogd && esv start cronie && esv start chronyd</mark></code></p>
-<p>On systemd:<code><mark> (chroot)# systemctl enable sysklogd cronie chronyd</mark></code></p>
+<h2>Set up the Environment</h2>
+<p>Our environment needs to be set up correctly before any other steps can proceed.</p>
+<p>Create the system mountpoint:</p>
+<p><code><mark>(root)# mkdir -v /mnt/everest</mark></code></p>
+<p>Assign the system mounpoint a variable for ease of use:</p>
+<p><code><mark>(root)# export EVEREST=/mnt/everest</mark></code></p>
 
