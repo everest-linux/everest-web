@@ -19,7 +19,7 @@
 <p>If you nedd assistance, feel free to reach out on IRC (#everestlinux), or Discord.</p>
 <h2>Prerequisites</h2>
 <p>The following steps will be used to complete the installation:</p>
-<p> - Set up the environment by creating proper mountpoints and users</p>
+<p> - Set up the environment by creating proper mountpoints, users, and partitions</p>
 <p> - Download the Everest Linux rootfs image</p>
 <p> - Unpack the rootfs image onto the previously set up mountpoint</p>
 <p> - Chroot into the new system</p>
@@ -33,10 +33,70 @@
 <p>Commands prefixed with <code><mark>(user)$</mark></code> should be run as an unprivileged user.</p>
 <p>Commands prefixed with <code><mark>(root)#</mark></code> should be run as the root user.</p>
 <p>Commands prefixed with <code><mark>(chroot)#</mark></code> should be run as the root user inside the chroot environment.</p>
-<h2>Set up the Environment</h2>
+<h2>Set up the environment</h2>
 <p>Our environment needs to be set up correctly before any other steps can proceed.</p>
 <p>Create the system mountpoint:</p>
 <p><code><mark>(root)# mkdir -v /mnt/everest</mark></code></p>
 <p>Assign the system mounpoint a variable for ease of use:</p>
 <p><code><mark>(root)# export EVEREST=/mnt/everest</mark></code></p>
-
+<p>Create any necessary partitions:</p>
+<p>/boot - 256MB</p>
+<p>(optional) swap - RAM * 2</p>
+<p>/ - rest of the drive</p>
+<p>Mount the root partition to the system mountpoint:</p>
+<p><code><mark>(root)# mount /dev/sdX /mnt/everest</mark></code</p>
+<p>Create the boot directory:</p>
+<p><code><mark>(root)# mkdir -pv /mnt/everest/boot</mark></code></p>
+<p>Mount the boot partition:</p>
+<p><code><mark>(root)# mount /dev/sdX /mnt/everest/boot</mark></code></p>
+<p>Our system is now set up for the installation.</p>
+<h2>Downloading the Everest image</h2>
+<p>An Everest Image is an uncomplete root filesystem image which provides a strong base to build off of.</p>
+<p>Each image has slight differences to others, some differences may include:</p>
+<p> - The init system</p>
+<p> - The standard C library</p>
+<p> - The architecture</p>
+<p>Images are designated in the following ways:</p>
+<p>everestlinux-X.X.X-INIT-ARCH(if not x86)-img.tar.xz</p>
+<p>For instance, an image targeting x86_64, with the busybox init system would be called:</p>
+<p>everestlinux-1.0.0-busybox-img.tar.xz</p>
+<p>An image targeting arm64, with systemd would be called:</p>
+<p>everestlinux-1.0.0-systemd-aarch64-img.tar.xz</p>
+<p>Other designations may be used, such as:</p>
+<p> - no_multilib</p>
+<p>Ensure you download the correct image for your system. For most users, images targeting</p>
+<p><strong>x86_64</strong> with the <strong>busybox</strong> init system are what you should use.</p>
+<p>To get the image to our destination as easily as possible, use wget</p>
+<p><code><mark>(user)$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/everestlinux-X.X.X-INIT-img.tar.xz</mark></code></p>
+<p>With the image downloaded, the system can now be installed.</p>
+<h2>Unpacking the Image</h2>
+<p>The image can now be unpacked into the system mountpoint.</p>
+<p>Ensure the image is located in <p><code><mark>/mnt/everest</mark></code></p>, then run the following command to unpack it:</p>
+<p><code><mark>(root)# tar -xpvf everestlinux-img.tar.xz --xattrs-include='*.*' --numeric-owner</mark></code></p>
+<p>The following 2 options are very important. Without them, some binaries may refuse to run due to incorrect file ownership.</p>
+<h2>Chrooting into the new installation</h2>
+<p>Our system is now in a partially working state.</p>
+<p>If we were to simply call it a day and try to boot into the system now, it would not be possible.</p>
+<p>Many parts of the system are missing, including a bootloader and kernel.</p>
+<p>Chrooting allows us to access the system and modify it, without actually booting into it.</p>
+<p>Before chrooting, we must mount some partitions.</p>
+<p>Chroot into the system:</p>
+<p><code><mark>(root)# everest-chroot /mnt/everest</mark></code></p>
+<p>This program will check the following:</p>
+<p> - /mnt/everest exists</p>
+<p> - /bin/sh exists</p>
+<p>Once in the chroot environment, run the following commands:</p>
+<p><code><mark>(chroot)# export PS1="(chroot) ${PS1}" && source /etc/profile</mark></code></p>
+<p>We are now fully set up for the rest of the installation.</p>
+<h2>Set up Glacier</h2>
+<p>Glacier is the package manager for Everest. It must be installed into the new system.</p>
+<p>Download the Glacier release tarball:</p>
+<p><code><mark>(chroot)# wget RELEASE_TARBALL</mark></code></p>
+<p>Unpack the tarball and run the installation:</p>
+<p><code><mark>(chroot)# tar xpvf glacier-release-X.X.X.tar.xz && glacierX.X.X/INSTALL.sh</mark></code></p>
+<p>Edit <p><code><mark>/etc/make.conf</mark></code></p> and change any settings you wish.</p>
+<h2>Install the Linux kernel</h2>
+<p>The kernel can now be installed.</p>
+<p>Use Glacier to download the source tree:</p>
+<p><code><mark>(chroot)# glacier -f linux</mark></code></p>
+<p>Find the kernel source tree in <p><code><mark>/usr/src/linux</mark></code></p>
