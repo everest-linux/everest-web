@@ -44,7 +44,7 @@
 <p>(optional) swap - RAM * 2</p>
 <p>/ - rest of the drive</p>
 <p>Mount the root partition to the system mountpoint:</p>
-<p><code><mark>(root)# mount /dev/sdX /mnt/everest</mark></code</p>
+<p><code><mark>(root)# mount /dev/sdX /mnt/everest</mark></code></p>
 <p>Create the boot directory:</p>
 <p><code><mark>(root)# mkdir -pv /mnt/everest/boot</mark></code></p>
 <p>Mount the boot partition:</p>
@@ -97,6 +97,33 @@
 <p>Edit <p><code><mark>/etc/make.conf</mark></code></p> and change any settings you wish.</p>
 <h2>Install the Linux kernel</h2>
 <p>The kernel can now be installed.</p>
+<p>Install the linux-firmware package, which provides firmware for some devices:</p>
+<p><code><mark>(chroot)# glacier -f linux-firmware</mark></code></p>
 <p>Use Glacier to download the source tree:</p>
 <p><code><mark>(chroot)# glacier -f linux</mark></code></p>
 <p>Find the kernel source tree in <p><code><mark>/usr/src/linux</mark></code></p>
+<p><i>Note: Alternatively, you can download a new kernel from kernel.org</i></p>
+<p>Clean the kernel source tree:</p>
+<p><code><mark>(chroot)# make mrproper</mark></code></p>
+<p>Configure the kernel:</p>
+<p><code><mark>(chroot)# make menuconfig</mark></code></p>
+<p><i>Note: Recommended options for configuration are not provided. It is up to the user to decide what they want to enable.</i></p>
+<p>Compile the kernel:</p>
+<p><code><mark>(chroot)# make && make modules_install</mark></code></p>
+<p>Copy the kernel image to /boot:</p>
+<p><code><mark>(chroot)# make install</mark></code></p>
+<p>(Optional) Build an initramfs</p>
+<p>On some systems, an initramfs (initial ram filesystem) is required to boot properly.</p>
+<p>Do some research and decide whether you need - or want - an initramfs.</p>
+<p>Install dracut:</p>
+<p><code><mark>(chroot)# glacier -f dracut</mark></code></p>
+<p>Build an initramfs:</p>
+<p><code><mark>(chroot)# dracut</mark></code></p>
+<h2>Configure the system</h2>
+<p>Some components of the system must be configured before we can boot.</p>
+<p>Create an fstab file.</p>
+<p>An example of a properly formatted fstab is below:</p>
+<p>/dev/sda1	/boot	vfat	defaults,noatime	0 2</p>
+<p>/dev/sda2	none	swap	sw			0 0</p>
+<p>/dev/sda3	/	ext4	noatime			0 1</p>
+<p>
