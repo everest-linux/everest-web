@@ -26,10 +26,19 @@
 <p>October 2022 - Glacier v3 enters testing</p>
 <p></p>
 <h3>Design Principles</h3>
-<p>Our design principles guide the development of Everest. You may notice we share some of these with Arch.</p>
+<p>Our design principles guide the development of Everest. You may notice we share most of these with Arch (because Arch is very cool).</p>
 <p><strong>Simplicity</strong> - We provide packages with almost zero modifications from upstream, except when necessary.</p>
+<p>The base Everest system only includes what you need to start building your system - UNIX tools, a C library, a C compiler, and Glacier.</p>
+<p>The base Everest system also weighs in at around 100 MB (may vary with different images, such as GNU or systemd).</p>
 <p><strong>Flexibility</strong> - Everest is designed with flexibility in mind. Any modification can be achieved if the user has enough knowledge</p>
-<p><strong>User Choice</strong> - Users are free to make any choice they see fit; this includes using proprietary software through the <strong>multiverse</strong> repository.
-<p><strong>User Centrality</strong> - We believe that instead of trying to cater to as many users as possible, we should only target those with interest and knowledge in Linux.</p>
+<p>For example, it is possible to replace Busybox with sbase, or use runit as your init system, all without breaking the system.</p>
+<p><strong>Functionality vs Ideology</strong> - The developers of Everest are strong advocates of free software, but understand that</p>
+<p>it cannot be implemented 100% of the time, such as in the form of drivers. We also understand that some users may prefer proprietary</p>
+<p>software over libre counterparts. We do not take steps to prevent proprietary software in our repositories,</p>
+<p>only requiring it to be under the <strong>multiverse</strong> repository.</p>
+<p>This is very different from heavily ideological distributions, such as Hyperbola, some of which don't even support many packages people may find useful,</p>
+<p>such as systemd, dbus, rust, java, and most recently, sudo.</p>
+<p><strong>User Centrality</strong> - We believe that instead of trying to make Everest beginner friendly, and work out of the box,</p>
+<p>we should instead focus on users with a willingness to learn how to install and use Everest.</p>
 </body>
 </html>

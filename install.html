@@ -94,6 +94,13 @@
 <p><code><mark>(chroot)# wget RELEASE_TARBALL</mark></code></p>
 <p>Unpack the tarball and run the installation:</p>
 <p><code><mark>(chroot)# tar xpvf glacier-release-X.X.X.tar.xz && glacierX.X.X/INSTALL.sh</mark></code></p>
+<p>This script will check for the following, and make corrections if necessary:</p>
+<p> - The C library is installed</p>
+<p> - The C library headers are installed</p>
+<p> - The C compiler is installed</p>
+<p> - GNU Binutils are installed</p>
+<p> - GNU Make is installed</p>
+<p> - Python is installed</p>
 <p>Edit <p><code><mark>/etc/make.conf</mark></code></p> and change any settings you wish.</p>
 <h2>Install the Linux kernel</h2>
 <p>The kernel can now be installed.</p>
