@@ -71,7 +71,8 @@
 <p>With the image downloaded, the system can now be installed.</p>
 <h2>Unpacking the Image</h2>
 <p>The image can now be unpacked into the system mountpoint.</p>
-<p>Ensure the image is located in <p><code><mark>/mnt/everest</mark></code></p>, then run the following command to unpack it:</p>
+<p>Ensure the image is located in <p><code><mark>/mnt/everest</mark></code></p></p>
+<p>then run the following command to unpack it:</p>
 <p><code><mark>(root)# tar -xpvf everestlinux-img.tar.xz --xattrs-include='*.*' --numeric-owner</mark></code></p>
 <p>The following 2 options are very important. Without them, some binaries may refuse to run due to incorrect file ownership.</p>
 <h2>Chrooting into the new installation</h2>
@@ -101,7 +102,8 @@
 <p> - GNU Binutils are installed</p>
 <p> - GNU Make is installed</p>
 <p> - Python is installed</p>
-<p>Edit <p><code><mark>/etc/make.conf</mark></code></p> and change any settings you wish.</p>
+<p>Edit <p><code><mark>/etc/make.conf</mark></code></p></p>
+<p>and change any settings you wish.</p>
 <h2>Install the Linux kernel</h2>
 <p>The kernel can now be installed.</p>
 <p>Install the linux-firmware package, which provides firmware for some devices:</p>
@@ -133,4 +135,43 @@
 <p>/dev/sda1	/boot	vfat	defaults,noatime	0 2</p>
 <p>/dev/sda2	none	swap	sw			0 0</p>
 <p>/dev/sda3	/	ext4	noatime			0 1</p>
-<p>
+<p>Enable system services, such as a cron daemon, logger, etc:</p>
+<p><code><mark>(chroot)# esv start cronie chronyd sysklogd # for busybox init</mark></code></p>
+<p><code><mark>(chroot)# systemctl enable --now cronie chronyd sysklogd # for systemd</mark></code></p>
+<p>Other things you might want to configure are:</p>
+<p> - /etc/doas.conf</p>
+<p> - /etc/inittab</p>
+<h2>Configure the bootloader</h2>
+<p>Our system needs one more component before it can be booted into: the bootloader</p>
+<p>For busybox init users, GRUB is the recommended bootloader.</p>
+<p>For systemd users, systemd-boot is the recommended bootloader.</p>
+<p><strong>GRUB</strong></p>
+<p>Install the GRUB package:</p>
+<p><i>Note: GRUB is split into 2 packages, grub-bios and grub-uefi.</i></p>
+<p><i>Ensure you install the correct package.</i></p>
+<p><code><mark>(chroot)# glacier -f grub-{bios,uefi}</mark></code></p>
+<p>Install GRUB:</p>
+<p><code><mark>(chroot)# grub-install /dev/sdX # for BIOS</mark></code></p>
+<p><code><mark>(chroot)# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub # for UEFI</mark></code></p>
+<p>Create a GRUB configuration file:</p>
+<p><code><mark>(chroot)# grub-mkconfig -o /boot/grub/grub.cfg</mark></code></p>
+<p><strong>systemd-boot</strong></p>
+<p><i>Note: systemd-boot only supports UEFI.</i></p>
+<p><i>Use GRUB if your system is incompatible with UEFI.</i></p>
+<p>Systemd-boot is included with systemd.</p>
+<p>Install systemd-boot:</p>
+<p><code><mark>(chroot)# bootctl install</mark></code></p>
+<p>Edit /boot/loader/loader.conf and create a boot entry at /boot/loader/entries/everest.conf</p>
+<h2>Finishing the Installation</h2>
+<p>Every component of the system has been configured, and we can now boot into it.</p>
+<p>Exit the chroot environment:</p>
+<p><code><mark>(chroot)# exit</mark></code></p>
+<p>Unmount all partitions from /mnt/everest:</p>
+<p><code><mark>(root)# umount -R /mnt/everest</mark></code></p>
+<p>Power off the system:</p>
+<p><code><mark>(root)# poweroff</mark></code></p>
+<p>Ensure you remove the installation media or you will not boot into the new system.</p>
+<h2>Post-installation</h2>
+<p>A base Everest system is pretty minimal. Most users will need to configure extra components,</p>
+<p>such as a window manager, sound, or networking.</p>
+<p>See page: <a href="https://git.everestlinux.org/EverestLinux/wiki/wiki/General-Recommendations">General Recommendations</a></p>
