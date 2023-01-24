@@ -79,7 +79,7 @@
 <p>Our system is now in a partially working state.</p>
 <p>If we were to simply call it a day and try to boot into the system now, it would not be possible.</p>
 <p>Many parts of the system are missing, including a bootloader and kernel.</p>
-<p>Chrooting allows us to access the system and modify it, without actually booting into it.</p>
+<p>Chrooting allows us to access the system to make modifications, without actually booting into it.</p>
 <p>Before chrooting, we must mount some partitions.</p>
 <p>Chroot into the system:</p>
 <p><code><mark>(root)# everest-chroot /mnt/everest</mark></code></p>
@@ -143,8 +143,9 @@
 <p> - /etc/inittab</p>
 <h2>Configure the bootloader</h2>
 <p>Our system needs one more component before it can be booted into: the bootloader</p>
-<p>For busybox init users, GRUB is the recommended bootloader.</p>
-<p>For systemd users, systemd-boot is the recommended bootloader.</p>
+<p>For most users, systemd-boot is recommended.</p>
+<p>The standalone package for systemd-boot can be installed by running:</p>
+<p><code><mark>(chroot)# glacier -f gummiboot</mark></code></p>
 <p><strong>GRUB</strong></p>
 <p>Install the GRUB package:</p>
 <p><i>Note: GRUB is split into 2 packages, grub-bios and grub-uefi.</i></p>
