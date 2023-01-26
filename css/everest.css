@@ -17,7 +17,7 @@
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background-color; #1E1E1E;
+	background-color: #1E1E1E;
 	overflow-x: hidden;
 	padding-top: 20px;
 }
@@ -38,6 +38,7 @@
 .main {
 	margin-left: 160px;
 	padding: 0px 10px;
+	background-color: #1E1E1E;
 }
 
 @media screen and (max-height: 450px) {
@@ -80,3 +81,4 @@ button {
 
 hr.dotted {
 	border-top: 3px dotted #bbb;
+}
