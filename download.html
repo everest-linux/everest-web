@@ -1,43 +1,43 @@
 <!DOCTYPE html>
-<hmtl>
+<html>
 <head>
-<title>Everest Linux - Download</title>
+<title>Everest Linux - Home</title>
 <link type="text/css" rel="stylesheet" href="css/everest.css"/>
 </head>
 <body>
-<ul>
-	<li><a href="index.html">Home</a></li>
-	<li><a href="about.html">About</a></li>
-	<li><a href="install.html">Handbook</a></li>
-	<li><a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a></li>
-	<li><a href="download.html">Downloads</a></li>
-	<li><a href="https://git.everestlinux.org">Git</a></li>
-</ul>
-<img src="img/banner-dl.jpg" alt="Everest Logo"/>
-<h1>Download Everest</h1>
-<p>Most users will want to get the most recent release.</p>
-<p>If for some reason you require an older release, it may be in the release archive.</p>
-<p>Using a very old release is not recommended because many critical programs (such as the Linux kernel) are severely out of date.</p>
-<p>It is for this reason that releases older than 2 years are removed from the archives.</p>
-<p>There are multiple ways to get Everest.</p>
-<h2>HTTPS</h2>
- <!-- Add icon library -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<!-- Auto width -->
-<button class="btn"><i class="fa fa-download"></i><a href="https://git.everestlinux.org/EverestLinux/everest/src/branch/main/releases"> Download</a></button>
-<h2>Bittorrent</h2>
-<p>Before torrenting, ensure doing so will not get you into trouble with local authorities.
-The possibility of this happening is small, but not impossible. If you live in the United States, or Europe, this should not be an issue.</p>
-<p>Verifying the checksum of a torrented tarball is not required, however it is still recommended to do so.</p>
-<p>THe signature ofthe latest tarball should be:</p>
-<p><code><mark>150dad224cb7e4244046b97170e0e01834ce07445bddb4be7ebc035b68b5221c  everestlinux-summit-0.0.1-systemd-rc.tar.xz</mark></code></p>
-<p><i>Note: if using a web seed capable torrent client, please leave it open once finished to seed back.</i></p>
-<h2>wget</h2>
-<p>If you wish to download an Everest tarball through the liveusb, wget allows you to quickly download it through the command line.</p>
-<p>The following command will download Everest:</p>
-<p><code><mark>$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/everestlinux-X.X.X-master.tar.xz</mark></code></p>
-<p>Ensure you define which version you want.</p>
-<h2>Installing Everest</h2>
-<p>The Everest installation handbook should give you a pretty good idea of how to set up your installation. It can be found <a href="install.html">here</a>.</p>
-</body>
-</html>
+<!-- Navbar -->
+<div class="sidenav">
+	<a href="index.html">Home</a>
+	<a href="about.html">About</a>
+	<a href="install.html">Install</a>
+	<a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a>
+	<a href="download.html">Downloads</a>
+	<a href="https://git.everestlinux.org/EverestLinux/wiki">Wiki</a>
+	<a href="https://git.everestlinux.org">Git</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<h2>Download Everest</h2>
+	<p>Most users will want to get the most recent release.</p>
+	<p>If for some reason you require an older release,</p>
+	<p>it may be in the release archive, which contains all</p>
+	<p>deprecated releases.</p>
+	<p>Using a very old release is not recommended as many critical</p>
+	<p>programs will likely have security vulnerabilities.</p>
+	<p>ALWAYS verify checksums of system images.</p>
+	<p>There are multiple ways of getting Everest:</p>
+	<h2>HTTPS</h2>
+	<button onclick="window.location.href='https://git.everestlinux.org/EverestLinux/everest/src/branch/main/releases';">
+	Download
+	</button>
+	<h2>BitTorrent</h2>
+	<p>In some regions, using BitTorrent is illegal.</p>
+	<p>Please ensure accessing BitTorrent is safe to do.</p>
+	<p>Everest Linux assumes no responsibility.</p>
+	<p>If using a web seed capable client, please leave it open once finished,</p>
+	<p>in order to seed back.</p>
+	<h2>wget</h2>
+	<p>If you want to quickly download a system image, you can use wget.</p>
+	<code>(user)$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/SYSTEM_IMAGE</code>
+</div>

@@ -1,35 +1,88 @@
 <!DOCTYPE html>
-<hmtl>
+<html>
 <head>
 <title>Everest Linux - Home</title>
 <link type="text/css" rel="stylesheet" href="css/everest.css"/>
 </head>
 <body>
-<ul>
-	<li><a href="index.html">Home</a></li>
-	<li><a href="about.html">About</a></li>
-	<li><a href="install.html">Handbook</a></li>
-	<li><a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a></li>
-	<li><a href="download.html">Downloads</a></li>
-	<li><a href="https://git.everestlinux.org">Git</a></li>
-</ul>
-<img src="img/banner2.jpg" alt="Everest Logo"/>
-<h1>Everest Linux</h1>
-<p>A highly flexible, general purpose meta-distribution, built off of the monolithic Linux kernel and Glacier package manager.</p>
-<h2>Why Everest?</h2>
-<p><strong>Simple: </strong>Everest strives to be simple by design, coming with no pre-installed bloatware, or spyware. Everest follows the UNIX philosphy when possible, and attempts to avoid using large GNU programs in its base system.</p>
-<p><strong>Stable: </strong>Everest is designed to be as stable as possible. All base system programs are statically linked, and Glacier will not operate on packages unless you tell it to.</p>
-<p><strong>Fast: </strong>Glacier downloads program source code from the Everest Package Index, then compiles it locally on your system, resulting in an extremely optimized experience. Simply define the makeflags for your system and you're ready to go.</p>
-<p><strong>Lightweight: </strong>Everest uses Busybox for its userland tools and init, and musl for its C library. All of these tools are designed to be as lightweight as possible.</p>
-<p><strong>Flexible: </strong>Everest supports higly customized installations. Any part of Everest can be replaced.</p>
-<h1>Ready to try Everest?</h1>
-<p><a href="install.html">Read the installation guide here.</a></p>
-<h1>News</h1>
-<p>11/1/22 - System image builds begin</p>
-<p>10/25/22 - Glacier v3 is released</p>
-<p>10/7/22 - Glacier v3 enters testing</p>
-<p>6/21/22 - everestlinux.org has been registered, all packages have been migrated to git.everestlinux.org.</p>
-<p>6/9/22 - Glacier v2.1 has been released</p>
-<p>5/31/22 - Glacier v2.0 has been released</p>
-</body>
-</html>
+<!-- Navbar -->
+<div class="sidenav">
+	<a href="index.html">Home</a>
+	<a href="about.html">About</a>
+	<a href="install.html">Install</a>
+	<a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a>
+	<a href="download.html">Downloads</a>
+	<a href="https://git.everestlinux.org/EverestLinux/wiki">Wiki</a>
+	<a href="https://git.everestlinux.org">Git</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<h2>Everest Linux</h2>
+	<p>A highly flexible, general purpose meta-distribution,</p>
+	<p>built off of the monolithic Linux kernel and Glacier</p>
+	<p>package manager.</p>
+	<h2>Why Everest?</h2>
+	<strong>Simple: </strong><p>Everest strives to be simple by design,</p>
+	<p>coming with no pre-installed bloatware or spyware.</p>
+	<p>Everest follows the UNIX philosophy whenever possible,</p>
+	<p>and tries to avoid including large programs in its base system.</p>
+	<strong>Stable: </strong><p>Everest is designed to be as stable</p>
+	<p>as possible. All base system programs are statically linked,</p>
+	<p>and can be updated with git-controlled root filesystems.</p>
+	<strong>Fast: </strong><p>Glacier downloads program source</p>
+	<p>code and compiles it locally on your system. The end result</p>
+	<p>is an extremely fast and optimized package. Simply define</p>
+	<p>CFLAGS, CXXFLAGS, and MAKEFLAGS, and you're ready to go.</p>
+	<strong>Lightweight: </strong><p>Everest uses Busybox for its userland</p>
+	<p>tools and init system, and musl for its standard C library.</p>
+	<p>All of these tools are designed to be as lightweight as possible.</p>
+	<strong>Flexible: </strong><p>Everest supports highly customized</p>
+	<p>installations. Want to replace Busybox init with systemd, openrc, runit,</p>
+	<p>dinit, or s6? Or replace musl with uClibc or Glibc? All of these are</p>
+	<p>possible, and encouraged.</p>
+	<h2>Ready to try Everest?</h2>
+	<p><a href="install.html">Read the installation guide here.</a></p>
+	<h2>News</h2>
+	<p>1/26/23 - Website overhaul</p>
+	<p>The Everest website has been completely overhauled with a</p>
+	<p>cleaner, sleeker look.</p>
+	<p>----------------------------------------</p>
+	<p>1/26/23 - System image builds nearly complete</p>
+	<p>A system image is coming together. This includes the toolchain</p>
+	<p>We are still ironing out issues with Busybox's wget implementation,</p>
+	<p>which fails to support https.</p>
+	<p>----------------------------------------</p>
+	<p>11/1/22 - System image builds have begun</p>
+	<p>Today, the team has begun compiling system images.</p>
+	<p>All programs have compiled correctly, with the exception</p>
+	<p>of the system toolchain. This is a very important component,</p>
+	<p>and the system cannot function without it.</p>
+	<p>----------------------------------------</p>
+	<p>10/25/22 - Glacier v3 is released</p>
+	<p>After nearly 2 months of hard work, Glacier v3 is finally out.</p>
+	<p>This release includes many stability improvements,</p>
+	<p>changes to the codebase to improve readability, and a new</p>
+	<p>build system.</p>
+	<p>----------------------------------------</p>
+	<p>10/7/22 - Glacier v3 enters testing</p>
+	<p>Glacier v3 is now available for testing. Please note that</p>
+	<p>this release is not stable and therefore should not be run</p>
+	<p>on a production machine.</p>
+	<p>----------------------------------------</p>
+	<p>8/31/22 - Announcing Glacier v3</p>
+	<p>Glacier v2, which was release back in June, functions great,</p>
+	<p>however does not function like a typical package manager would.</p>
+	<p>Additionally, adding functionality is very difficult as the codebase</p>
+	<p>is very complex and messy. Glacier v3 aims to fix these issues.</p>
+	<p>----------------------------------------</p>
+	<p>6/21/22 - Registering everestlinux.org</p>
+	<p>Everest now owns a domain. This allows us to host our own website,</p>
+	<p>rather than using GitHub (which is owned by Microsoft). This gives</p>
+	<p>us more control over our work.</p>
+	<p>----------------------------------------</p>
+	<p>5/31/22 - Glacier v2 is released</p>
+	<p>Glacier v2 has been released. This version provides several improvements</p>
+	<p>to the codebase, such as compressing everything to a single executable,</p>
+	<p>and removing the whole "enter package name" scheme.</p>
+</div>	
