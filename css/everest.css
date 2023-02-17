@@ -35,6 +35,10 @@
 	color: #4a86e8ff;
 }
 
+html {
+	background-color: #1E1E1E;
+}
+
 .main {
 	margin-left: 160px;
 	padding: 0px 10px;
@@ -58,7 +62,7 @@ code {
 	border-left-width: 4px;
 	border-radius: 2px;
 	padding: 2px;
-	color: white;
+	color: #e6e6e6;
 }
 
 h2 {
@@ -67,7 +71,7 @@ h2 {
 	padding-left: 4px;
 	border-width: 8px;
 	border-radius: 5px;
-	color: white;
+	color: #e6e6e6;
 }
 
 button {
@@ -79,7 +83,7 @@ button {
 	border-color: #4a86e8ff;
 	border-radius: 5px;
 	background-color: #2C2C2C;
-	color: white;
+	color: #e6e6e6;
 }
 
 hr.dotted {
@@ -87,13 +91,14 @@ hr.dotted {
 }
 
 p {
-	color: white;
+	color: #e6e6e6;
 }
 
 strong {
-		color: white;
+	color: #e6e6e6;
 }
 
 i {
-	color: white;
+	color: #e6e6e6;
 }
+

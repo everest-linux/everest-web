@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Everest Linux - Install</title>
+<link type="text/css" rel="stylesheet" href="css/everest.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<a href="index.html">Home</a>
+	<a href="about.html">About</a>
+	<a href="install.html">Install</a>
+	<a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a>
+	<a href="download.html">Downloads</a>
+	<a href="https://git.everestlinux.org/EverestLinux/wiki">Wiki</a>
+	<a href="https://git.everestlinux.org">Git</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<h2>Installation Handbook</h2>
+	<p>This guide is the official installation handbook for Everest Linux.</p>
+	<p>Using unofficial guides is not recommended, as they may be outdated, or unreliable. The official guide is located at https://www.everestlinux.org/install.</p>
+	<p>Simply copy and pasting commands from this guide won't cut it, and you'll most likely end up with a broken installation. Ensure you know what each command does.</p>
+	<p>If you need assistance, reach out to us on IRC (libera.chat, #everestlinux) or Discord.</p>
+	<h2>Prerequisites</h2>
+	<p>The following steps are required to complete an installation:</p>
+	<ol>
+		<li>Set up the build environment</li>
+		<li>Download a system image</li>
+		<li>Unpack the system image</li>
+		<li>Change root into the new system</li>
+		<li>Install programs</li>
+		<li>Install the Linux kernel</li>
+		<li>Set up init scripts and services</li>
+		<li>Install the bootloader</li>
+		<li>Reboot the system</li>
+	</ol>
+	<i>Note that Everest is highly flexible. That being said, it is up to you to make modifications yourself.</i>
+	<p>Run commands prefixed with <code>(user)$</code> as an unprivileged user.</p>
+	<p>Run commands prefixed with <code>(root)#</code> as the root user.</p>
+	<p>Run commands prefixed with <code>(chroot)#</code> inside the chroot environment.</p>
+	<h2>Set up the environment</h2>
+	<p>Everest needs a proper environment set up in order to install correctly.</p>
+	<p>A system mountpoint is where the new system's root (/) will be. Where you put this doesn't matter, as the host system used to build the system won't be included</p>
+	<p>in the final installation. In this example, we will use /mnt/everest.</p>
+	<p>Create a system mountpoint:</p>
+	<code>(root)# mkdir -pv /mnt/everest</code>
+	<p>A variable pointing to the system mountpoint may be useful in the future, as it will save you a bit of typing.</p>
+	<p>Create a variable for the system mountpoint:</p>
+	<code>(root)# SYS_MNT=/mnt/everest</code>
+	<p>Partitions must be created on the drive you wish to install Everest to. The typical partition layout on an Everest system may differ from othet distributions.</p>
+	<p>The typical layout is:</p>
+	<table>
+		<tr>
+			<th>Mount point</th>
+			<th>Type</th>
+			<th>Suggested size</th>
+		</tr>
+		<tr>
+			<td>/mnt/everest/boot</td>
+			<td>EFI system partition (esp)</td>
+			<td>No smaller than 256 MB, no larger than 1 GB</td>
+		</tr>
+		<tr>
+			<td>/mnt/everest/usr</td>
+			<td>/usr</td>
+			<td>No smaller than 25 GB</td>
+		</tr>
+		<tr>
+			<td>/mnt/everest</td>
+			<td>Root filesystem</td>
+			<td>Remainder of the drive</td>
+		</tr>
+	<table>
+	<p>Partition the target drive:</p>
+	<code>(root)# cfdisk /dev/sdX</code>
+	<p>A valid filesystem is required on the drive.</p>
+	<p>Most filesystems should work, however ensure the system has the corresponding package for whatever filesystem you choose.</p>
+	<p>For example, if XFS is used, when installing the system:</p>
+	<code>(chroot)# gpkg -f world/xfsprogs</code>
+	<p>In this example, Ext4 will be used.</p>
+	<p>Create a filesystem:</p>
+	<code>(root)# mkfs.ext4 /dev/root</code>
+	<p></p>
+	<code>(root)# mkfs.ext4 /dev/usr</code>
+	<p>The EFI system partition (esp) must be formatted as FAT32.</p>
+	<code>(root)# mkfs.vfat -F32 /dev/boot</code>
+	<p>Some additional directories may need to be created.</p>
+	<p>Create extra needed directories:</p>
+	<code>(root)# mkdir /mnt/everest/boot</code>
+	<p></p>
+	<code>(root)# mkdir /mnt/everest/usr</code>
+	<p></p>
+	<code>(root)# mkdir /mnt/everest/usr/{bin,sbin,lib,include,local,share,src,man}</code>
+	<p></p>
+	<code>(root)# mkdir /mnt/everest/usr/local/{bin,etc,include,lib,man,sbin,share,src}</code>
+	<p>If on an x86_64 system, create a symlink to /usr/lib:</p>
+	<code>(root)# ln -sv /mnt/everest/usr/lib /mnt/everest/usr/lib64</code>
+</div>
