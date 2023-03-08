@@ -86,15 +86,117 @@
 	<code>(root)# mkfs.ext4 /dev/usr</code>
 	<p>The EFI system partition (esp) must be formatted as FAT32.</p>
 	<code>(root)# mkfs.vfat -F32 /dev/boot</code>
+	<p>Mount the root partition to the system mountpoint:</p>
+	<code>(root)# mount /dev/root /mnt/everest</code>
 	<p>Some additional directories may need to be created.</p>
 	<p>Create extra needed directories:</p>
 	<code>(root)# mkdir /mnt/everest/boot</code>
 	<p></p>
 	<code>(root)# mkdir /mnt/everest/usr</code>
+	<p>Mount the remaining partitions:</p>
+	<code>(root)# mount /dev/boot /mnt/everest/boot</code>
 	<p></p>
-	<code>(root)# mkdir /mnt/everest/usr/{bin,sbin,lib,include,local,share,src,man}</code>
+	<code>(root)# mount /dev/usr /mnt/everest/usr</code>
+	<p>Create remaining directories on /usr with mkusrskel:</p>
+	<code>(root)# mkusrskel -d /mnt/everest/usr</code>
+	<h2>Downloading a system image</h2>
+	<p>An Everest system image provides an incomplete root filesystem which users can build a system off of. Users should be careful of which</p>
+	<p>image they choose, as switching in the future is trivial, time consuming, and requires rebuilding a lot of packages. It's a lot better</p>
+	<p>to get it right the first time, rather than trying to get it right later.</p>
+	<p>Do some thorough planning to ensure you get the right system image. For instance, ask yourself a few questions, such as:</p>
+	<ol>
+		<li>Do I need 32 bit libraries?</li>
+		<li>Will I be using proprietary software that cannot be recompiled?</li>
+		<li>Do I require a specific C library for my hardware setup?</li>
+		<li>Do I want to set up NSA Security Enhanced Linux (SELinux)</li>
+		<li>Do I want an init system other than Busybox's built in init configured out of the box?</li>
+	</ol>
+	<p>Downloading a system image that is severely out of date is not recommended. Many programs, such as the kernel or SSL library will be vulnerable to attacks.</p>
+	<p>Download a system image with wget:</p>
+	<code>(user)$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/SYSTEM_IMAGE.tar.xz</code>
+	<h2>Unpacking the system image</h2>
+	<p>Now that a system image has been downloaded, we can unpack it.</p>
+	<p>Ensure the system image is inside the system mountpoint, otherwise you may run into trouble.</p>
+	<p>Since a Linux root filesystem is complex, and many different files need to be owned by certain users, or have certain permissions, simply running `tar xf` will</p>
+	<p>result in a broken image. A couple extra flags are needed to preserve these permissions in the unpacked image.</p>
+	<p>Unpack the system image:</p>
+	<code>(root)# tar -xpvf SYSTEM_IMAGE --xattrs-include='*.*' --numeric-owner</code>
+	<p>If this command was run correctly, you shouldn't need to edit any permissions manually.</p>
+	<h2>Chrooting into the system mountpoint</h2>
+	<p>Although we have a relatively complete root filesystem at this point, many essential programs are still missing. These include the kernel and bootloader. Without these,</p>
+	<p>the system is unable to boot. At this point, we must chroot into the new system. This will allow us to complete the system without booting.</p>
+	<p>Chroot into the new system:</p>
+	<code>(root)# everest-chroot /mnt/everest</code>
+	<p>Change the shell prompt to differentiate the two environments:</p>
+	<code>(chroot)# echo "export PS1='(chroot) ${PS1}'" >> /etc/profile && source /etc/profile</code>
+	<h2>Install packages</h2>
+	<p>Any programs you wish to install, such as display servers, login managers, and desktop environments, should be installed now. The kernel can take multiple</p>
+	<p>hours to compile on some hardware.</p>
+	<p>Glacier manages packages on the system, and it allows users to install, or 'merge' their own. It is recommended to get familiar with this system.</p>
+	<wiki>See: <a href="https://git.everestlinux.org/EverestLinux/wiki/wiki/Introduction-to-Glacier">Introduction to Glacier</a></wiki>
+	<h2>Install the Linux kernel</h2>
+	<p>The most important part of the system, the kernel, which allows hardware to communicate with software, is ready to be installed.</p>
+	<p>If needed, merge the linux-firmware package, which provides device firmware:</p>
+	<code>(chroot)# gpkg -f world/linux-firmware</code>
+	<p>At this stage, you can decide which kernel you want to install. In Everest's package repository, many prebuilt kernels are available, as well as the</p>
+	<p>source code, should you wish to compile your own.</p>
+	<p><strong>Option 1: Custom kernel</strong></p>
+	<p>Compiling a custom kernel is the recommended option for most users, as it allows the most control.</p>
+	<p>Download the kernel's source tree:</p>
+	<code>(chroot)# gpkg -f world/linux</code>
+	<p>The source tree will be located under /usr/src/linux.</p>
+	<p>Inside /usr/src/linux, ensure the source tree is completely clean by running the following:</p>
+	<code>(chroot)# make mrproper</code>
+	<p>The kernel must be configured before it is compiled. Recommended options are not provided - it is up to you to configure the kernel for your setup.</p>
+	<p>Configure the kernel:</p>
+	<code>(chroot)# export EVEREST_ARCH="$(echo $MACHTYPE)"</code>
 	<p></p>
-	<code>(root)# mkdir /mnt/everest/usr/local/{bin,etc,include,lib,man,sbin,share,src}</code>
-	<p>If on an x86_64 system, create a symlink to /usr/lib:</p>
-	<code>(root)# ln -sv /mnt/everest/usr/lib /mnt/everest/usr/lib64</code>
+	<code>(chroot)# ARCH=$EVEREST_ARCH make defconfig</code>
+	<p></p>
+	<code>(chroot)# ARCH=$EVEREST_ARCH make menuconfig</code>
+	<p>Once the kernel is configured, compile it:</p>
+	<code>(chroot)# make && make modules install</code>
+	<p><strong>Option 2: Distribution kernel</strong></p> 
+	<p>For those who do not wish to configure a custom kernel, or likewise do not have the time or system resources to do so, a distribution kernel</p>
+	<p>provides a binary kernel. However, there are a couple of pitfalls to this option:</p>
+	<ol>
+		<li>Distribution kernels are not fine tuned to your system, they are generic and bloated</li>
+		<li>Distribution kernels are managed by their respective development teams, who must be relied upon for fixes</li>
+		<li>Distribution kernels deprive the user of the experience gained by configuring and compiling a custom kernel</li>
+	</ol>
+	<p>Everest offers many distribution kernels, some notable ones include:</p>
+	<ol>
+		<li>linux-everest</li>
+		<li>linux-zen</li>
+		<li>linux-hardened</li>
+	</ol>
+	<p>Install a distribution kernel:</p>
+	<code>(chroot)# gpkg -f world/linux-{everest,zen,hardened}</code>
+	<h2>Build an initramfs</h2>
+	<p>Depending on your system, an initramfs may be required. For example, users of distribution kernels will ALWAYS need to build an initramfs,</p>
+	<p>while those who configured and compiled their own will usually not need one.</p>
+	<p>To build an initramfs, you will need dracut. Install dracut:</p>
+	<code>(chroot)# gpkg -f world/dracut</code>
+	<p>Build an initramfs:</p>
+	<code>(chroot)# dracut</code>
+	<h2>Configure the system</h2>
+	<p>Now that the kernel is installed, various other parts of the system should be configured.</p>
+	<p>Create /etc/fstab, which provides the system with information about mounted filesystems.</p>
+	<p>For example, on a system with a root, /usr, and boot partition, /etc/fstab will look like this:</p>
+	<fhead><strong>FILE:</strong> /etc/fstab</fhead>
+	<div class="file">
+		<p>/dev/sda1 / ext4 noatime 0 1</p>
+		<p>/dev/sda2 /usr ext4 noatime 0 1</p>
+		<p>/dev/sda3 /boot vfat defaults,noatime 0 2
+	</div>
+	<p>System services that some may find helpful, such as a cron daemon or logging daemon, should be set up now.</p>
+	<p>On systems using systemd:</p>
+	<code>(chroot)# systemctl enable cronie chronyd sysklogd</code>
+	<p>On systems without a service manager, all services under /etc/init.d will be initialied by rcS.</p>
+	<p>The system's timezone is read from /etc/localtime, which is a symlink.</p>
+	<p>In case timezone information is missing from /usr/share/zoneinfo, install it:</p>
+	<code>(chroot)# gpkg -f world/tzdata</code>
+	<p>Create /etc/localtime:</p>
+	<code>(chroot)# ln -sv /usr/share/zoneinfo/<i>Region</i>/<i>City</i> /etc/localtime</code>
+	
 </div>
