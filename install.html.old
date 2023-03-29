@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Everest Linux - Install</title>
+<link type="text/css" rel="stylesheet" href="css/everest.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<a href="index.html">Home</a>
+	<a href="about.html">About</a>
+	<a href="install.html">Install</a>
+	<a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a>
+	<a href="download.html">Downloads</a>
+	<a href="https://git.everestlinux.org/EverestLinux/wiki">Wiki</a>
+	<a href="https://git.everestlinux.org">Git</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<h2>Installation Handbook</h2>
+	<p>This is the official installation guide for Everest Linux.</p>
+	<p>Using unofficial guides is not recommended as they may be</p>
+	<p>out of date.</p>
+	<p>Simply following this guide blindly is a great way to end up</p>
+	<p>with a broken installation. Ensure you have a rough idea of</p>
+	<p>what each command does.</p>
+	<p>If you need assistance, reach out on IRC (#everestlinux) or Discord.</p>
+	<h2>Prerequisites</h2>
+	<p>The following steps will be used to complete the installation:</p>
+	<p> - Set up the environment</p>
+	<p> - Download the Everest Linux system image</p>
+	<p> - Unpack the system image</p>
+	<p> - Chroot into the new system</p>
+	<p> - Install desired programs</p>
+	<p> - Install the Linux kernel
+	<p> - Set up init scripts/services</p>
+	<p> - Reboot the system</p>
+	<i>Note: Everest is highly flexible.</i>
+	<i>If you are changing anything in this guide, it is assumed</i>
+	<i>you know exactly what to do.</i>
+	<p>Run <code>(user)$</code> commands as an unprivileged user.</p>
+	<p>Run <code>(root)#</code> commands as the root user.</p>
+	<p>Run <code>(chroot)#</code> commands inside the chroot environment.</p>
+	<h2>Set up the environment</h2>
+	<p>Our environment needs to be set up correctly for the installation.</p>
+	<p>Create the system mountpoint:</p>
+	<code>(root)# mkdir -pv /mnt/everest</code>
+	<p>Although it may not be used, assign the system mountpoint a variable:</p>
+	<code>(root)# export SYS_MNT=/mnt/everest</code>
+	<p>Partition your drive:</p>
+	<code>(root)# cfdisk /dev/sdX</code>
+	<p>Mount the root partition to the system mountpoint:</p>
+	<code>(root)# mount /dev/sdX /mnt/everest</code>
+	<p>If needed, create the boot directory:</p>
+	<code>(root)# mkdir -pv /mnt/everest/boot</code>
+	<p>Mount the boot partition:</p>
+	<code>(root)# mount /dev/sdX /mnt/everest/boot</code>
+	<h2>Downloading the Everest system image</h2>
+	<p>An Everest system image is an incomplete root filesystem, which</p>
+	<p>provides a strong base to build off of</p>
+	<p>Not all system images are the same. Some differences are:</p>
+	<p> - The init system</p>
+	<p> - The standard C library</p>
+	<p> - The architecture</p>
+	<p> - SELinux support</p>
+	<p> - Multilib support</p>
+	<p>Ensure you download the image you want. Migrating in the future</p>
+	<p>is not officially supported or even recommended.</p>
+	<p>Download an image with <code>wget</code>:</p>
+	<code>(user)$ wget SYSTEM_IMAGE_LINK</code>
+	<h2>Unpacking the system image</h2>
+	<p>The system image can now be unpacked.</p>
+	<p>Ensure the system image is located under the system mountpoint.</p>
+	<p>Note that a simple <code>tar -xvf</code> will cause errors with</p>
+	<p>permissions. Therefore, a few extra flags are needed.</p>
+	<p>Unpack the system image:</p>
+	<code>(root)# tar -xpvf SYSTEM_IMAGE --xattrs-include='*.*' --numeric-owner</code>
+	<p>This will ensure all file ownership is compliant.</p>
+	<h2>Chrooting into the new installation</h2>
+	<p>The system is in a partially working state.</p>
+	<p>If we were to call it a day and reboot now, it wouldn't be possible.</p>
+	<p>Many critical parts of the system are missing, including the</p>
+	<p>bootloader and kernel. Chrooting allows us to make modifications</p>
+	<p>to the target system, without actually booting into it.</p>
+	<p>Before chrooting, additional filesystems must be mounted.</p>
+	<p>Mount these filesystems:</p>
+	<code>(root)# mount --types proc /proc /mnt/everest/proc</code>
+	<p></p>
+	<code>(root)# mount --rbind /sys /mnt/everest/sys</code>
+	<p></p>
+	<code>(root)# mount --make-rslave /mnt/everest/sys</code>
+	<p></p>
+	<code>(root)# mount --rbind /dev/ /mnt/everest/dev</code>
+	<p></p>
+	<code>(root)# mount --make-rslave /mnt/everest/dev</code>
+	<p></p>
+	<code>(root)# mount --bind /run /mnt/everest/run</code>
+	<p></p>
+	<code>(root)# mount --make-slave /mnt/everest/run</code>
+	<p>Chroot into the system:</p>
+	<code>(root)# chroot --userspec=0:0 /mnt/everest /bin/sh</code>
+	<p>Change the shell prompt to avoid confusion:</p>
+	<code>(chroot)# export PS1="(chroot) ${PS1}" && source /etc/profile</code>
+	<h2>Install programs</h2>
+	<p>Any programs you wish to install should be installed now.</p>
+	<p>This is because the Linux kernel takes multiple hours to compile.</p>
+	<p>See <a href="https://git.everestlinux.org/EverestLinux/wiki/wiki/General-Recommendations">General Recommendations</a> for ideas. Note that some</p>
+	<p>programs assume the system is installed, so use caution.</p>
+	<h2>Install the Linux kernel</h2>
+	<p>The most important part of the system, the kernel, is ready to be installed.</p>
+	<p>Install the linux-firmware package, which provides device firmware:</p>
+	<code>(chroot)# glacier -f linux-firmware</code>
+	<p>Download the kernel's source tree:</p>
+	<code>(chroot)# glacier -f linux</code>
+	<p>Change directory to the kernel's source tree:</p>
+	<code>(chroot)# cd /usr/src/linux</code>
+	<p>Ensure the kernel source tree is clean:</p>
+	<code>(chroot)# make mrproper</code>
+	<p>Configure the kernel:</p>
+	<code>(chroot)# ARCH="your-arch-here" make defconfig && make menuconfig</code>
+	<p>Compile the kernel:</p>
+	<code>(chroot)# make && make modules_install</code>
+	<p>Install the kernel:</p>
+	<code>(chroot)# make install</code>
+	<p>On some systems, an initial RAM filesystem (initramfs)</p>
+	<p>may be needed to ensure proper booting.</p>
+	<p>If you want an initramfs, install dracut:</p>
+	<code>(chroot)# glacier -f dracut</code>
+	<p>Build an initramfs:</p>
+	<code>(chroot)# dracut</code>
+	<h2>Configure the system</h2>
+	<p>Some components of the system mus be configured.</p>
+	<p>Create <code>/etc/fstab</code>.</p>
+	<p>Enable system services, such as a cron daemon, logger, etc:</p>
+	<code>(chroot)# /etc/init.d/{cronie,chronyd,sysklogd} start</code>
+	<p></p>
+	<code>(chroot)# systemctl enable --now cronie chronyd sysklogd</code>
+	<p>Set the timezone:</p>
+	<code>(chroot)# ln -svf /usr/share/zoneinfo/Region/City /etc/localtime</code>
+	<p>Configure the locale:</p>
+	<code>(chroot)# echo "LANG=en_US.UTF-8" > /etc/locale.conf</code>
+	<p>Set the system hostname:</p>
+	<code>(chroot)# echo "my_hostname" > /etc/hostname</code>
+	<p>Other things you might want to configure are:</p>
+	<p> - /etc/doas.conf or /etc/sudoers</p>
+	<p> - /etc/inittab</p>
+	<h2>Configure the bootloader</h2>
+	<p>One more critical component is needed: the bootloader</p>
+	<p>While any bootloader can be installed, this guide recommends</p>
+	<p><code>systemd-boot</code> and <code>grub</code>.</p>
+	<p>For systemd-boot/gummiboot:</p>
+	<p>Install the standalone package for systemd-boot if systemd is not installed:</p>
+	<code>(chroot)# glacier -f gummiboot</code>
+	<p>Install the bootloader:</p>
+	<code>(chroot)# bootctl install</code>
+	<p>Edit <code>/boot/loader/loader.conf</code> to your liking.</p>
+	<p>Create a boot entry at <code>/boot/loader/entries/everest.conf</code>.</p>
+	<p>For GRUB:</p>
+	<p>Install the GRUB package that corresponds to your system:</p>
+	<code>(chroot)# glacier -f grub-bios</code>
+	<p></p>
+	<code>(chroot)# glacier -f grub-uefi</code>
+	<p>Install GRUB:</p>
+	<code>(chroot)# grub-install /dev/sdX # for BIOS</code>
+	<p></p>
+	<code>(chroot)# grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub # for UEFI</code>
+	<p>Create a GRUB configuration file:</p>
+	<code>(chroot)# grub-mkconfibg -o /boot/grub/grub.cfg</code>
+	<h2>Finishing the installation</h2>
+	<p>Every component of the system has been configured, and we can now</p>
+	<p>boot into it.</p>
+	<p>Exit the chroot environment:</p>
+	<code>(chroot)# exit</code>
+	<p>Unmount all partitions from the system mountpoint:</p>
+	<code>(root)# umount -R /mnt/everest</code>
+	<p>Power off the system:</p>
+	<code>(root)# poweroff</code>
+	<p>Ensure you remove the installation media or you</p>
+	<p>will not boot into the new system.</p>
+	<h2>Post installation</h2>
+	<p>A base Everest system is very minimal.</p>
+	<p>Most users will want to configure extra components, such as a window</p>
+	<p>manager, or sound. See: <a href="https://git.everestlinux.org/EverestLinux/wiki/wiki/General-Recommendations">General Recommendations</a> for more info.</p>
+	
+</div>

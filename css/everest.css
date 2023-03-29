@@ -46,6 +46,7 @@ html {
 }
 
 .file {
+	font-family: monospace;
 	background-color: #0F0F0F;
 	border-left-style: solid;
 	border-left-color: MediumSeaGreen;
@@ -54,6 +55,29 @@ html {
 	padding: 4px;
 	width: 50%;
 	color: white;
+}
+
+.kernel {
+	font-family: monospace;
+	background-color: #0F0F0F;
+	border-left-style: solid;
+	border-left-color: SlateBlue;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: white;
+}
+
+.warning {
+	background-color: #330000;
+	border-left-style: solid;
+	border-left-color: #e60000;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #e60000;
 }
 
 fhead {
@@ -65,6 +89,28 @@ fhead {
 	padding: 6px;
 	width: 50%;
 	color: MediumSeaGreen;
+}
+
+khead {
+	background-color: #0F0F0F;
+	border-left-style: solid;
+	border-left-color: SlateBlue;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: Slateblue;
+}
+
+warnhead {
+	background-color: #330000;
+	border-left-style: solid;
+	border-left-color: #e60000;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #e60000;
 }
 
 @media screen and (max-height: 450px) {
@@ -95,19 +141,19 @@ wiki {
 	border-color: Tomato;
 }
 
-file {
+/* file {
 	border-style: solid;
-	border-width: 1px;
+	border-width: 4px;
 	border-radius: 2px;
 	padding: 2px;
 	border-color: black;
-}
+} */
 
 h2 {
 	border-left-style: solid;
 	border-color: #4a86e8ff;
 	padding-left: 4px;
-	border-width: 8px;
+	border-left-width: 6px;
 	border-radius: 5px;
 	color: #e6e6e6;
 }
@@ -128,7 +174,7 @@ hr.dotted {
 	border-top: 3px dotted #bbb;
 }
 
-p {
+/* p {
 	color: #e6e6e6;
 }
 
