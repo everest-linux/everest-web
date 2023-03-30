@@ -128,6 +128,10 @@
 		<li>Do I want to set up NSA Security Enhanced Linux (SELinux)</li>
 		<li>Do I want an init system other than Busybox's built in init configured out of the box?</li>
 	</ol>
+	<warnhead><strong>WARNING:</strong></warnhead>
+	<div class="warning">
+		<p>Make sure you're happy with the system image you choose. While migrating in the future is possible, it requires rebuilding the majority of the system.</p>
+	</div>
 	<p>Downloading a system image that is severely out of date is not recommended. Many programs, such as the kernel or SSL library will be vulnerable to attacks.</p>
 	<p>Download a system image with wget:</p>
 	<code>(user)$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/SYSTEM_IMAGE.tar.xz</code>
