@@ -81,6 +81,17 @@ html {
 	color: #e60000;
 }
 
+.news {
+	background-color: #1A1A1A;
+	border-left-style: solid;
+	border-left-color: #4a86e8ff;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: white;
+}
+
 fhead {
 	background-color: #0F0F0F;
 	border-left-style: solid;
@@ -112,6 +123,17 @@ warnhead {
 	padding: 6px;
 	width: 50%;
 	color: #e60000;
+}
+
+newshead {
+	background-color: #1A1A1A;
+	border-left-style: solid;
+	border-left-color: #4a86e8ff;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #4a86e8ff;
 }
 
 @media screen and (max-height: 450px) {
@@ -187,3 +209,8 @@ i {
 	color: #e6e6e6;
 }
 
+footer {
+	text-align: center;
+	font-size: 10px;
+	padding: 20px;
+}
