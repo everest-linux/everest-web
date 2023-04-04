@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Everest Linux - Docs</title>
+<link type="text/css" rel="stylesheet" href="../css/everest.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<a href="../index.html">Home</a>
+	<a href="../about.html">About</a>
+	<a href="../install.html">Install</a>
+	<a href="https://git.everestlinux.org/EverestLinux/glacier-pkgs">Packages</a>
+	<a href="../download.html">Downloads</a>
+	<a href="home.html">Docs</a>
+	<a href="https://git.everestlinux.org/EverestLinux/wiki">Wiki</a>
+	<a href="../errata.html">Errata</a>
+	<a href="https://git.everestlinux.org">Git</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<button onclick="window.location.href='home.html';">
+	Back to home
+	</button>
+	<h2>General Recommendations</h2>
+	<p>This page will explain how to expand an Everest system from barebones to more usable.</p>
+	<h2>1 - Administration</h2>
+	<p><strong>1.1 </strong>Users</p>
+	<p>A base system leaves only the root account. Using this account for daily use is extremely unsafe. It is highly recommended to create an unprivileged user.</p>
+	<p>This can be done with the 'adduser' command. See 'man adduser' for more info.</p>
+	<p><strong>1.2 </strong>Services</p>
+	<p>Learn how to use your system's init system. 'esv' should be relatively straightforward, while 'systemd' may require more practice.</p>
+	<p>To enable services on systems using 'esv':</p>
+	<code>(root)# esv start service</code>
+	<p>On 'systemd':</p>
+	<code>(root)# systemctl enable --now service</code>
+	<p>With no service manager:</p>
+	<code>(root)# /etc/init.d/service_name {start,stop,restart}</code>
+	<p></p>
+	<h2>2 - Package Management</h2>
+	<p><strong>2.1 </strong>Basics</p>
+	<p>Everest uses 'glacier' as its package manager. It downloads a PKGBUILD-like script and sources it. It then runs the according functions.</p>
+	<p>Glacier functions a lot like Gentoo's 'portage', and while 'glacier' is not as feature-rich, it should satisfy the needs of most users.</p>
+	<p><strong>2.2 </strong>Repositories</p>
+	<p>The 'GREPO' variable, defined in '/etc/glacier.conf', is where Glacier will download packages to. This is tied into your system profile, and should not be changed.</p>
+	<p>There are 8 subcategories:</p>
+	<ol>
+		<li>world - system software</li>
+		<li>galaxy - copyleft-licensed software</li>
+		<li>universe - permissive-licensed software</li>
+		<li>multiverse - proprietary (binary-redistributable or EULA) software</li>
+		<li>Testing counterparts</li>
+	</ol>
+	<p>In addition to the subcategory system, whitelisted licenses can be changed in '/etc/glacier.conf'.</p>
+	<h2>3 - Boot process</h2>
+	<p><strong>3.1 </strong>Microcode</p>
+	<p>All users of AMD and Intel CPUs should install their corresponding microcode update package.</p>
+	<code>(root)# gpkg -f world/{amd,intel}-ucode</code>
+	<p><strong>3.2 </strong>Secure boot</p>
+	<p>Everest does not officially support UEFI secure boot at the moment. While you can always attempt to implement it yourself, there will most likely be pitfalls.</p>
+	<p>For most users, disabling secure boot altogether is recommended.</p>
+	<p><strong>3.3 </strong>Rescue partition</p>
+	<p>By default, an Everest system image ships with a directory called '/rescue'. These files can be copied over to a separate partition for quick system repair.</p>
+	<h2>4 - Interface</h2>
+	<p><strong>4.1 </strong>Display server</p>
+	<p>Xorg is the de-facto standard display server in the Linux world, and allows the user to run graphical applications, such as a desktop environment, window manager, and other programs.</p>
+	<p>Wayland is an alternative to Xorg, but is not compatible with everything.</p>
+	<p>Configuring Xorg is an absolute headache, while Wayland is relatively smooth. Weigh the benefits of both and decide what works better for you.</p>
+	<p>Everest doesn't actually ship Xorg, it ships Xenocara, OpenBSD's build framework for Xorg. The two should be 100% compatible.</p>
+	<p><strong>4.2 </strong>Drivers</p>
+	<p>AMD graphics drivers are included in distribution kernels, and can be included in custom kernels when configuring. Nouveau, the open source implementation of Nvidia's graphics drivers can be included as well.</p>
+	<p>While these defaults may be adequate for running a headless machine, or just general web browsing, some users may want more performance out of their GPU.</p>
+	<p>Install mesa, which provides an open source implementation of OpenGL, Vulkan, and other APIs:</p>
+	<code>(root)# gpkg -f world/mesa</code>
+	<p>Install AMD drivers:</p>
+	<code>(root)# gpkg -f world/mesa</code>
+	<p>Install Nvidia drivers on a system running a distribution kernel:</p>
+	<code>(root)# gpkg -f world/nvidia</code>
+	<p>Or, install Nvidia drivers on a system running a custom kernel:</p>
+	<code>(root)# gpkg -f world/nvidia-dkms</code>
+	<p><strong>4.3 </strong>Desktop environments</p>
+	<p>Desktop environments provide a complete graphical interface, like what's found in most Linux distributions. Users who want something that will work out of the box will most likely opt for a desktop environment.</p>
+	<p>Some popular choices include GNOME, KDE Plasma, and Xfce.</p>
+	<p><strong>4.4 </strong>Standalone window managers</p>
+	<p>A window manager is a single program with one task - manage window position, size, etc. Users who want a lightweight, keyboard oriented workflow, and are fine with extensive customization will most likely opt for a window manager.</p>
+	<p>Some popular choices include i3, sway, bspwm, openbox, awesome, and dwm.</p>
+</div>
+<footer>
+<p>Page last updated 4/04/23 @ 13:34</p>
+<p>Page licensed under GNU Free Documentation License 1.3 or later</p>
+<p>--------------------</p>
+<p>Copyright (C) 2021-2023 Everest Linux</p>
+<p>Linux (R) is a registered trademark of Linus Torvalds.</p>
+<p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
+</footer>
