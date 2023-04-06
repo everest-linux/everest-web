@@ -247,3 +247,7 @@ footer {
 #myUL li a:hover:not(.header) {
 	background-color: #1E1E1E;
 }
+
+img {
+	padding: 6px 8px 6px 16px;
+}
