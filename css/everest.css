@@ -193,6 +193,10 @@ button {
 	color: #e6e6e6;
 }
 
+button:hover {
+	background-color: #252525;
+}
+
 hr.dotted {
 	border-top: 3px dotted #bbb;
 }
