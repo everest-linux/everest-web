@@ -142,6 +142,7 @@ newshead {
 }
 
 body {
+	line-height: 0.95;
 	font-family: sans-serif;
 	background-color: #1E1E1E;
 }
