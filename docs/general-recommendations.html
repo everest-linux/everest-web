@@ -60,7 +60,7 @@
 	<h2>3 - Boot process</h2>
 	<p><strong>3.1 </strong>Microcode</p>
 	<p>All users of AMD and Intel CPUs should install their corresponding microcode update package.</p>
-	<code>(root)# gpkg -f world/{amd,intel}-ucode</code>
+	<code>(root)# gpkg -f {amd,intel}-ucode</code>
 	<p><strong>3.2 </strong>Secure boot</p>
 	<p>Everest does not officially support UEFI secure boot at the moment. While you can always attempt to implement it yourself, there will most likely be pitfalls.</p>
 	<p>For most users, disabling secure boot altogether is recommended.</p>
@@ -76,19 +76,38 @@
 	<p>AMD graphics drivers are included in distribution kernels, and can be included in custom kernels when configuring. Nouveau, the open source implementation of Nvidia's graphics drivers can be included as well.</p>
 	<p>While these defaults may be adequate for running a headless machine, or just general web browsing, some users may want more performance out of their GPU.</p>
 	<p>Install mesa, which provides an open source implementation of OpenGL, Vulkan, and other APIs:</p>
-	<code>(root)# gpkg -f world/mesa</code>
+	<code>(root)# gpkg -f mesa</code>
 	<p>Install AMD drivers:</p>
-	<code>(root)# gpkg -f world/mesa</code>
+	<code>(root)# gpkg -f mesa</code>
 	<p>Install Nvidia drivers on a system running a distribution kernel:</p>
-	<code>(root)# gpkg -f world/nvidia</code>
+	<code>(root)# gpkg -f nvidia</code>
 	<p>Or, install Nvidia drivers on a system running a custom kernel:</p>
-	<code>(root)# gpkg -f world/nvidia-dkms</code>
+	<code>(root)# gpkg -f nvidia-dkms</code>
 	<p><strong>4.3 </strong>Desktop environments</p>
 	<p>Desktop environments provide a complete graphical interface, like what's found in most Linux distributions. Users who want something that will work out of the box will most likely opt for a desktop environment.</p>
 	<p>Some popular choices include GNOME, KDE Plasma, and Xfce.</p>
 	<p><strong>4.4 </strong>Standalone window managers</p>
 	<p>A window manager is a single program with one task - manage window position, size, etc. Users who want a lightweight, keyboard oriented workflow, and are fine with extensive customization will most likely opt for a window manager.</p>
 	<p>Some popular choices include i3, sway, bspwm, openbox, awesome, and dwm.</p>
+	<h2>5 - Networking</h2>
+	<p><strong>5.1 </strong>Clock synchronization</p>
+	<p>NTP is a protocol for synchronizing computer clocks over the network.</p>
+	<p>Chrony, one implementation, is available in the package database.</p>
+	<p>In case it was not installed, run:</p>
+	<code>(root)# gpkg -f chrony</code>
+	<p><Strong>5.2 </strong>Firewall</p>
+	<p>Firewalls provide an extra layer of protection.</p>
+	<p>The default firewall in Everest is ufw, which can be installed by running:</p>
+	<code>(root)# gpkg -f ufw</code>
+	<h2>6 - Input</h2>
+	<p><strong>6.1 </strong>Keyboard layouts</p>
+	<p>If your keyboard layout is non-english, or otherwise unusual, you will need to configure it, both in TTY and in Xorg.</p>
+	<p>Keymaps are located in /usr/share/kbd/keymaps.</p>
+	<p>To change the keyboard layout, edit /etc/vconsole.conf:</p>
+	<fhead><strong>FILE:</strong> /etc/vconsole.conf</fhead>
+	<div class="file">
+		<p>KEYMAP=uk</p>
+	</div>
 </div>
 <footer>
 <p>Page last updated 4/04/23 @ 13:34</p>
