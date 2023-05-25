@@ -221,16 +221,17 @@ footer {
 }
 
 #myInput {
-	width: 50%;
+	width: 378px;
 	font-size: 16px;
-	padding: 12px 20px 12px 20px;
+	padding: 10px;
 	border: 2px solid #4a86e8ff;
 	border-radius: 2px;
 	margin-bottom: 12px;
+	background-color: #2C2C2C;
 }
 
 #myUL {
-	width: 50%;
+	width: 400px;
 	list-style-type: none;
 	padding: 0;
 	margin: 0;
