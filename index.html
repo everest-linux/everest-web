@@ -26,23 +26,31 @@
 <div class="main">
 	<h2>Everest Linux</h2>
 	<p>A highly flexible, general purpose meta-distribution, built off of the monolithic Linux kernel and Glacier package manager.</p>
-	<h2>Why Everest?</h2>
-	<strong>Simple: </strong><p>Everest strives to be simple by design, coming with no pre-installed bloatware or spyware. Everest follows the UNIX philosophy whenever possible,</p>
-	<p>and tries to avoid including large programs in its base system.</p>
+	<h2>Advantages of Everest</h2>
+	<strong>Simple: </strong><p>Everest strives to be simple by design, coming with no pre-installed bloatware or spyware. Everest follows the UNIX philosophy whenever possible, and tries to avoid including large programs in its base system.</p>
 	<strong>Stable: </strong><p>Everest is designed to be as stable as possible. All base system programs are statically linked, and can be updated with git-controlled root filesystems.</p>
-	<strong>Fast: </strong><p>Glacier downloads program source code and compiles it locally on your system. The end result is an extremely fast and optimized package. Simply define</p>
-	<p>CFLAGS, CXXFLAGS, and MAKEFLAGS, and you're ready to go.</p>
+	<strong>Fast: </strong><p>Glacier downloads program source code and compiles it locally on your system. The end result is an extremely fast and optimized package. Simply define CFLAGS, CXXFLAGS, and MAKEFLAGS, and you're ready to go.</p>
 	<strong>Lightweight: </strong><p>Everest uses Busybox for its userland tools and init system, and musl for its standard C library. All of these tools are designed to be as lightweight as possible.</p>
-	<strong>Flexible: </strong><p>Everest supports highly customized installations. Want to replace Busybox init with systemd, openrc, runit, dinit, or s6? Or replace musl with uClibc or Glibc? All of these are</p>
-	<p>possible, and encouraged.</p>
-	<h2>Ready to try Everest?</h2>
-	<p><a href="install.html">Read the installation guide here.</a></p>
+	<strong>Flexible: </strong><p>Everest supports highly customized installations. Want to replace Busybox init with systemd, openrc, runit, dinit, or s6? Or replace musl with uClibc or Glibc? All of these are possible, and encouraged.</p>
+	<h2>Try Everest</h2>
+	<button onclick="window.location.href='install.html';">
+	Installation Guide
+	</button>
 	<h2>News</h2>
+	<newshead><strong>6/8/23 - New Everest logo</strong></newshead>
+	<div class="news">
+		<p>The Everest logo has been slightly redesigned. This includes a darker color palette.</p>
+	</div>
+	<p></p>
 	<newshead><strong>4/25/23 - Announcing Glacier v4</strong></newshead>
 	<div class="news">
 		<p>Glacier v4 is another complete overhaul of Glacier. This new release includes dependency resolution, multiple downloads, and a new, concise package format.</p>
 		<p>Since Glacier v4 uses a completely different package format, it is thus <strong>incompatible</strong> with all previous releases.</p>
 		<p>No time estimate has been given for this release.</p>
+		<warnhead><strong>WARNING:</strong></warnhead>
+		<div class="warning">
+			<p>Glacier v4 is highly unstable and experimental. Use at your own risk.</p>
+		</div>
 	</div>
 	<p></p>
 	<newshead><strong>2/1/23 - Manual intervention required for /etc/glacier.conf</strong></newshead>
@@ -60,7 +68,7 @@
 		<p>A system image is coming together. This includes the toolchain We are still ironing out issues with Busybox's wget implementation, which fails to support https.</p>
 	</div>
 	<p></p>
-	<newshead><strong>11/1/22 -  System image builts have begun</strong></newshead>
+	<newshead><strong>11/1/22 -  System image builds have begun</strong></newshead>
 	<div class="news">
 		<p>Today, the team has begun compiling system images. All programs have compiled correctly, with the exception of the system toolchain. This is a very important component, and the system cannot function without it.</p>
 	</div>
@@ -90,8 +98,30 @@
 	<p></p>
 	<newshead><strong>5/31/22 - Glacier v2 is released</strong></newshead>
 	<div class="news">
-		<p>Glacier v2 has been released. This version provides several improvements to the codebase, such as compressing everything to a single executable,</p>
-		<p>and removing the whole "enter package name" scheme.</p>
+		<p>Glacier v2 has been released. This version provides several improvements to the codebase, such as condensing everything to a single executable.</p>
+	</div>
+	<p></p>
+	<newshead><strong>4/20/22 - Glacier v1 is released</strong></newshead>
+	<div class="news">
+		<p>Glacier has released a stable point in its development.</p>
+		<p>In addition, color and unicode support has been added.</p>
+	</div>
+	<p></p>
+	<newshead><strong>4/5/22 - Glacier v0.6rc</strong></newshead>
+	<div class="news">
+		<p>The package format has been updated to include timestamping capabilities.</p>
+		<p>These timestamps will be queried along with a package.</p>
+	</div>
+	<p></p>
+	<newshead><strong>3/28/22 - Glacier v0.5rc</strong></newshead>
+	<div class="news">
+		<p>Added a proper cleanup operation after a transaction finishes.</p>
+		<p>Additionally, caching support has been added.</p>
+	</div>
+	<p></p>
+	<newshead><strong>3/10/22 - Glacier v0.2rc</strong></newshead>
+	<div class="news">
+		<p>Added proper error handling.</p>
 	</div>
 </div>
 <footer>
