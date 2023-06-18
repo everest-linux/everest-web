@@ -136,6 +136,15 @@ newshead {
 	color: #4a86e8ff;
 }
 
+wikihead {
+	border-left-style: solid;
+	border-left-color: Tomato;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	color: Tomato;
+}
+
 @media screen and (max-height: 450px) {
 	.sidenav {padding-top: 15px;}
 	.sidenav a{font-size: 18px;}
