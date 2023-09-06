@@ -115,7 +115,7 @@
 	<p>To make the changes persistent, change the 'GREPO' variable in '/etc/glacier.conf':</p>
 	<fhead><strong>FILE:</strong> /etc/glacier.conf</fhead>
 	<div class="file">
-		<p>GREPO="https://some-repo.org</p>
+		<p>export GREPO="https://some-repo.org</p>
 	</div>
 	<p><strong>7.3 </strong>Compile flags</p>
 	<p>When an operation is performed on a package, 'gpkg' invokes the system's C compiler, which can take flags for compilation.</p>
@@ -126,6 +126,36 @@
 	<p>Note that all changes to the global package index ('/glacier/index') will be overwritten during an update, where the user invokes 'git pull' on '/'.</p>
 	<p><strong>7.5 </strong>Whitelisting licenses</p>
 	<p>Certain license types can be whitelisted or blacklisted. This is useful for controlling which software is installed on your system.</p>
+	<p>This setting is stored in /etc/glacier.conf, in a simple Bash array. By default, it should look something like this:</p>
+	<fhead><strong>FILE:</strong> /etc/glacier.conf</fhead>
+	<div class="file">
+		<p>export GLACIER_ALLOWED_LICENSES=("GPL v3" "GPL v2" "GPL" "MIT" "BSD" "APACHE")</p>
+	</div>
+	<p><strong>7.6 </strong>Services</p>
+	<p>Glacier services are small programs that can do certain tasks within Glacier, such as updating the local package database.</p>
+	<p>Services must be enabled in /etc/glacier.conf before they can be used.</p>
+	<fhead><strong>FILE: </strong>/etc/glacier.conf</fhead>
+	<div class="file">
+		<p>export GLACIER_ALLOW_SERVICES="true"</p>
+	</div>
+	<p></p>
+	<warnhead><strong>WARNING:</strong></warnhead>
+	<div class="warning">
+		<p>Services can present a security risk to your system if not used properly. Ensure you review each service, its functions, and only use services made by users you trust.</p>
+	</div>
+	<p>Services can be configured to run at three different times: run (when an operation is started), pkg (when a package is installed), and end (when all pending operations have finished).</p>
+	<p>Create 3 files in /etc/glacier:</p>
+	<code>(root)# touch /etc/glacier/{call-srv,pkg-srv,end-srv}</code>
+	<p>There should be a directory in /etc/glacier containing service files. If not, create it now:</p>
+	<code>(root)# mkdir /etc/glacier/services</code>
+	<p>Now you can add services to the previously created files. For instance:</p>
+	<fhead><strong>FILE: </strong>/etc/glacier/end-srv</fhead>
+	<div class="file">
+		<p>#!/bin/bash</p>
+		<p>&nbsp</p>
+		<p>GLACIER_SRV_DIR="/etc/glacier/services"</p>
+		<p>$GLACIER_SRV_DIR/update-pkgdb.hook</p>
+	</div>
 	<h2>Querying packages</h2>
 	<p><strong>8.1 </strong>Introduction</p>
 	<p>Glacier packages, in ther simplest form, are text files, containing instructions on how the package is built, who made it, what it's called, and what files it includes.</p>
@@ -195,7 +225,7 @@
 	<p>Anything prefixed with "system" refers to the use of 'syspkg'.</p>
 </div>
 <footer>
-<p>Page last updated 4/04/23 @ 13:19</p>
+<p>Page last updated 9/03/23 @ 22:02</p>
 <p>Page licensed under GNU Free Documentation License 1.3 or later</p>
 <p>--------------------</p>
 <p>Copyright (C) 2021-2023 Everest Linux</p>
