@@ -1,0 +1,271 @@
+/* css/everest.css - stylesheet for everest-web */
+/* 
+   Copyright (C)  2023  Everest Linux.
+   Permission is granted to copy, distribute and/or modify this document
+   under the terms of the GNU Free Documentation License, Version 1.3
+   or any later version published by the Free Software Foundation;
+   with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
+   A copy of the license is included in the section entitled "GNU
+   Free Documentation License".
+*/
+
+/* Sidebar menu */
+.sidenav {
+	height: 100%;
+	width: 160px;
+	position: fixed;
+	z-index: 1;
+	top: 0;
+	left: 0;
+	background-color: #2E3440;
+	overflow-x: hidden;
+	padding-top: 20px;
+}
+
+/* Menu links */
+.sidenav a {
+	padding: 6px 8px 6px 16px;
+	text-decoration: none;
+	font-size: 20px;
+	color: #D8DEE9;
+	display: block;
+}
+
+.sidenav a:hover {
+	color: #ECEFF4;
+}
+
+html {
+	background-color: #3B4252;
+	color: #ECEFF4;
+}
+
+.main {
+	margin-left: 160px;
+	padding: 0px 10px;
+	background-color: #3B4252;
+}
+
+.file {
+	font-family: monospace;
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-color: #A3BE8C;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #ECEFF4;
+}
+
+.kernel {
+	font-family: monospace;
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-color: #B48EAD;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #ECEFF4;
+}
+
+.warning {
+	background-color: #BF616A;
+	border-left-style: solid;
+	border-left-color: #BF616A;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #2E3440;
+}
+
+.news {
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-color: #88C0D0;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #ECEFF4;
+}
+
+/* Everything below this line isn't styled yet */
+
+fhead {
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-color: #A3BE8C;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #A3BE8C;
+}
+
+khead {
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-color: #B48EAD;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #B48EAD;
+}
+
+warnhead {
+	background-color: #BF616A;
+	border-left-style: solid;
+	border-left-color: #BF616A;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #2E3440;
+}
+
+newshead {
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-color: #88C0D0;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #88C0D0;
+}
+
+wikihead {
+	border-left-style: solid;
+	border-left-color: #D08770;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	color: #D08770;
+}
+
+@media screen and (max-height: 450px) {
+	.sidenav {padding-top: 15px;}
+	.sidenav a{font-size: 18px;}
+}
+
+body {
+	font-family: sans-serif;
+	background-color: #3B4252;
+	color: #ECEFF4;
+}
+
+code {
+	font-family: monospace;
+	background-color: #2E3440;
+	border-left-style: solid;
+	border-left-width: 4px;
+	border-radius: 2px;
+	padding: 2px;
+	color: #ECEFF4;
+}
+
+wiki {
+	border-left-style: solid;
+	border-left-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	border-color: #D08770;
+}
+
+/* file {
+	border-style: solid;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 2px;
+	border-color: black;
+} */
+
+h2 {
+	border-left-style: solid;
+	border-color: #88C0D0;
+	padding-left: 4px;
+	border-left-width: 6px;
+	border-radius: 5px;
+	color: #ECEFF4;
+}
+
+button {
+	font-size: 24px;
+	border-style: none;
+	border-left-style: solid;
+	border-width: 8px;
+	padding: 12px 28px;
+	border-color: #88C0D0;
+	border-radius: 5px;
+	background-color: #434C5E;
+	color: #ECEFF4;
+}
+
+button:hover {
+	background-color: #4C566A;
+}
+
+hr.dotted {
+	border-top: 3px dotted #bbb;
+}
+
+/* p {
+	color: #e6e6e6;
+} */
+
+/* strong {
+	color: #4a86e8ff;
+} */
+
+/* i {
+	color: #e6e6e6;
+} */
+
+footer {
+	text-align: center;
+	font-size: 10px;
+	padding: 20px;
+}
+
+#myInput {
+	width: 378px;
+	font-size: 16px;
+	padding: 10px;
+	border: 2px solid #88C0D0;
+	border-radius: 2px;
+	margin-bottom: 12px;
+	background-color: #434C5E;
+	color: #ECEFF4;
+}
+
+#myUL {
+	width: 400px;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+#myUL li a {
+	border-left-width: 2px;
+	border-left-style: solid;
+	border-left-color: #88C0D0;
+	margin-top: -1px;
+	background-color: #434C5E;
+	padding: 12px;
+	text-decoration: none;
+	font-size: 18px;
+	color: #ECEFF4;
+	display: block;
+}
+
+#myUL li a:hover:not(.header) {
+	background-color: #4C566A;
+}
+
+img {
+	padding: 8px;
+}
