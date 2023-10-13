@@ -22,6 +22,35 @@
 
 <!-- Rest of page -->
 <div class="main">
+	<h2>Package Database</h2>
+	<p>This page contains links to multiple Glacier package databases.</p>
+	<p>Packages should correspond to your system's profile. If you don't know what your system's profile is, it can be queried with the following command:</p>
+	<code>(user)$ echo $GLACIER_SYSTEM_PROFILE</code>
+	<p></p>
+	<script>
+	function myfunction() {
+		var input, filter, ul, li, a, i, txtValue;
+		input = document.getElementById('myInput');
+		filter = input.value.toUpperCase();
+		ul = document.getElementById("myUL");
+		li = ul.getElementsByTagName('li');
+
+		for (i = 0; i < li.length; i++) {
+			a = li[i].getElementsByTagName("a")[0];
+			txtValue = a.textContent || a.innerText;
+			if (txtValue.toUpperCase().indexOf(filter) > -1) {
+				li[i].style.displau = "";
+			} else {
+				li[i].style.display = "none";
+			}
+		}
+	}
+	</script>
+	<input type="text" id="myInput" onKeyup="myFunction()" placeholder="Search databases...">
+	<ul id="myUL">
+		<li><a href="https://git.everestlinux.org/EverestLinux/epkgs-x86-musl">x86-musl</a></li>
+		<li><a href="https://git.everestlinux.org/EverestLinux/epkgs-x86-glibc">x86-glibc</a></li>
+	</ul>
 </div>
 <footer>
 <p>Copyright (C) 2021-2023 Everest Linux</p>

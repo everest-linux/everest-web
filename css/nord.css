@@ -168,6 +168,12 @@ code {
 	color: #ECEFF4;
 }
 
+cil {
+	font-family: monospace;
+	background-color: #2E3440;
+	padding: 2px;
+}
+
 wiki {
 	border-left-style: solid;
 	border-left-width: 4px;
