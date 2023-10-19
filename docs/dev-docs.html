@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Everest Linux - Docs</title>
+	<link type="text/css" rel="stylesheet" href="../css/nord.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<img src="../img/everest-nord.svg" alt="everest-logo">
+	<a href="../index.html">Home</a>
+	<a href="../about.html">About</a>
+	<a href="../install.html">Install</a>
+	<a href="../packages.html">Packages</a>
+	<a href="../download.html">Downloads</a>
+	<a href="home.html">Docs</a>
+	<a href="../errata.html">Errata</a>
+	<a href="https://git.everestlinux.org">Git ↗</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<button onclick="window.location.href='home.html';">
+	Back to home
+	</button>
+	<h2>Developer Documentation</h2>
+	<p>This page contains developer-specific documentation.</p>
+	<h2>1 - Coding Style</h2>
+	<p><strong>1.1</strong> File Structure</p>
+	<p>Files should follow this format:<p>
+	<ul>
+		<li>Header comment, including program name and LICENSE</li>
+		<li>Headers</li>
+		<li>Macros</li>
+		<li>Types</li>
+		<li>Global variables</li>
+		<li>Functions</li>
+		<li><cil>main</cil> (if applicable)</li>
+	</ul>
+	<p>Note that function declarations should be defined in a separate header, ex:</p>
+	<p><cil>#include "project_name.h"</cil></p>
+	<p>Indentations should be a single tab and be equal to 8 characters for better readability.</p>
+	<p><strong>1.2</strong> Functions</p>
+	<p>Functions should have their return type on one line, their name and parameters one line down, and the bracket one line under the name and arguments.</p>
+	<p>Example:</p>
+	<bigcodehead><strong>CODE:</strong> Proper function formatting in C</bigcodehead>
+	<div class="bigcode">
+		<p>static void</p>
+		<p>usage(int argc, char *argv[])
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("usage: %s [-a] [-b]\n", argv[0]);</p>
+		<p>}</p>
+	</div>
+	<p></p>
+	<p><strong>1.3</strong> Example Program</p>
+	<fhead><strong>FILE:</strong> prog.c</fhead>
+	<div class="file">
+		<p>#include &lt;stdio.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>#include "prog.h"</p>
+		<p>&nbsp;</p>
+		<p>void</p>
+		<p>hello()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("hello\n");
+		<p>}</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hello();
+		<p>}</p>
+	</div>
+	<p></p>
+	<fhead><strong>FILE:</strong> prog.h</fhead>
+	<div class="file">
+		<p>#ifndef PROG_H_</p>
+		<p>#define PROG_H_</p>
+		<p>&nbsp;</p>
+		<p>void hello();</p>
+		<p>&nbsp;<p>
+		<p>#endif</p>
+	</div>
+	<h2>2 - Licensing</h2>
+	<p><strong>2.1</strong> Disclaimer</p>
+	<warnhead><strong>WARNING:</strong></warnhead>
+	<div class="warning">
+		<p>This is not legal advice. If you are in doubt with licensing, please contact your lawyer.</p>
+	</div>
+	<p><strong>2.2</strong> Preferred Licenses</p>
+	<p>For all projects officially released under Everest, the GNU GPL family of licenses is preferred. It provides compatibility with all other existing Everest projects.</p>
+	<p>Most programs should be licensed under the standard GPL. For libraries, you might want to choose the LGPL, if you want to allow linking within proprietary programs. For web applications, always choose the AGPL.</p>
+	<p><strong>2.3</strong> Other Licenses</p>
+	<p>If you wish to use a non-GPL license for your project, that is perfectly permissible.</p>
+	<p>Before releasing your program, we ask that you add the following disclaimer to your README:</p>
+	<fhead><strong>FILE:</strong> README</fhead>
+	<div class="file">
+		<p>LICENSING DISCLAIMER:</p> 
+		<p>This program is licensed under (LICENSE), and as such may be incompatible with other GPL-licensed Everest programs.</p>
+		<p>Please contact the program's maintainer if you have questions.</p>
+	</div>
+	<p>If you are an Everest developer and host a project on our Git server, but do not want it associated with Everest, please submit an electronically signed form stating the following:</p>
+	<fhead><strong>FILE:</strong> WAIVER</fhead>
+	<div class="file">
+		<p>Everest Linux Development Group hereby relinquishes all claims of ownership on program "foo" to developer "bar".
+		<p>Electronically signed by Foobar on 1/1/2024</p>
+		<p>Electronically signed by Everest Linux head developer on 1/1/2024</p>
+	</div>
+	<p><strong>2.3</strong> Proprietary Licenses</p>
+	<p>Programs hosted on our Git servers are never to be released under proprietary licenses.</p>
+	<p>There will be no further discussion.</p>
+</div>
+<footer>
+<p>Page last updated MM/DD/YY @ HH:MM</p>
+<p>Page licensed under GNU Free Documentation License 1.3 or later</p>
+<p>--------------------</p>
+<p>Copyright (C) 2021-2023 Everest Linux</p>
+<p>Linux (R) is a registered trademark of Linus Torvalds.</p>
+<p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
+</footer>
