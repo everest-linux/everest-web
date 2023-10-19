@@ -314,6 +314,10 @@ body, html {
 	background-repeat: no-repeat;
 	background-size: cover;
 	position: relative;
+	padding-top: 0px;
+	padding-right: 0px;
+	margin-right: -8px;
+	margin-top: -8px;
 }
 
 .hero-text {
