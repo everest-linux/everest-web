@@ -92,7 +92,20 @@ html {
 	color: #ECEFF4;
 }
 
-/* Everything below this line isn't styled yet */
+table, td {
+	border: 2px solid;
+	border-color: #ECEFF4;
+	border-collapse: collapse;
+	padding: 4px;
+	background-color: #2E3440;
+}
+
+th {
+	border: 2px solid;
+	background-color: #88C0D0;
+	color: #2E3440;
+	border-color: #ECEFF4;
+}
 
 fhead {
 	background-color: #2E3440;
