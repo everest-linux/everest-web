@@ -30,24 +30,12 @@
 <div class="main">
 	<h2>Installation Handbook</h2>
 	<p>This guide is the official installation handbook for Everest Linux.</p>
-	<warnhead><strong>WARNING:</strong></warnhead>
+	<warnhead><strong>PRELIMINARY WARNINGS:</strong></warnhead>
 	<div class="warning">
-		<p>Using unofficial guides is not recommended, as they may be outdated, or unreliable. The official guide is located at https://www.everestlinux.org/install.</p>
-	</div>
-	<p></p>
-	<warnhead><strong>WARNING:</strong></warnhead>
-	<div class="warning">
-		<p>Simply copy and pasting commands from this guide won't cut it, and you'll most likely end up with a broken installation. Ensure you know what each command does, and how to tailor it to your system, if necessary.</p>
-	</div>
-	<p></p>
-	<warnhead><strong>WARNING:</strong></warnhead>
-	<div class="warning">
-		<p>Everest is not for the faint of heart. If you have never touched Linux in your life, Everest is most certainly not for you. Linux Mint is a great distribution that works out of the box, and is a great entry point into Linux.</p>
-	</div>
-	<p></p>
-	<warnhead><strong>WARNING:</strong></warnhead>
-	<div class="warning">
-		<p>Everest at its current state is highly experimental. Install at your own risk.</p>
+		<p><strong>WARNING 1:</strong> Using unofficial guides is not recommended, as they may be outdated, or unreliable. The official guide is located at https://www.everestlinux.org/install.</p>
+		<p><strong>WARNING 2:</strong> Simply copy and pasting commands from this guide won't cut it, and you'll likely end up with a broken installation. Ensure you know what each command does, and how to tailor it to your system, if necessary.</p>
+		<p><strong>WARNING 3:</strong> Everest is not for the faint of heart. There is absolutely no hand holding provided, you are on your own. If you have never touched Linux in your life, Everest is most certainly not for you. There are many distributions which provide a much better user experience for those new to Linux, we personally recommend Linux Mint.</p>
+		<p><strong>WARNING 4:</strong> Everest in its current state is highly experimental. Install at your own risk.</p>
 	</div>
 	<p>If you need assistance, reach out to us on IRC (libera.chat, #everestlinux) or Discord.</p>
 	<h2>Prerequisites</h2>
@@ -57,6 +45,7 @@
 		<li>Download a system image</li>
 		<li>Unpack the system image</li>
 		<li>Change root into the new system</li>
+		<li>Set up the Glacier system profile and package index</li>
 		<li>Install programs</li>
 		<li>Install the Linux kernel</li>
 		<li>Set up init scripts and services</li>
@@ -68,8 +57,8 @@
 	<p>Run commands prefixed with <code>(root)#</code> as the root user.</p>
 	<p>Run commands prefixed with <code>(chroot)#</code> inside the chroot environment.</p>
 	<h2>Set up the environment</h2>
-	<p>Everest needs a proper environment set up in order to install correctly.</p>
-	<p>A system mountpoint is where the new system's root (/) will be. Where you put this doesn't matter, as the host system used to build the system won't be included in the final installation. In this example, we will use /mnt/everest.</p>
+	<p>On the host system being used to install Everest, a properly set up environment containing certain programs and directories must be set up to ensure the installation can take place. This section will go into detail on how to set up this environment.</p>
+	<p>A system mountpoint is where the new system's root (<cil>/</cil>) will be. Where you put this doesn't matter, as the host system used to build the system won't be included in the final installation. In this example, we will use <cil>/mnt/everest</cil>.</p>
 	<p>Create a system mountpoint:</p>
 	<code>(root)# mkdir -pv /mnt/everest</code>
 	<p>A variable pointing to the system mountpoint may be useful in the future, as it will save you a bit of typing.</p>
@@ -86,12 +75,12 @@
 		<tr>
 			<td>/mnt/everest/boot</td>
 			<td>EFI system partition (esp)</td>
-			<td>No smaller than 256 MB, no larger than 1 GB</td>
+			<td>No smaller than 256 MB, no larger than 1 GB (minimum 1 GB if installing multiple kernels)</td>
 		</tr>
 		<tr>
 			<td>/mnt/everest/usr</td>
 			<td>/usr</td>
-			<td>No smaller than 25 GB</td>
+			<td>No smaller than 25 GB, recommended size varies.</td>
 		</tr>
 		<tr>
 			<td>/mnt/everest</td>
@@ -104,11 +93,12 @@
 	<p>A valid filesystem is required on the drive.</p>
 	<p>Most filesystems should work, however ensure the system has the corresponding package for whatever filesystem you choose.</p>
 	<p>For example, if XFS is used, when installing the system:</p>
-	<code>(chroot)# gpkg -f world/xfsprogs</code>
+	<code>(chroot)# gpkg -f xfsprogs</code>
 	<p></p>
-	<warnhead><strong>WARNING:</strong></warnhead>
-	<div class="warning">
+	<cautionhead><strong>CAUTION:</strong></cautionhead>
+	<div class="caution">
 		<p>Zfs is not officially supported by Everest, and requires a lot of configuration to work properly. Use Zfs at your own risk.</p>
+		<p>This stance may change at a later date, however currently there is no official Everest documentation for setting up Zfs.</p>
 	</div>
 	<p>In this example, Ext4 will be used.</p>
 	<p>Create a filesystem:</p>
@@ -131,7 +121,7 @@
 	<p>Create remaining directories on /usr with mkusrskel:</p>
 	<code>(root)# mkusrskel -d /mnt/everest/usr</code>
 	<h2>Downloading a system image</h2>
-	<p>An Everest system image provides an incomplete root filesystem which users can build a system off of. Users should be careful of which image they choose, as switching in the future is arduous, time consuming, and requires rebuilding a lot of packages.</p>
+	<p>An Everest system image provides an incomplete root filesystem which users can build a system off of. This includes system programs, libraries, Glacier, among others.  Users should be careful of which image they choose, as switching in the future is arduous, time consuming, and requires rebuilding a lot of packages.</p>
 	<p>It's a lot better to get it right the first time, rather than trying to get it right later.</p>
 	<p>Do some thorough planning to ensure you get the right system image. For instance, ask yourself a few questions, such as:</p>
 	<ol>
@@ -141,9 +131,9 @@
 		<li>Do I want to set up NSA Security Enhanced Linux (SELinux)</li>
 		<li>Do I want an init system other than Busybox's built in init configured out of the box?</li>
 	</ol>
-	<warnhead><strong>WARNING:</strong></warnhead>
-	<div class="warning">
-		<p>Make sure you're happy with the system image you choose. While migrating in the future is possible, it requires rebuilding the majority of the system.</p>
+	<notehead><strong>NOTE:</strong></notehead>
+	<div class="note">
+		<p>Make sure you're happy with the system image you choose. While migrating in the future is possible, it requires rebuilding the majority of the system, takes a substantial amount of time, and may present other issues.</p>
 	</div>
 	<p>Downloading a system image that is severely out of date is not recommended. Many programs, such as the kernel or SSL library will be vulnerable to attacks.</p>
 	<p>Download a system image with wget:</p>
@@ -151,30 +141,32 @@
 	<h2>Unpacking the system image</h2>
 	<p>Now that a system image has been downloaded, we can unpack it.</p>
 	<p>Ensure the system image is inside the system mountpoint, otherwise you may run into trouble.</p>
-	<p>Since a Linux root filesystem is complex, and many different files need to be owned by certain users, or have certain permissions, simply running `tar xf` will result in a broken image. A couple extra flags are needed to preserve these permissions in the unpacked image.</p>
+	<p>Since a Linux root filesystem is complex, and many different files need to be owned by certain users, or have certain permissions, simply running <cil>tar xf</cil> will result in a broken image, as the proper permissions are not carried over. A couple extra flags are needed to preserve these permissions in the unpacked image.</p>
 	<p>Unpack the system image:</p>
 	<code>(root)# tar -xpvf SYSTEM_IMAGE --xattrs-include='*.*' --numeric-owner</code>
 	<p>If this command was run correctly, you shouldn't need to edit any permissions manually.</p>
-	<p>In case permissions were changed, you can use the 'prep' command from everest-build-tools.</p>
+	<p>In case permissions were changed, you can use the <cil>prep</cil> command from <cil>everest-build-tools</cil>.</p>
 	<h2>Chrooting into the system mountpoint</h2>
-	<p>Although we have a relatively complete root filesystem at this point, many essential programs are still missing. These include the kernel and bootloader. Without these, the system is unable to boot. At this point, we must chroot into the new system. This will allow us to complete the system without booting.</p>
+	<p>Although we have a relatively complete root filesystem at this point, many essential programs are still missing. These include the kernel and bootloader. Without these, the system is unable to boot. At this point, we must chroot into the new system. This will allow us to complete the system's build process without booting into it.</p>
 	<p>Chroot into the new system:</p>
 	<code>(root)# everest-chroot /mnt/everest</code>
 	<p>Change the shell prompt to differentiate the two environments:</p>
-	<code>(chroot)# echo "export PS1='(chroot) ${PS1}'" >> /etc/profile && source /etc/profile</code>
+	<code>(chroot)# echo "export PS1='(chroot) ${PS1}'" &gt;&gt; /etc/profile && source /etc/profile</code>
 	<h2>Install packages</h2>
 	<p>Any programs you wish to install, such as display servers, login managers, and desktop environments, should be installed now. The kernel can take multiple hours to compile on some hardware.</p>
 	<p>Glacier manages packages on the system, and it allows users to install, or 'merge' their own. It is recommended to get familiar with this system.</p>
 	<wikihead><strong>WIKI</strong>: <a href="https://git.everestlinux.org/EverestLinux/wiki/wiki/Introduction-to-Glacier">Introduction to Glacier</a></wikihead>
+	<p>Glacier may not function correctly if the package database has not been downloaded. If <cil>gpkg</cil> outputs the following error: <cil>[x] Local package database does not exist.</cil>, run:</p>
+	<p><code>(chroot)# glacier-update-pkgdb</code></p>
 	<h2>Install the Linux kernel</h2>
 	<p>The most important part of the system, the kernel, which allows hardware to communicate with software, is ready to be installed.</p>
 	<p>If needed, merge the linux-firmware package, which provides device firmware:</p>
-	<code>(chroot)# gpkg -f world/linux-firmware</code>
+	<code>(chroot)# gpkg -f linux-firmware</code>
 	<p>At this stage, you can decide which kernel you want to install. In Everest's package repository, many prebuilt kernels are available, as well as the source code, should you wish to compile your own.</p>
 	<p><strong>Option 1: Custom kernel</strong></p>
-	<p>Compiling a custom kernel is the recommended option for most users, as it allows the most control.</p>
+	<p>Compiling a custom kernel is the recommended option for most users, as it allows the most control over what exactly is installed on your system.</p>
 	<p>Download the kernel's source tree:</p>
-	<code>(chroot)# gpkg -f world/linux</code>
+	<code>(chroot)# gpkg -f linux</code>
 	<p>The source tree will be located under /usr/src/linux.</p>
 	<p>Inside /usr/src/linux, ensure the source tree is completely clean by running the following:</p>
 	<code>(chroot)# make mrproper</code>
@@ -183,8 +175,8 @@
 	<khead><strong>KERNEL: </strong> Enbable support for IPv6</khead>
 	<div class="kernel">
 		<p>Networking support ---></p>
-		<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbspNetworking options ---></p>
-		<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<*> The IPv6 protocol [CONFIG_IPV6]</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Networking options ---></p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*&gt; The IPv6 protocol [CONFIG_IPV6]</p>
 	</div>
 	<p> Recommended options are not provided - it is up to you to configure the kernel for your setup.</p>
 	<p>Configure the kernel:</p>
@@ -222,9 +214,9 @@
 	<p>For example, on a system with a root, /usr, and boot partition, /etc/fstab will look like this:</p>
 	<fhead><strong>FILE:</strong> /etc/fstab</fhead>
 	<div class="file">
-		<p>/dev/sda1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp/&nbsp&nbsp&nbsp&nbsp&nbsp&nbspext4&nbsp&nbsp&nbsp&nbsp&nbsp&nbspnoatime&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp0 1</p>
-		<p>/dev/sda2&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp/usr&nbsp&nbsp&nbsp&nbsp&nbsp&nbspext4&nbsp&nbsp&nbsp&nbsp&nbsp&nbspnoatime&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp0 1</p>
-		<p>/dev/sda3&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp/boot&nbsp&nbsp&nbsp&nbsp&nbsp&nbspvfat&nbsp&nbsp&nbsp&nbsp&nbsp&nbspdefaults,noatime&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp0 2</p>
+		<p>/dev/sda1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ext4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;noatime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 1</p>
+		<p>/dev/sda2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/usr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ext4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;noatime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 1</p>
+		<p>/dev/sda3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/boot&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vfat&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;defaults,noatime&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 2</p>
 	</div>
 	<p>System services that some may find helpful, such as a cron daemon or logging daemon, should be set up now.</p>
 	<p>On systems using systemd:</p>
@@ -241,8 +233,8 @@
 	<p>Or, on systemd:</p>
 	<code>(chroot)# hostnamectl hostname <i>hostname</i></code>
 	<p>A network connection is very important, and there are multiple ways to set one up.</p>
-	<warnhead><strong>WARNING:</strong></warnhead>
-	<div class="warning">
+	<cautionhead><strong>CAUTION:</strong></cautionhead>
+	<div class="caution">
 		<p>Ensure your network is fully set up before proceeding with any other steps. It's better to get it right the first time, rather than trying to fix it later.</p>
 	</div>
 	<p>First, ensure the desired network interface is not blocked by rfkill:</p>
@@ -272,9 +264,9 @@
 	<p>The /etc/hosts file is used to resolve IP addresses not resolved by the DHCP server.</p>
 	<fhead><strong>FILE:</strong> /etc/hosts</fhead>
 	<div class="file">
-		<p>127.0.0.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsplocalhost</p>
-		<p>::1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsplocalhost</p>
-		<p>127.0.1.1&nbsp&nbsp&nbsp&nbsp&nbsp&nbsplocaldomain <i>hostname</i></p>
+		<p>127.0.0.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localhost</p>
+		<p>::1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localhost</p>
+		<p>127.0.1.1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;localdomain <i>hostname</i></p>
 	</div>
 	<p>The root password is extremely important, as it controls access to the root user, the most powerful user on the system.</p>
 	<p>Ensure your chosen root password is strong enough where it cannot be guessed easily.</p>
@@ -295,12 +287,45 @@
 	<h2>Configure the bootloader</h2>
 	<p>Now that the system is correctly configured and the kernel is installed, the final step can proceed - installing the bootloader. Without a bootloader, the system will be unable to load the Linux kernel upon boot.</p>
 	<p>This guide only mentions GRUB, however note that other bootloaders are supported.</p>
-	<p>Merge GRUB for BIOS:</p>
-	<code>(chroot)# gpkg -f world/grub-bios</code>
-	<p>Merge GRUB for UEFI:</p>
-	<code>(chroot)# gpkg -f world/grub-efi</code>
+	<p>The GRUB package for certain system profiles compiles BIOS AND UEFI support. If you wish to remove UEFI support, you will have to manually patch the package file.</p>
+	<p>Unless you are using some obscure system profile, or simply want to make your system as small as possible, you definitely will not have to worry about this.</p>
+	<wikihead><strong>WIKI</strong>: <a href="https://git.everestlinux.org/EverestLinux/wiki/wiki/Introduction-to-Glacier">Introduction to Glacier</a></wikihead>
+	<p>Merge <cil>grub</cil>:</p>
+	<code>(chroot)# gpkg -f grub</code>
 	<p>Install GRUB for BIOS:</p>
 	<code>(chroot)# grub-install /dev/sda</code>
+	<p>If configuring GRUB to boot with UEFI, a few extra things need to be configured.</p>
+	<p>The following kernel options need to be configured in order to support UEFI:</p>
+	<khead><strong>KERNEL:</strong> Enable UEFI support</khead>
+	<div class="kernel">
+		<p>Processor type and features ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[*] EFI runtime service support</p>
+		<p></p>
+		<p>-*- Enable the block layer ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partition Types ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[ /*] Advanced partition selection</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[*] EFI GUID Partition support</p>
+		<p></p>
+		<p>Device Drivers ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Firmware Drivers ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[*] Mark VGA/VBE/EFI FB as generic system framebuffer</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Graphics Support ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*&gt; Direct Rendering Manager (Xfree86 4.1.0 and higher DRI support) ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[*] Enable legacy fbdev support for your modsetting driver</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*&gt; Simple framebuffer driver</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Frame buffer Devices ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*&gt; Support for frame buffer devices ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Console display driver support ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-*- Framebuffer Console support</p>
+		<p>File systems ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DOS/FAT/EXFAT/NT Filesystems ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*/M&gt; VFAT (Windows-95) fs support</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Psuedo filesystems ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*/M&gt; EFI Variable filesystem</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-*- Native language support ---&gt;</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*/M&gt; Codepage 437 (United States, Canada)</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;*/M&gt; NLS ISO 8859-1 (Latin 1; Western European Languages)</p>
+	</div>
 	<p>Install GRUB for UEFI:</p>
 	<code>(chroot)# grub-install --target=x86_64-efi --efi-directory=/boot</code>
 	<p>For GRUB to work correctly, a configuration file must be created. Create one now:</p>
@@ -314,7 +339,7 @@
 	<code>(root)# umount -R /mnt/everest</code>
 	<p>Reboot the system:</p>
 	<code>(root)# reboot</code>
-	<p>Ensure the installation medium is removed, or else you will not boot into the new system, rather back into the installation medium.</p>
+	<p>Ensure the newly installed bootloader is first to boot, otherwise you will end up in your old system again. If you used a live USB to install Everest, make sure you remove it before rebooting.</p>
 	<h2>Conclusion</h2>
 	<p>If all went well, Everest should boot up with no problems.</p>
 	<p>Remove the system image from /:</p>

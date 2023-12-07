@@ -26,15 +26,15 @@
 	<button onclick="window.location.href='home.html';">
 	Back to home
 	</button>
-	<h2>Introduction</h2>
+	<h2>1 - Introduction</h2>
 	<p>Glacier is the package management system for Glacier. All users should be familiar with how it works.</p>
-	<h2>Terminology</h2>
+	<h2>2 - Terminology</h2>
 	<p>In this case, the word 'merge' and 'install' mean the same thing.</p>
 	<p>A package index is a list of all installed packages on any given Everest system.</p>
 	<p>The local index is managed by all users on the system, and is located in /usr/glacier/index.</p>
 	<p>The global index is managed by Git, and is located in /glacier/index.</p>
 	<p>A system profile describes your base system, including C library, architecture, SELinux support, multilib support, etc.</p>
-	<h2>Included programs</h2>
+	<h2>3 - Included programs</h2>
 	<p><strong>3.1 </strong>gpkg</p>
 	<p>'gpkg' is the program most users will be interacting with. It handles the downloading, installation, and logging of packages.</p>
 	<p><strong>3.2 </strong>syspkg</p>
@@ -45,30 +45,30 @@
 	<p>'gquery' queries information on a package.</p>
 	<p><strong>3.5 </strong>glacier-mkprofile</p>
 	<p>'glacier-mkprofile' makes changes to the system-wide profile. Users should not interact with this unless needed.</p>
-	<h2>Frontends</h2>
+	<h2>4 - Frontends</h2>
 	<p>Frontends, or wrappers, may provide additional functionality to Glacier.</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
 		<p>Third party frontends and wrapper scripts are not supported. Use them at your own risk.</p>
 	</div>
-	<h2>Merging packages</h2>
-	<p><strong>4.1 </strong>Using gpkg</p>
+	<h2>5 - Merging packages</h2>
+	<p><strong>5.1 </strong>Using gpkg</p>
 	<p>To merge a package from a repository:</p>
 	<code>(root)# gpkg -f repo/pkg</code>
 	<p>For instance, to install 'vim' in the 'world' repository:</p>
 	<code>(root)# gpkg -f world/vim</code>
-	<p><strong>4.2 </strong>Using syspkg</p>
+	<p><strong>5.2 </strong>Using syspkg</p>
 	<p>Using 'syspkg' is not recommended for end users because all changes to the global package index will be overwritten when pulling a new update.</p>
 	<p>If you understand these risks, and wish to use 'syspkg' anyways, you are acknowledging that things may break.</p>
 	<p>To merge a package from a repository:</p>
 	<code>(root)# syspkg -f repo/pkg</code>
-	<h2>Updating packages</h2>
-	<p><strong>5.1 </strong>Introduction</p>
+	<h2>6 - Updating packages</h2>
+	<p><strong>6.1 </strong>Introduction</p>
 	<p>When merging a package into any index, the package file is retained in said index. This provides most information needed to keep track of the package, however, when updating, an updated package file will need to be downloaded. Old package files will be retained as 'pkgname.old'.</p>
-	<p><strong>5.2 </strong>Using gpkg</p>
+	<p><strong>6.2 </strong>Using gpkg</p>
 	<p>To update a package:</p>
 	<code>(root)# gpkg -u repo/pkg</code>
-	<p><strong>5.3 </strong>Using syspkg</p>
+	<p><strong>6.3 </strong>Using syspkg</p>
 	<p>As mentioned above, 'syspkg' is intended for system development, and NOT for end users.</p>
 	<p>However, 'syspkg -u' has some use cases for end users. These include:</p>
 	<ul>
@@ -77,24 +77,24 @@
 	</ul>
 	<p>To update a package:</p>
 	<code>(root)# syspkg -u repo/pkg</code>
-	<h2>Removing packages</h2>
-	<p><strong>6.1 </strong>Introduction</p>
+	<h2>7 - Removing packages</h2>
+	<p><strong>7.1 </strong>Introduction</p>
 	<p>When removing a package, the package info file is moved from the appropriate index to /tmp, and saved as 'pkgname.rm'. This means it will be wiped after the next reboot.</p>
-	<p><strong>6.2 </strong>Using gpkg</p>
+	<p><strong>7.2 </strong>Using gpkg</p>
 	<p>To remove a package:</p>
 	<code>(root)# gpkg -x pkg</code>
 	<p>Note that no repository name was provided. It is not required, as no files will be downloaded during the removal process.</p>
 	<p>If a package is a dependency for another, you will be shown the following error:</p>
 	<code>[x] Could not remove (package_name): is a dependency for (package_name)</code>
-	<p><strong>6.3 </strong>Using syspkg</p>
+	<p><strong>7.3 </strong>Using syspkg</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
 		<p>Removing packages that shipped with the system images WILL cause catastrophic damage. You have been warned.</p>
 	</div>
 	<p>If you wish to proceed anyways, you can remove a package with:</p>
 	<code>(root)# syspkg -x pkg</code>
-	<h2>Advanced usage</h2>
-	<p><strong>7.1 </strong>Patching packages</p>
+	<h2>8 - Advanced usage</h2>
+	<p><strong>8.1 </strong>Patching packages</p>
 	<p>Patching packages is the act of editing a package file to change compile options, optimizations, etc. It is very useful if used correctly.</p>
 	<p>The officially tested and verified method for patching is as follows:</p>
 	<ul>
@@ -102,7 +102,7 @@
 		<li>Edit the package file with a text editor of your choice</li>
 		<li>Install the locally modified package with 'gpkg -fl pkg'</li>
 	</ul>
-	<p><strong>7.2 </strong>Custom package repository</p>
+	<p><strong>8.2 </strong>Custom package repository</p>
 	<p>If Glacier's standard package repository is not sufficient, you can use a custom one.</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
@@ -116,21 +116,21 @@
 	<div class="file">
 		<p>export GREPO="https://some-repo.org</p>
 	</div>
-	<p><strong>7.3 </strong>Compile flags</p>
+	<p><strong>8.3 </strong>Compile flags</p>
 	<p>When an operation is performed on a package, 'gpkg' invokes the system's C compiler, which can take flags for compilation.</p>
 	<p>'MAKEFLAGS', 'CFLAGS', 'CXXFLAGS', and 'LDFLAGS' can be set in '/etc/make.conf'.</p>
 	<p>It is highly recommended to keep '-static' in 'CFLAGS' and 'LDFLAGS'.</p>
-	<p><strong>7.4 </strong>Using syspkg</p>
+	<p><strong>8.4 </strong>Using syspkg</p>
 	<p>'syspkg' is intended for development use and not for end users. That being said, 'syspkg' can be used for fixing security vulnerabilities without pulling in a new release from git.</p>
 	<p>Note that all changes to the global package index ('/glacier/index') will be overwritten during an update, where the user invokes 'git pull' on '/'.</p>
-	<p><strong>7.5 </strong>Whitelisting licenses</p>
+	<p><strong>8.5 </strong>Whitelisting licenses</p>
 	<p>Certain license types can be whitelisted or blacklisted. This is useful for controlling which software is installed on your system.</p>
 	<p>This setting is stored in /etc/glacier.conf, in a simple Bash array. By default, it should look something like this:</p>
 	<fhead><strong>FILE:</strong> /etc/glacier.conf</fhead>
 	<div class="file">
 		<p>export GLACIER_ALLOWED_LICENSES=("GPL v3" "GPL v2" "GPL" "MIT" "BSD" "APACHE")</p>
 	</div>
-	<p><strong>7.6 </strong>Services</p>
+	<p><strong>8.6 </strong>Services</p>
 	<p>Glacier services are small programs that can do certain tasks within Glacier, such as updating the local package database.</p>
 	<p>Services must be enabled in /etc/glacier.conf before they can be used.</p>
 	<fhead><strong>FILE: </strong>/etc/glacier.conf</fhead>
@@ -151,25 +151,25 @@
 	<fhead><strong>FILE: </strong>/etc/glacier/end-srv</fhead>
 	<div class="file">
 		<p>#!/bin/bash</p>
-		<p>&nbsp</p>
+		<p>&nbsp;</p>
 		<p>GLACIER_SRV_DIR="/etc/glacier/services"</p>
 		<p>$GLACIER_SRV_DIR/update-pkgdb.hook</p>
 	</div>
-	<h2>Querying packages</h2>
-	<p><strong>8.1 </strong>Introduction</p>
+	<h2>9 - Querying packages</h2>
+	<p><strong>9.1 </strong>Introduction</p>
 	<p>Glacier packages, in ther simplest form, are text files, containing instructions on how the package is built, who made it, what it's called, and what files it includes.</p>
-	<p><strong>8.2 </strong>Querying files</p>
+	<p><strong>9.2 </strong>Querying files</p>
 	<p>All files belonging to a package can be listed with:</p>
 	<code>(user)$ gquery -f pkg</code>
-	<p><strong>8.3 </strong>Querying info</p>
+	<p><strong>9.3 </strong>Querying info</p>
 	<p>Package info can be listed with:</p>
 	<code>(user)$ gquery -i pkg</code>
-	<h2>Writing packages</h2>
-	<p><strong>9.1 </strong>Introduction</p>
+	<h2>10 - Writing packages</h2>
+	<p><strong>10.1 </strong>Introduction</p>
 	<p>As mentioned before, Glacier packages are simply text files. This makes them very easy to write and maintain.</p>
 	<p>If you have previous experience writing PKGBUILDs for the AUR, writing Glacier packages should feel very similar.</p>
 	<p>In this page, 'nano' will be used as an example.</p>
-	<p><strong>9.2 </strong>Metadata</p>
+	<p><strong>10.2 </strong>Metadata</p>
 	<p>Package files start with metadata, which tells Glacier who made the package, what its called, as well as other information.</p>
 	<p>Double check that all of this information is correct before submitting a package.</p>
 	<fhead><strong>FILE:</strong> $(pwd)/nano</fhead>
@@ -184,7 +184,7 @@
 	</div>
 	<p>Hopefully, most of these options are self explanatory.</p>
 	<p>For INCLUDED_FILES, ensure you DON'T include documentation (manpages, etc).</p>
-	<p><strong>9.3 </strong>Integrity information</p>
+	<p><strong>10.3 </strong>Integrity information</p>
 	<fhead><strong>FILE:</strong> $(pwd)/nano</fhead>
 	<div class="file">
 		<p>SHA256SUMS="86f3442768bd2873cec693f83cdf80b4b444ad3cc14760b74361474fc87a4526"</p>
@@ -192,7 +192,7 @@
 	<p>All packages must include their checksums. When merging a package, 'gpkg' will check the provided checksum against the actual checksum of the package, and if they don't match, the operation will be cancelled.</p>
 	<p>To get the checksum of a package:</p>
 	<code>(user)$ sha256sum package</code>
-	<p><strong>9.4 </strong>Dependency information</p>
+	<p><strong>10.4 </strong>Dependency information</p>
 	<fhead><strong>FILE:</strong> $(pwd)/nano</fhead>
 	<div class="file">
 		<p>DEPENDS=("")</p>
@@ -200,7 +200,7 @@
 	</div>
 	<p>Dependency information is extremely important. It allows 'gpkg' to install any dependencies. It also warns the user when a package conflicts with another.</p>
 	<p>This should be fairly easy to figure out. Most projects will have this listed in their README. If you're the developer, you'll probably already know the dependencies your package requires.</p>
-	<p><strong>9.5 </strong>Source information</p>
+	<p><strong>10.5 </strong>Source information</p>
 	<fhead><strong>FILE:</strong> $(pwd)/nano</fhead>
 	<div class="file">
 		<p>PACKAGE_SRC="https://nano-editor.org/dist/v7/nano-7.2.tar.xz</p>

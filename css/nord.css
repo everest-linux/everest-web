@@ -70,6 +70,28 @@ html {
 	color: #ECEFF4;
 }
 
+.note {
+	background-color: #88C0D0;
+	border-left-style: solid;
+	border-left-color: #88C0D0;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #2E3440;
+}
+
+.caution {
+	background-color: #EBCB8B;
+	border-left-style: solid;
+	border-left-color: #EBCB8B;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #2E3440;
+}
+
 .warning {
 	background-color: #BF616A;
 	border-left-style: solid;
@@ -107,6 +129,17 @@ th {
 	border-color: #ECEFF4;
 }
 
+notehead {
+	background-color: #88C0D0;
+	border-left-style: solid;
+	border-left-color: #88C0D0;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #2E3440;
+}
+
 fhead {
 	background-color: #2E3440;
 	border-left-style: solid;
@@ -127,6 +160,17 @@ khead {
 	padding: 6px;
 	width: 50%;
 	color: #B48EAD;
+}
+
+cautionhead {
+	background-color: #EBCB8B;
+	border-left-style: solid;
+	border-left-color: #EBCB8B;
+	border-width: 4px;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #2E3440;
 }
 
 warnhead {

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Everest Linux - Docs</title>
+	<link type="text/css" rel="stylesheet" href="../css/nord.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<img src="../img/everest-nord.svg" alt="everest-logo">
+	<a href="../index.html">Home</a>
+	<a href="../about.html">About</a>
+	<a href="../install.html">Install</a>
+	<a href="../packages.html">Packages</a>
+	<a href="../download.html">Downloads</a>
+	<a href="home.html">Docs</a>
+	<a href="../errata.html">Errata</a>
+	<a href="https://git.everestlinux.org">Git ↗</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<button onclick="window.location.href='home.html';">
+	Back to home
+	</button>
+	<h2>1 - Introduction</h2>
+	<p>Documentation for Everest is formatted in a specific way. This page explains how a page is formatted, and what certain things mean, in as much detail as possible.</p>
+	<h2>2 - Cards</h2>
+	<p><strong>2.1 </strong>Introduction</p>
+	<p>Most Everest documentation pages will contain some type of a "card". Put simply, these are small sections that contain file contents, kernel configurations, warnings, notes, etc. There are 6 types of cards:</p>
+	<p><strong>2.2 </strong>Note</p>
+	<p>This card is the most simple. It contains a note on a certain section. They are usually not required to read, but contain important information.</p>
+	<notehead><strong>NOTE:</strong></notehead>
+	<div class="note">
+		<p>This is an example of a note card.</p>
+	</div>
+	<p><strong>2.3 </strong>Caution</p>
+	<p>This card is one step up from a note. It contains important information, and should be read. However, it usually isn't urgent, or if it is, it contains things that most would consider common knowledge.</p>
+	<cautionhead><strong>CAUTION:</strong></cautionhead>
+	<div class="caution">
+		<p>This is an example of a caution card.</p>
+	</div>
+	<p><strong>2.4 </strong>Warning</p>
+	<p>This card is one of the most important. It contains extremely important information that, if not understood, could lead to system breakage, data loss, etc.</p>
+	<warnhead><strong>WARNING:</strong></warnhead>
+	<div class="warning">
+		<p>This is an example of a warning card.</p>
+	</div>
+	<p><strong>2.5 </strong>File</p>
+	<p>This card contains the contents of a text file. It is usually used to show configuration files.</p>
+	<fhead><strong>FILE:</strong> example.txt</fhead>
+	<div class="file">
+		<p>This is an example of a file card.</p>
+	</div>
+	<p><strong>2.6 </strong>Kernel</p>
+	<p>This card contains a kernel configuration as seen in <cil>make menuconfig</cil>.</p>
+	<khead><strong>KERNEL:</strong> Enable module "example</khead>
+	<div class="kernel">
+		<p>This is an example of a kernel card.</p>
+	</div>
+	<p><strong>2.7 </strong>Bigcode</p>
+	<p>The <cil>code</cil> tag is typically used to denote commands the user should run. The <cil>bigcode</cil> card is meant for showing programs, usually Bash or Python scripts, or C programs.</p>
+	<bigcodehead><strong>CODE:</strong> example.c</bigcodehead>
+	<div class="bigcode">
+		<p>This is an example of a bigcode card.</p>
+	</div>
+	<p><strong>2.8 </strong>News</p>
+	<p>This card is meant for sharing news about the distribution. It is only found on the homepage.</p>
+	<newshead><strong>1/1/70 - Example</strong></newshead>
+	<div class="news">
+		<p>This is an example of a news card.</p>
+	</div>
+</div>
+<footer>
+<p>Page last updated MM/DD/YY @ HH:MM</p>
+<p>Page licensed under GNU Free Documentation License 1.3 or later</p>
+<p>--------------------</p>
+<p>Copyright (C) 2021-2023 Everest Linux</p>
+<p>Linux (R) is a registered trademark of Linus Torvalds.</p>
+<p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
+</footer>

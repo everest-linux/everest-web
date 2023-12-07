@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Everest Linux - Docs</title>
+	<link type="text/css" rel="stylesheet" href="../css/nord.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<img src="../img/everest-nord.svg" alt="everest-logo">
+	<a href="../index.html">Home</a>
+	<a href="../about.html">About</a>
+	<a href="../install.html">Install</a>
+	<a href="../packages.html">Packages</a>
+	<a href="../download.html">Downloads</a>
+	<a href="home.html">Docs</a>
+	<a href="../errata.html">Errata</a>
+	<a href="https://git.everestlinux.org">Git ↗</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<button onclick="window.location.href='home.html';">
+	Back to home
+	</button>
+	<h2>Recovery</h2>
+	<p>System security is very important, however there are time that a system becomes so secure that the owner of the system becomes locked out of their own computer. There are a couple different methods for recovering a locked system.</p>
+	<h2>1 - Issues</h2>
+	<p><strong>1.1</strong> Issues resulting in a locked system</p>
+	<p>There are many things which may lock someone out of their system. The most notable ones are:</p>
+	<ul>
+		<li>Forgotten root password</li>
+		<li>Problematic PAM configuration</li>
+	</ul>
+	<p>There are two methods for recovering a system locked out by these issues, one of which should be set up by default.</p>
+	<h2>2 - Rescue Partition</h2>
+	<p><strong>2.1</strong> Introduction</p>
+	<p>Everest includes a small rescue partition in its system images, which contains only what is necessary to recover a system. Using this partition, system recovery is a relatively easy task.</p>
+	<p><strong>2.2</strong> Booting</p>
+	<p>While installing, either GRUB automatically created a boot entry for the rescue partition, or you did it yourself. If not, the rescue partition is unusable for recovery.</p>
+	<p>To boot into the rescue partition, power off your system, and select <cil>Everest Linux (rescue)</cil> in the GRUB boot menu.</p>
+	<h2>3 - Using BASH as init</h2>
+	<p><strong>3.1</strong> Introduction</p>
+	<p>The Linux kernel supports setting a custom init using kernel parameters. In this instance, we will use <cil>bash</cil> as our init to recover a locked system.</p>
+	<p><strong>3.2</strong> Booting</p>
+	<p>Power off your system. While booting, edit your boot entry's kernel parameters. On GRUB, this can be done with the <cil>e</cil> key.</p>
+	<p>Add the following to your kernel parameters:</p>
+	<khead><strong>KERNEL:</strong> Required kernel parameters to use BASH as init</khead>
+	<div class="kernel">
+		<p>init="/bin/bash"</p>
+	</div>
+</div>
+<footer>
+<p>Page last updated MM/DD/YY @ HH:MM</p>
+<p>Page licensed under GNU Free Documentation License 1.3 or later</p>
+<p>--------------------</p>
+<p>Copyright (C) 2021-2023 Everest Linux</p>
+<p>Linux (R) is a registered trademark of Linus Torvalds.</p>
+<p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
+</footer>
