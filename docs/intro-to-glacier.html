@@ -36,15 +36,19 @@
 	<p>A system profile describes your base system, including C library, architecture, SELinux support, multilib support, etc.</p>
 	<h2>3 - Included programs</h2>
 	<p><strong>3.1 </strong>gpkg</p>
-	<p>'gpkg' is the program most users will be interacting with. It handles the downloading, installation, and logging of packages.</p>
+	<p><cil>gpkg</cil> is the program most users will be interacting with. It handles the downloading, installation, and logging of packages.</p>
 	<p><strong>3.2 </strong>syspkg</p>
-	<p>'syspkg' is like 'gpkg', except it operates on the system index, rather than the local index. End users should not use this unless instructed to.</p>
+	<p><cil>syspkg</cil> is like <cil>gpkg</cil>, except it operates on the system index, rather than the local index. End users should not use this unless instructed to.</p>
 	<p><strong>3.3 </strong>glist</p>
-	<p>'glist' lists all installed packages, allowing the user to filter by name.
+	<p><cil>glist</cil> lists all installed packages, allowing the user to filter by name.
 	<p><strong>3.4 </strong>gquery</p>
-	<p>'gquery' queries information on a package.</p>
-	<p><strong>3.5 </strong>glacier-mkprofile</p>
-	<p>'glacier-mkprofile' makes changes to the system-wide profile. Users should not interact with this unless needed.</p>
+	<p><cil>gquery</cil> queries information on a package.</p>
+	<p><strong>3.5 </strong>gpc</p>
+	<p><cil>gpc</cil> checks if the syntax of a package is correct. This can be used to troubleshoot a package refusing to install, but is mainly intended for package developers.</p>
+	<p><strong>3.6 </strong>glacier-mkprofile</p>
+	<p><cil>glacier-mkprofile</cil> makes changes to the system-wide profile. Users should not interact with this unless needed.</p>
+	<p><strong>3.7 </strong>glacier-update-pkdgb</p>
+	<p><cil>glacier-update-pkgdb</cil> syncs the local package database with the remote server. This command should be run periodically to ensure you have the most up-to-date packages.</p>
 	<h2>4 - Frontends</h2>
 	<p>Frontends, or wrappers, may provide additional functionality to Glacier.</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
@@ -54,36 +58,35 @@
 	<h2>5 - Merging packages</h2>
 	<p><strong>5.1 </strong>Using gpkg</p>
 	<p>To merge a package from a repository:</p>
-	<code>(root)# gpkg -f repo/pkg</code>
-	<p>For instance, to install 'vim' in the 'world' repository:</p>
-	<code>(root)# gpkg -f world/vim</code>
+	<code>(root)# gpkg -f pkg</code>
+	<p>For instance, to install 'vim':</p>
+	<code>(root)# gpkg -f vim</code>
 	<p><strong>5.2 </strong>Using syspkg</p>
-	<p>Using 'syspkg' is not recommended for end users because all changes to the global package index will be overwritten when pulling a new update.</p>
-	<p>If you understand these risks, and wish to use 'syspkg' anyways, you are acknowledging that things may break.</p>
-	<p>To merge a package from a repository:</p>
-	<code>(root)# syspkg -f repo/pkg</code>
+	<p>Using <cil>syspkg</cil> is not recommended for end users because all changes to the global package index will be overwritten when pulling a new update.</p>
+	<p>If you understand these risks, and wish to use <cil>syspkg</cil> anyways, you are acknowledging that things may break.</p>
+	<p>To merge a package:</p>
+	<code>(root)# syspkg -f pkg</code>
 	<h2>6 - Updating packages</h2>
 	<p><strong>6.1 </strong>Introduction</p>
-	<p>When merging a package into any index, the package file is retained in said index. This provides most information needed to keep track of the package, however, when updating, an updated package file will need to be downloaded. Old package files will be retained as 'pkgname.old'.</p>
+	<p>When merging a package into any index, the package file is retained in said index. This provides most information needed to keep track of the package, however, when updating, an updated package file will need to be downloaded. Old package files will be retained as <cil>pkgname.old</cil>.</p>
 	<p><strong>6.2 </strong>Using gpkg</p>
 	<p>To update a package:</p>
-	<code>(root)# gpkg -u repo/pkg</code>
+	<code>(root)# gpkg -u pkg</code>
 	<p><strong>6.3 </strong>Using syspkg</p>
-	<p>As mentioned above, 'syspkg' is intended for system development, and NOT for end users.</p>
-	<p>However, 'syspkg -u' has some use cases for end users. These include:</p>
+	<p>As mentioned above, <cil>syspkg</cil> is intended for system development, and NOT for end users.</p>
+	<p>However, <cil>syspkg -u</cil> has some use cases for end users. These include:</p>
 	<ul>
 		<li>Updating a system program WITHOUT pulling a new release from Git</li>
 		<li>Fixing urgent security vulnerabilities</li>
 	</ul>
 	<p>To update a package:</p>
-	<code>(root)# syspkg -u repo/pkg</code>
+	<code>(root)# syspkg -u pkg</code>
 	<h2>7 - Removing packages</h2>
 	<p><strong>7.1 </strong>Introduction</p>
-	<p>When removing a package, the package info file is moved from the appropriate index to /tmp, and saved as 'pkgname.rm'. This means it will be wiped after the next reboot.</p>
+	<p>When removing a package, the package info file is moved from the appropriate index to /tmp, and saved as <cil>pkgname.rm</cil>. This means it will be wiped after the next reboot.</p>
 	<p><strong>7.2 </strong>Using gpkg</p>
 	<p>To remove a package:</p>
 	<code>(root)# gpkg -x pkg</code>
-	<p>Note that no repository name was provided. It is not required, as no files will be downloaded during the removal process.</p>
 	<p>If a package is a dependency for another, you will be shown the following error:</p>
 	<code>[x] Could not remove (package_name): is a dependency for (package_name)</code>
 	<p><strong>7.3 </strong>Using syspkg</p>
@@ -98,20 +101,20 @@
 	<p>Patching packages is the act of editing a package file to change compile options, optimizations, etc. It is very useful if used correctly.</p>
 	<p>The officially tested and verified method for patching is as follows:</p>
 	<ul>
-		<li>Download the package file with 'gpkg -d'</li>
+		<li>Download the package file with <cil>gpkg -d</cil></li>
 		<li>Edit the package file with a text editor of your choice</li>
-		<li>Install the locally modified package with 'gpkg -fl pkg'</li>
+		<li>Install the locally modified package with <cil>gpkg -fl pkg</cil></li>
 	</ul>
 	<p><strong>8.2 </strong>Custom package repository</p>
 	<p>If Glacier's standard package repository is not sufficient, you can use a custom one.</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
-		<p>Ensure the repository you wish to migrate to supports your system profile. For example, if your profile is 'x86-musl', the new repository should offer packages compatible with 'x86-musl'.</p>
+		<p>Ensure the repository you wish to migrate to supports your system profile. For example, if your profile is <cil>x86-musl</cil>, the new repository should offer packages compatible with <cil>x86-musl</cil>.</p>
 		<p>Errors will occur if this is not taken into account.</p>
 	</div>
 	<p>To use a custom repository once, to merge a package:</p>
 	<code>(root)# GREPO=http://some-repo.org gpkg -f repo/pkg</code>
-	<p>To make the changes persistent, change the 'GREPO' variable in '/etc/glacier.conf':</p>
+	<p>To make the changes persistent, change the <cil>GREPO</cil> variable in <cil>/etc/glacier.conf</cil>:</p>
 	<fhead><strong>FILE:</strong> /etc/glacier.conf</fhead>
 	<div class="file">
 		<p>export GREPO="https://some-repo.org</p>

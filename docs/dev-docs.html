@@ -28,7 +28,8 @@
 	<h2>Developer Documentation</h2>
 	<p>This page contains developer-specific documentation.</p>
 	<h2>1 - Coding Style</h2>
-	<p><strong>1.1</strong> File Structure</p>
+	<p><strong>1.1</strong> C</p>
+	<p><i>1.1.1</i> File Structure</p>
 	<p>Files should follow this format:<p>
 	<ul>
 		<li>Header comment, including program name and LICENSE</li>
@@ -42,7 +43,7 @@
 	<p>Note that function declarations should be defined in a separate header, ex:</p>
 	<p><cil>#include "project_name.h"</cil></p>
 	<p>Indentations should be a single tab and be equal to 8 characters for better readability.</p>
-	<p><strong>1.2</strong> Functions</p>
+	<p><i>1.1.2</i> Functions</p>
 	<p>Functions should have their return type on one line, their name and parameters one line down, and the bracket one line under the name and arguments.</p>
 	<p>Example:</p>
 	<bigcodehead><strong>CODE:</strong> Proper function formatting in C</bigcodehead>
@@ -54,7 +55,7 @@
 		<p>}</p>
 	</div>
 	<p></p>
-	<p><strong>1.3</strong> Example Program</p>
+	<p><i>1.1.3</i> Example Program</p>
 	<fhead><strong>FILE:</strong> prog.c</fhead>
 	<div class="file">
 		<p>#include &lt;stdio.h&gt;</p>
@@ -83,6 +84,31 @@
 		<p>&nbsp;<p>
 		<p>#endif</p>
 	</div>
+	<p><i>1.1.4</i> common.h</p>
+	<p>For large programs which include many header files, it is perfectly acceptable to define these includes in a separate header and then include that in each file.</p>
+	<fhead><strong>FILE:</strong> common.h</fhead>
+	<div class="file">
+		<p>#ifndef COMMON_H_</p>
+		<p>#define COMMON_H_</p>
+		<p>&nbsp;</p>
+		<p>#include &lt;color.h&gt;</p>
+		<p>#include &lt;stdio.h&gt;</p>
+		<p>#include &lt;unistd.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>#endif</p>
+	</div>
+	<p></p>
+	<fhead><strong>FILE:</strong> prog.c</fhead>
+	<div class="file">
+		<p>#include "common.h"</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;printf("hello\n");
+		<p>}</p>
+	</div>
+	<p><strong>1.2</strong> Bash/Shell</p>
 	<h2>2 - Licensing</h2>
 	<p><strong>2.1</strong> Disclaimer</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
