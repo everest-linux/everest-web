@@ -388,4 +388,7 @@ body, html {
 
 hr {
 	color: #88c0d0;
+	height: 20px;
+	width: 0px;
+	border-width: 0px;
 }
