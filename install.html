@@ -79,8 +79,13 @@
 		</tr>
 		<tr>
 			<td>/mnt/everest/usr</td>
-			<td>/usr</td>
+			<td>User partition</td>
 			<td>No smaller than 25 GB, recommended size varies.</td>
+		</tr>
+		<tr>
+			<td>/mnt/everest/home</td>
+			<td>Home partition</td>
+			<td>It depends</td>
 		</tr>
 		<tr>
 			<td>/mnt/everest</td>
@@ -135,6 +140,11 @@
 	<div class="note">
 		<p>Make sure you're happy with the system image you choose. While migrating in the future is possible, it requires rebuilding the majority of the system, takes a substantial amount of time, and may present other issues.</p>
 	</div>
+	<p></p>
+	<warnhead><strong>WARNING:</strong></warnhead>
+	<div class="warning">
+		<p>As a beginner, under NO CIRCUMSTANCES should you use a system image omitting 32 bit libraries unless it is ABSOLUTELY NECESSARY.</p>
+	</div>
 	<p>Downloading a system image that is severely out of date is not recommended. Many programs, such as the kernel or SSL library will be vulnerable to attacks.</p>
 	<p>Download a system image with wget:</p>
 	<code>(user)$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/SYSTEM_IMAGE.tar.xz</code>
@@ -146,6 +156,10 @@
 	<code>(root)# tar -xpvf SYSTEM_IMAGE --xattrs-include='*.*' --numeric-owner</code>
 	<p>If this command was run correctly, you shouldn't need to edit any permissions manually.</p>
 	<p>In case permissions were changed, you can use the <cil>prep</cil> command from <cil>everest-build-tools</cil>.</p>
+	<cautionhead><strong>CAUTION:</strong></cautionhead>
+	<div class="caution">
+		<p>Caution should be exercised when running <cil-inv>prep</cil-inv> as it can mess with permissions already existing on the system.</p>
+	</div>
 	<h2>Chrooting into the system mountpoint</h2>
 	<p>Although we have a relatively complete root filesystem at this point, many essential programs are still missing. These include the kernel and bootloader. Without these, the system is unable to boot. At this point, we must chroot into the new system. This will allow us to complete the system's build process without booting into it.</p>
 	<p>Chroot into the new system:</p>

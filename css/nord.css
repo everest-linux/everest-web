@@ -253,6 +253,12 @@ cil {
 	padding: 2px;
 }
 
+cil-inv {
+	font-family: monospace;
+	background-color: #2E3440;
+	color: #ECEFF4;
+	padding: 2px;
+
 wiki {
 	border-left-style: solid;
 	border-left-width: 4px;

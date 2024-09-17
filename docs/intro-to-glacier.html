@@ -28,13 +28,42 @@
 	</button>
 	<h2>1 - Introduction</h2>
 	<p>Glacier is the package management system for Glacier. All users should be familiar with how it works.</p>
-	<h2>2 - Terminology</h2>
-	<p>In this case, the word 'merge' and 'install' mean the same thing.</p>
-	<p>A package index is a list of all installed packages on any given Everest system.</p>
-	<p>The local index is managed by all users on the system, and is located in /usr/glacier/index.</p>
-	<p>The global index is managed by Git, and is located in /glacier/index.</p>
-	<p>A system profile describes your base system, including C library, architecture, SELinux support, multilib support, etc.</p>
-	<h2>3 - Included programs</h2>
+	<h2>2 - Package Indexes</h2>
+	<p>On an Everest system, packages are stored in an "index", of which there are two, the <i>system</i> index and the <i>user</i> index.</p>
+	<p>The system index is located in <cil>/glacier/index</cil>, and the user index is localed in <cil>/usr/glacier/index</cil>.</p>
+	<p>When you merge a package from a repository, <cil>gpkg</cil> will retrieve the file, execute the relevant instruction sets, and store the package in the user index. <cil>syspkg</cil> will operate on the system index instead. On update, <cil>gpkg</cil> will retrieve the package from the user index and execute the relevant instruction sets. The package will then be moved back into the user index. On removal, the package will be moved to <cil>/tmp</cil> oncde the removal instructions have been executed.</p>
+	<h2>3 - Repositories</h2>
+	<p>Unlike most distributions, Everest installations include a copy of the package repository on the local system. Rather than downloading packages from a remote server, Glacier clones a package from the local repository.</p>
+	<p>This presents some advantages:</p>
+	<ul>
+		<li><p>Package modifications can be done easily</p></li>
+		<li><p>In the result of connection loss, Glacier can still be used</p></li>
+	</ul>
+	<p>And also some disadvantages:</p>
+	<ul>
+		<li><p>Security risks may surface if the repository is not kept updated or an unauthorized party makes changes to packages</p></li>
+	</ul>
+	<p>The <cil>glacier-update-pkgdb</cil> program can be used to update the local repository. This should be done regularly (at least once a week) to ensure the newest and most secure packages are available.</p>
+	<h2>4 - The System Profile</h2>
+	<p>An Everest installation includes a system profile. In simple terms, this is a series of environment variables and configurations that tell Glacier which packages it can install. The system profile should not change unless the user intends to migrate profiles.</p>
+	<p>The following environment variables are defined by the system profile:</p>
+	<ul>
+		<li><p><cil>GLACIER_REPO</cil> - The repository which will be downloaded by <cil>glacier-update-pkgdb</cil></p></li>
+		<li><p><cil>GLACIER_ARCH</cil> - The CPU's architecture</p></li>
+		<li><p><cil>GLACIER_TARGET</cil> - The compilation triplet</p></li>
+		<li><p><cil>GLACIER_SYSTEM_PROFILE</cil> - The name of the system profile</p></li>
+	</ul>
+	<p>The following system profiles are available:</p>
+	<ul>
+		<li><p><cil>x86_64-musl</cil></p></li>
+	</ul>
+	<p>The following system profiles are planned for the future:</p>
+	<ul>
+		<li><p><cil>x86_64-glibc</cil></p></li>
+		<li><p><cil>x86_64-musl-nomultilib</cil></p></li>
+		<li><p><cil>x86_64-glibc-nomultilib</cil></p></li>
+	</ul>
+	<h2>5 - Included programs</h2>
 	<p><strong>3.1 </strong>gpkg</p>
 	<p><cil>gpkg</cil> is the program most users will be interacting with. It handles the downloading, installation, and logging of packages.</p>
 	<p><strong>3.2 </strong>syspkg</p>
@@ -49,13 +78,13 @@
 	<p><cil>glacier-mkprofile</cil> makes changes to the system-wide profile. Users should not interact with this unless needed.</p>
 	<p><strong>3.7 </strong>glacier-update-pkdgb</p>
 	<p><cil>glacier-update-pkgdb</cil> syncs the local package database with the remote server. This command should be run periodically to ensure you have the most up-to-date packages.</p>
-	<h2>4 - Frontends</h2>
+	<h2>6 - Frontends</h2>
 	<p>Frontends, or wrappers, may provide additional functionality to Glacier.</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
 		<p>Third party frontends and wrapper scripts are not supported. Use them at your own risk.</p>
 	</div>
-	<h2>5 - Merging packages</h2>
+	<h2>7 - Merging packages</h2>
 	<p><strong>5.1 </strong>Using gpkg</p>
 	<p>To merge a package from a repository:</p>
 	<code>(root)# gpkg -f pkg</code>
@@ -66,7 +95,7 @@
 	<p>If you understand these risks, and wish to use <cil>syspkg</cil> anyways, you are acknowledging that things may break.</p>
 	<p>To merge a package:</p>
 	<code>(root)# syspkg -f pkg</code>
-	<h2>6 - Updating packages</h2>
+	<h2>8 - Updating packages</h2>
 	<p><strong>6.1 </strong>Introduction</p>
 	<p>When merging a package into any index, the package file is retained in said index. This provides most information needed to keep track of the package, however, when updating, an updated package file will need to be downloaded. Old package files will be retained as <cil>pkgname.old</cil>.</p>
 	<p><strong>6.2 </strong>Using gpkg</p>
@@ -81,7 +110,7 @@
 	</ul>
 	<p>To update a package:</p>
 	<code>(root)# syspkg -u pkg</code>
-	<h2>7 - Removing packages</h2>
+	<h2>9 - Removing packages</h2>
 	<p><strong>7.1 </strong>Introduction</p>
 	<p>When removing a package, the package info file is moved from the appropriate index to /tmp, and saved as <cil>pkgname.rm</cil>. This means it will be wiped after the next reboot.</p>
 	<p><strong>7.2 </strong>Using gpkg</p>
@@ -96,7 +125,7 @@
 	</div>
 	<p>If you wish to proceed anyways, you can remove a package with:</p>
 	<code>(root)# syspkg -x pkg</code>
-	<h2>8 - Advanced usage</h2>
+	<h2>10 - Advanced usage</h2>
 	<p><strong>8.1 </strong>Patching packages</p>
 	<p>Patching packages is the act of editing a package file to change compile options, optimizations, etc. It is very useful if used correctly.</p>
 	<p>The officially tested and verified method for patching is as follows:</p>
@@ -109,7 +138,7 @@
 	<p>If Glacier's standard package repository is not sufficient, you can use a custom one.</p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
-		<p>Ensure the repository you wish to migrate to supports your system profile. For example, if your profile is <cil>x86-musl</cil>, the new repository should offer packages compatible with <cil>x86-musl</cil>.</p>
+		<p>Ensure the repository you wish to migrate to supports your system profile. For example, if your profile is <cil-inv>x86-musl</cil-inv>, the new repository should offer packages compatible with <cil-inv>x86-musl</cil-inv>.</p>
 		<p>Errors will occur if this is not taken into account.</p>
 	</div>
 	<p>To use a custom repository once, to merge a package:</p>
@@ -158,7 +187,7 @@
 		<p>GLACIER_SRV_DIR="/etc/glacier/services"</p>
 		<p>$GLACIER_SRV_DIR/update-pkgdb.hook</p>
 	</div>
-	<h2>9 - Querying packages</h2>
+	<h2>11 - Querying packages</h2>
 	<p><strong>9.1 </strong>Introduction</p>
 	<p>Glacier packages, in ther simplest form, are text files, containing instructions on how the package is built, who made it, what it's called, and what files it includes.</p>
 	<p><strong>9.2 </strong>Querying files</p>
@@ -167,7 +196,12 @@
 	<p><strong>9.3 </strong>Querying info</p>
 	<p>Package info can be listed with:</p>
 	<code>(user)$ gquery -i pkg</code>
-	<h2>10 - Writing packages</h2>
+	<h2>12 - Writing packages</h2>
+	<notehead><strong>NOTE:</strong></notehead>
+	<div class="note">
+		<p>This section is outdated as of 9/17/2024</p>
+		<p>Reason: Glacier v4 changes the package format</p>
+	</div>
 	<p><strong>10.1 </strong>Introduction</p>
 	<p>As mentioned before, Glacier packages are simply text files. This makes them very easy to write and maintain.</p>
 	<p>If you have previous experience writing PKGBUILDs for the AUR, writing Glacier packages should feel very similar.</p>
@@ -227,7 +261,7 @@
 	<p>Anything prefixed with "system" refers to the use of 'syspkg'.</p>
 </div>
 <footer>
-<p>Page last updated 9/03/23 @ 22:02</p>
+<p>Page last updated 9/17/24 @ 09:40</p>
 <p>Page licensed under GNU Free Documentation License 1.3 or later</p>
 <p>--------------------</p>
 <p>Copyright (C) 2021-2023 Everest Linux</p>
