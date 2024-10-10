@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Everest Linux - Docs</title>
+	<link type="text/css" rel="stylesheet" href="../css/nord.css"/>
+</head>
+<body>
+<!-- Navbar -->
+<div class="sidenav">
+	<img src="../img/everest-nord.svg" alt="everest-logo">
+	<a href="../index.html">Home</a>
+	<a href="../about.html">About</a>
+	<a href="../install.html">Install</a>
+	<a href="../packages.html">Packages</a>
+	<a href="../download.html">Downloads</a>
+	<a href="home.html">Docs</a>
+	<a href="../errata.html">Errata</a>
+	<a href="https://git.everestlinux.org">Git ↗</a>
+</div>
+
+<!-- Rest of page -->
+<div class="main">
+	<button onclick="window.location.href='home.html';">
+	Back to home
+	</button>
+	<h2>1 - Introduction</h2>
+	<p><cil>libglacier</cil> is the backend library for Glacier. It simplifies many functions and allows users to extend Glacier's functionality.</p>
+	<h2>2 - Installation</h2>
+	<p>In order to install <cil>libglacier</cil>, the following libraries must be installed:</p>
+	<ul>
+		<li><p>libcolor</p></li>
+		<li><p>libconfig</p></li>
+	</ul>
+	<p>Once these libraries are installed, clone the <cil>libglacier</cil> repository:</p>
+	<p><code>$ git clone https://git.everestlinux.org/EverestLinux/libglacier</code></p>
+	<p>Enter the repository and edit the make configuration file:</p>
+	<p><code>$ cd libglacier</code></p>
+	<p><code>$ ${EDITOR} config.mk</code></p>
+	<cautionhead><strong>CAUTION</strong></cautionhead>
+	<div class="caution">
+		<p>Before proceeding with ANY other step, make sure you define <cil-inv>PREFIX</cil-inv> in config.mk.</p>
+		<p>By default this variable is not defined. Results will be unexpected if the library is compiled without <cil-inv>PREFIX</cil-inv> defined.</p>
+	</div>
+	<p>Build the library:</p>
+	<p><code>$ make lib</code></p>
+	<notehead><strong>NOTE</strong></notehead>
+	<div class="note">
+		<p><cil-inv>libglacier</cil-inv> is provided as a static library only.</p>
+		<p>If you wish to compile a shared library instead, you must edit the Makefile</p>
+	</div>
+
+</div>
+<footer>
+<p>Page last updated MM/DD/YY @ HH:MM</p>
+<p>Page licensed under GNU Free Documentation License 1.3 or later</p>
+<p>--------------------</p>
+<p>Copyright (C) 2021-2023 Everest Linux</p>
+<p>Linux (R) is a registered trademark of Linus Torvalds.</p>
+<p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
+</footer>
