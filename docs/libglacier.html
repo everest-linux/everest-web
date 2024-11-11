@@ -50,13 +50,247 @@
 		<p><cil-inv>libglacier</cil-inv> is provided as a static library only.</p>
 		<p>If you wish to compile a shared library instead, you must edit the Makefile</p>
 	</div>
+	<h2>3 - Using libglacier in a program</h2>
+	<p>To use <cil>libglacier</cil> in a program, include the relevant header files:</p>
+	<bigcodehead><strong>CODE:</strong> Including libglacier header files</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_config.h&gt;</p>
+		<p>#include &lt;glacier_data.h&gt;</p>
+		<p>#include &lt;glacier_log.h&gt;</p>
+		<p>#include &lt;glacier_pkgops.h&gt;</p>
+		<p>#include &lt;glacier_runtime.h&gt;</p>
+	</div>
+	<p></p>
+	<p>To compile <cil>libglacier</cil> into your program, add the following compile flag:</p>
+	<p><code>-lconfig</code></p>
+	<p></p>
+	<h2>4 - Configuration Functions</h2>
+	<p><cil>libglacier</cil> supplies functions for parsing and getting values from libconfig-syntax configuration files. While only three are present, more are planned for the future.</p>
+	<p><strong>4.1</strong> init_config</p>
+	<p><cil>init_config<cil> initializes the libconfig library, and allows configuration files to be parsed.</p>
+	<p>No parameters are accepted by <cil>init_config</cil>.</p>
+	<bigcodehead><strong>CODE:</strong> init_config used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_config.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_config();</p>
+		<p>}</p>
+	</div>
+	<p><cil>init_config</cil> returns 0 on success, and 1 on failure.</p>
+	<p></p>
+	<p><strong>4.2</strong> die_config</p>
+	<p><cil>die_config</cil> unloads the libconfig library. You should always run this when you're finished with libconfig in order to free memory.</p>
+	<p>No parameters are accepted by <cil>die_config</cil>.</p>
+	<bigcodehead><strong>CODE:</strong> die_config used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_config.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die_config();</p>
+		<p>}</p>
+	</div>
+	<p><cil>die_config</cil> returns 0 on success, and 1 on failure.</p>
+	<p><strong>4.3</strong> load_all_from_config</p>
+	<p><cil>load_all_from_config</cil> loads all expected settings from /etc/glacier.cfg.</p>
+	<p>No parameters are accepted by <cil>load_all_from_config</cil>.</p>
+	<bigcodehead><strong>CODE:</strong> load_all_from_config used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_config.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_config();</p>
+		<p>}</p>
+	</div>
+	<h2>5 - Data structure functions</h2>
+	<p>Since Glacier is a package manager, <cil>libglacier</cil> provides functions for creating and handling dependency trees.</p>
+	<p><strong>5.1</strong> create_node</p>
+	<p><cil>create_node</cil> creates a node for a dependency tree.</p>
+	<p><cil>create_node</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>char *data</cil> (the name of the node to create)</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> create_node used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_data.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node package = create_node("Package");</p>
+		<p>}</p>
+	</div>
+	<p><strong>5.2</strong> add_child</p>
+	<p><cil>add_child</cil> adds a specified child node to a parent node.</p>
+	<p><cil>add_child</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>struct node *parent</cil> (the parent node which the child will be added to)</p></li>
+		<li><p><cil>struct node *child</cil> (the child node which will be added to the parent node)</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> add_child used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_data.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node pack = create_node("pack");
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node dep1 = create_node("dep1");
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_child(pack, dep1);</p>
+		<p>}</p>
+	</div>
+	<p><strong>5.3</strong> print_tree</p>
+	<p><cil>print_tree</cil> prints a dependency tree specified at its root node.</p>
+	<p><cil>print_tree</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>struct node *root</cil> (the root node of the tree to print</p></li>
+		<li><p><cil>int level</cil> (the number of levels to descend)</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> print_tree used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_data.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node pack = create_node("pack");</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node dep1 = create_node("dep1");</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_child(pack, dep1);</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_tree(pack, 0);</p>
+		<p>}</p>
+	</div>
+	<p></p>
+	<h2>6 - Logging Functions</h2>
+	<p>The logging functions <cil>libglacier</cil> provides are designed to allow a uniform style of output. </p>
+	<p>The following logging functions are included:</p>
+	<ul>
+		<li><p><cil>infolog</cil></p></li>
+		<li><p><cil>warnlog</cil></p></li>
+		<li><p><cil>errlog</cil></p></li>
+		<li><p><cil>successlog</cil></p></li>
+	</ul>
+	<p>These four functions accept the following parameters:</p>
+	<ul>
+		<li><p><cil>char MSG</cil> (the message to output</p></li>
+	</ul>
+	<p></p>
+	<notehead><strong>NOTE:</strong></notehead>
+	<div class="note">
+		<p>Logging functions do not require a newline character ('\n'), they will automatically place one after the message.</p>
+	</div>
+	<p></p>
+	<bigcodehead><strong>CODE:</strong> Logging functions used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_log.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infolog("This is an info message");</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warnlog("This is a warning message");</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errlog("This is an error message");</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;successlog("This is a success message");</p>
+		<p>}</p>
+	</div>
+	<p></p>
+	<h2>7 - Package Operation Functions</h2>
+	<p>This section describes the numerous functions related to operations on packages.</p>
+	<p><strong>7.1</strong> mkworkspace</p>
+	<p><cil>mkworkspace</cil> creates a Glacier workspace at <cil>/tmp/glacier-workspace</cil>.</p>
+	<p><cil>mkworkspace</cil> accepts no parameters.</p>
+	<p><cil>mkworkspace</cil> returns the following values:</p>
+	<ul>
+		<li><p>0 on success</p></li>
+		<li><p>2 on library error</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> mkworkspace used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_pkgops.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mkworkspace();</p>
+		<p>}</p>
+	</div>
+	<p><strong>7.2</strong> prepare_pkg</p>
+	<p><cil>prepare_pkg</cil> copies a package archive from the local package database to the workspace, and untars it.</p>
+	<p><cil>prepare_pkg</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>char PACKAGE[]</cil> (the package file to prepare)</p></li>
+	</ul>
+	<p><cil>prepare_pkg</cil> returns the following values:</p>
+	<ul>
+		<li><p>0 on success</p></li>
+		<li><p>1 on package does not exist, or error untarring</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> prepare_pkg used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_pkgops.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepare_pkg("/glacier/localdb/epkgs-x86_64-musl/foo.tar");</p>
+		<p>}</p>
+	</div>
+	<p>&nbsp;</p>
+	<cautionhead><strong>CAUTION:</strong></cautionhead>
+	<div class="caution">
+		<p>This example presented is not the best. Instead of manually specifying the package directory, you should be calling the system profile.</p>
+	</div>
+	<p><strong>7.3</strong> run_make_task</p>
+	<p><cil>run_make_task</cil> runs a specified make task in a package's current working directory.</p>
+	<p><cil>run_make_task</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>char TASK[]</cil> (the make task to run</p></li>
+	</ul>
+	<p><cil>run_make_task</cil> returns the following values:</p>
+	<ul>
+		<li><p>0 on success</p></li>
+		<li><p>1 on failure</p></li>
+	</ul>
+	<bigcodehad><strong>CODE:</strong> run_make_task used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_pkgops.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepare_pkg("/glacier/localdb/epkgs-x86_64-musl/foo.tar");</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;run_make_task("installpkg");</p>
 
+		<p>}</p>
+	</div>
+	<h2>8 - Runtime Functions</h2>
+	<p>The functions described here are used for various runtime checks.</p>
+	<p><strong>8.1</strong> runtime_exists</p>
+	<p><cil>runtime_exists</cil> checks if necessary runtime files exist and are in their correct locations.</p>
+	<p><cil>runtime_exists</cil> accepts no parameters.
+	<p><cil>runtime_exists</cil> returns no values.</p>
+	<bigcodehead><strong>CODE:</strong> runtime_exists used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_runtime.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime_exists();</p>
+		<p>}</p>
+	</div>
+	<p><strong>8.2</strong>
 </div>
 <footer>
 <p>Page last updated MM/DD/YY @ HH:MM</p>
 <p>Page licensed under GNU Free Documentation License 1.3 or later</p>
 <p>--------------------</p>
-<p>Copyright (C) 2021-2023 Everest Linux</p>
+<p>Copyright (C) 2021-2023 Everest Linux</p>d
 <p>Linux (R) is a registered trademark of Linus Torvalds.</p>
 <p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
 </footer>
