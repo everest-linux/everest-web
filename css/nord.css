@@ -100,7 +100,7 @@ html {
 	border-radius: 2px;
 	padding: 4px;
 	width: 50%;
-	color: #2E3440;
+	color: #D8DEE9;
 }
 
 .news {
@@ -181,7 +181,7 @@ warnhead {
 	border-radius: 2px;
 	padding: 6px;
 	width: 50%;
-	color: #2E3440;
+	color: #D8DEE9;
 }
 
 newshead {
@@ -395,7 +395,13 @@ body, html {
 
 hr {
 	color: #88c0d0;
-	height: 20px;
-	width: 0px;
-	border-width: 0px;
+	width: 50%;
+	border-width: 4px;
+	border-radius: 5px;
+	margin-left: 0;
+}
+
+.tab {
+	display: inline-block;
+	margin-left: 80px;
 }

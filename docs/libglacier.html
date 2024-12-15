@@ -59,15 +59,16 @@
 		<p>#include &lt;glacier_log.h&gt;</p>
 		<p>#include &lt;glacier_pkgops.h&gt;</p>
 		<p>#include &lt;glacier_runtime.h&gt;</p>
+		<p>#include &lt;glacier_security.h&gt;</p>
 	</div>
 	<p></p>
-	<p>To compile <cil>libglacier</cil> into your program, add the following compile flag:</p>
-	<p><code>-lconfig</code></p>
+	<p>To compile <cil>libglacier</cil> into your program, add the flag <cil>-lglacier</cil> to your build process.</p>
+	<p><code>$ gcc program.c -lglacier -o program</code></p>
 	<p></p>
 	<h2>4 - Configuration Functions</h2>
 	<p><cil>libglacier</cil> supplies functions for parsing and getting values from libconfig-syntax configuration files. While only three are present, more are planned for the future.</p>
 	<p><strong>4.1</strong> init_config</p>
-	<p><cil>init_config<cil> initializes the libconfig library, and allows configuration files to be parsed.</p>
+	<p><cil>init_config</cil> initializes the libconfig library, and allows configuration files to be parsed.</p>
 	<p>No parameters are accepted by <cil>init_config</cil>.</p>
 	<bigcodehead><strong>CODE:</strong> init_config used in a program</bigcodehead>
 	<div class="bigcode">
@@ -76,11 +77,17 @@
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_config();</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (init_config() != 0) {</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errlog("failed to initialize libconfig");
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return(EXIT_FAILURE);</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else {</p>
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;successlog("Initialized libconfig");
+		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
 		<p>}</p>
 	</div>
 	<p><cil>init_config</cil> returns 0 on success, and 1 on failure.</p>
-	<p></p>
+	<hr>
 	<p><strong>4.2</strong> die_config</p>
 	<p><cil>die_config</cil> unloads the libconfig library. You should always run this when you're finished with libconfig in order to free memory.</p>
 	<p>No parameters are accepted by <cil>die_config</cil>.</p>
@@ -140,9 +147,9 @@
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node pack = create_node("pack");
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node dep1 = create_node("dep1");
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_child(pack, dep1);</p>
+		<p><span class="tab"></span>struct node pack = create_node("pack");
+		<p><span class="tab"></span>struct node dep1 = create_node("dep1");
+		<p><span class="tab"></span>add_child(pack, dep1);</p>
 		<p>}</p>
 	</div>
 	<p><strong>5.3</strong> print_tree</p>
@@ -159,11 +166,26 @@
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node pack = create_node("pack");</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node dep1 = create_node("dep1");</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;add_child(pack, dep1);</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print_tree(pack, 0);</p>
+		<p><span class="tab"></span>struct node pack = create_node("pack");</p>
+		<p><span class="tab"></span>struct node dep1 = create_node("dep1");</p>
+		<p><span class="tab"></span>add_child(pack, dep1);</p>
+		<p><span class="tab"></span>print_tree(pack, 0);</p>
 		<p>}</p>
+	</div>
+	<p><strong>5.4</strong> init_queue</p>
+	<p><cil>init_queue</cil> initializes a queue data structure.</p>
+	<p><cil>init_queue</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>queue *q</cil> (the name of the queue to initialize</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> init_queue used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier_data.h&gt;</p>
+		<p>&nbsp;</p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>hi</p>
 	</div>
 	<p></p>
 	<h2>6 - Logging Functions</h2>
@@ -256,7 +278,7 @@
 		<li><p>0 on success</p></li>
 		<li><p>1 on failure</p></li>
 	</ul>
-	<bigcodehad><strong>CODE:</strong> run_make_task used in a program</bigcodehead>
+	<bigcodehead><strong>CODE:</strong> run_make_task used in a program</bigcodehead>
 	<div class="bigcode">
 		<p>#include &lt;glacier_pkgops.h&gt;</p>
 		<p>&nbsp;</p>
