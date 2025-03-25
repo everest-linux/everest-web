@@ -40,26 +40,26 @@
 	<p><code>$ ${EDITOR} config.mk</code></p>
 	<cautionhead><strong>CAUTION</strong></cautionhead>
 	<div class="caution">
-		<p>Before proceeding with ANY other step, make sure you define <cil-inv>PREFIX</cil-inv> in config.mk.</p>
-		<p>By default this variable is not defined. Results will be unexpected if the library is compiled without <cil-inv>PREFIX</cil-inv> defined.</p>
+		<p>Before proceeding with ANY other step, make sure you define <cil_inv>PREFIX</cil_inv> in config.mk.</p>
+		<p>By default this variable is not defined. Results will be unexpected if the library is compiled without <cil_inv>PREFIX</cil_inv> defined.</p>
 	</div>
 	<p>Build the library:</p>
 	<p><code>$ make lib</code></p>
 	<notehead><strong>NOTE</strong></notehead>
 	<div class="note">
-		<p><cil-inv>libglacier</cil-inv> is provided as a static library only.</p>
+		<p><cil_inv>libglacier</cil_inv> is provided as a static library only.</p>
 		<p>If you wish to compile a shared library instead, you must edit the Makefile</p>
 	</div>
 	<h2>3 - Using libglacier in a program</h2>
 	<p>To use <cil>libglacier</cil> in a program, include the relevant header files:</p>
 	<bigcodehead><strong>CODE:</strong> Including libglacier header files</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_config.h&gt;</p>
-		<p>#include &lt;glacier_data.h&gt;</p>
-		<p>#include &lt;glacier_log.h&gt;</p>
-		<p>#include &lt;glacier_pkgops.h&gt;</p>
-		<p>#include &lt;glacier_runtime.h&gt;</p>
-		<p>#include &lt;glacier_security.h&gt;</p>
+		<p>#include &lt;glacier/config.h&gt;</p>
+		<p>#include &lt;glacier/data.h&gt;</p>
+		<p>#include &lt;glacier/log.h&gt;</p>
+		<p>#include &lt;glacier/pkgops.h&gt;</p>
+		<p>#include &lt;glacier/runtime.h&gt;</p>
+		<p>#include &lt;glacier/security.h&gt;</p>
 	</div>
 	<p></p>
 	<p>To compile <cil>libglacier</cil> into your program, add the flag <cil>-lglacier</cil> to your build process.</p>
@@ -72,18 +72,18 @@
 	<p>No parameters are accepted by <cil>init_config</cil>.</p>
 	<bigcodehead><strong>CODE:</strong> init_config used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_config.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/config.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;if (init_config() != 0) {</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errlog("failed to initialize libconfig");
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return(EXIT_FAILURE);</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;else {</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;successlog("Initialized libconfig");
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}
+		<p><span class="tab"></span>if (init_config() != 0) {</p>
+		<p><span class="tab"></span><span class="tab"></span>errlog("failed to initialize libconfig");</p>
+		<p><span class="tab"></span><span class="tab"></span>return(EXIT_FAILURE);</p>
+		<p><span class="tab"></span>}</p>
+		<p><span class="tab"></span>else {</p>
+		<p><span class="tab"></span><span class="tab"></span>successlog("Initialized libconfig");</p>
+		<p><span class="tab"></span>}</p>
 		<p>}</p>
 	</div>
 	<p><cil>init_config</cil> returns 0 on success, and 1 on failure.</p>
@@ -93,28 +93,30 @@
 	<p>No parameters are accepted by <cil>die_config</cil>.</p>
 	<bigcodehead><strong>CODE:</strong> die_config used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_config.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/config.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;die_config();</p>
+		<p><span class="tab"></span>die_config();</p>
 		<p>}</p>
 	</div>
 	<p><cil>die_config</cil> returns 0 on success, and 1 on failure.</p>
+	<hr>
 	<p><strong>4.3</strong> load_all_from_config</p>
 	<p><cil>load_all_from_config</cil> loads all expected settings from /etc/glacier.cfg.</p>
 	<p>No parameters are accepted by <cil>load_all_from_config</cil>.</p>
 	<bigcodehead><strong>CODE:</strong> load_all_from_config used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_config.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/config.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;init_config();</p>
+		<p><span class="tab"></span>init_config();</p>
 		<p>}</p>
 	</div>
+	<p><cil>load_all_from_config</cil> returns 0 on success, and 1 on failure.</p>
 	<h2>5 - Data structure functions</h2>
 	<p>Since Glacier is a package manager, <cil>libglacier</cil> provides functions for creating and handling dependency trees.</p>
 	<p><strong>5.1</strong> create_node</p>
@@ -125,14 +127,16 @@
 	</ul>
 	<bigcodehead><strong>CODE:</strong> create_node used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_data.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/data.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;struct node package = create_node("Package");</p>
+		<p><span class="tab"></span>struct node package = create_node("Package");</p>
 		<p>}</p>
 	</div>
+	<p><cil>create_node</cil> returns a node structure.</p>
+	<hr>
 	<p><strong>5.2</strong> add_child</p>
 	<p><cil>add_child</cil> adds a specified child node to a parent node.</p>
 	<p><cil>add_child</cil> accepts the following parameters:</p>
@@ -142,8 +146,8 @@
 	</ul>
 	<bigcodehead><strong>CODE:</strong> add_child used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_data.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/data.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
@@ -152,6 +156,8 @@
 		<p><span class="tab"></span>add_child(pack, dep1);</p>
 		<p>}</p>
 	</div>
+	<p><cil>add_child</cil> returns 0 on success, and 1 on failure.</p>
+	<hr>
 	<p><strong>5.3</strong> print_tree</p>
 	<p><cil>print_tree</cil> prints a dependency tree specified at its root node.</p>
 	<p><cil>print_tree</cil> accepts the following parameters:</p>
@@ -161,8 +167,8 @@
 	</ul>
 	<bigcodehead><strong>CODE:</strong> print_tree used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_data.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/data.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
@@ -172,22 +178,28 @@
 		<p><span class="tab"></span>print_tree(pack, 0);</p>
 		<p>}</p>
 	</div>
+	<p><cil>print_tree</cil> returns 0 on success.</p>
+	<hr>
 	<p><strong>5.4</strong> init_queue</p>
 	<p><cil>init_queue</cil> initializes a queue data structure.</p>
+	<notehead><strong>REMOVED FEATURE</strong></notehead>
+	<div class="note">
+		<p>The queue data structure was removed in a recent update (March 2025). This function is no longer available in the current version of libglacier.</p>
+	</div>
 	<p><cil>init_queue</cil> accepts the following parameters:</p>
 	<ul>
 		<li><p><cil>queue *q</cil> (the name of the queue to initialize</p></li>
 	</ul>
 	<bigcodehead><strong>CODE:</strong> init_queue used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_data.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/data.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p><span class="tab"></span>hi</p>
+		<p><span class="tab"></span>/* Queue implementation removed */</p>
+		<p>}</p>
 	</div>
-	<p></p>
 	<h2>6 - Logging Functions</h2>
 	<p>The logging functions <cil>libglacier</cil> provides are designed to allow a uniform style of output. </p>
 	<p>The following logging functions are included:</p>
@@ -207,109 +219,283 @@
 		<p>Logging functions do not require a newline character ('\n'), they will automatically place one after the message.</p>
 	</div>
 	<p></p>
+	<p>All logging functions return 0 on success, and 1 on failure.</p>
 	<bigcodehead><strong>CODE:</strong> Logging functions used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_log.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/log.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;infolog("This is an info message");</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;warnlog("This is a warning message");</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errlog("This is an error message");</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;successlog("This is a success message");</p>
+		<p><span class="tab"></span>infolog("This is an info message");</p>
+		<p><span class="tab"></span>warnlog("This is a warning message");</p>
+		<p><span class="tab"></span>errlog("This is an error message");</p>
+		<p><span class="tab"></span>successlog("This is a success message");</p>
 		<p>}</p>
 	</div>
-	<p></p>
 	<h2>7 - Package Operation Functions</h2>
 	<p>This section describes the numerous functions related to operations on packages.</p>
 	<p><strong>7.1</strong> mkworkspace</p>
 	<p><cil>mkworkspace</cil> creates a Glacier workspace at <cil>/tmp/glacier-workspace</cil>.</p>
 	<p><cil>mkworkspace</cil> accepts no parameters.</p>
+	<bigcodehead><strong>CODE:</strong> mkworkspace used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/pkgops.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>mkworkspace();</p>
+		<p>}</p>
+	</div>
 	<p><cil>mkworkspace</cil> returns the following values:</p>
 	<ul>
 		<li><p>0 on success</p></li>
 		<li><p>2 on library error</p></li>
 	</ul>
-	<bigcodehead><strong>CODE:</strong> mkworkspace used in a program</bigcodehead>
-	<div class="bigcode">
-		<p>#include &lt;glacier_pkgops.h&gt;</p>
-		<p>&nbsp;</p>
-		<p>int</p>
-		<p>main()</p>
-		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mkworkspace();</p>
-		<p>}</p>
-	</div>
+	<p>Calling <cil>mkworkspace</cil> creates the workspace if it doesn't already exist.</p>
+	<hr>
 	<p><strong>7.2</strong> prepare_pkg</p>
 	<p><cil>prepare_pkg</cil> copies a package archive from the local package database to the workspace, and untars it.</p>
 	<p><cil>prepare_pkg</cil> accepts the following parameters:</p>
 	<ul>
 		<li><p><cil>char PACKAGE[]</cil> (the package file to prepare)</p></li>
 	</ul>
+	<bigcodehead><strong>CODE:</strong> prepare_pkg used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/pkgops.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>prepare_pkg("/glacier/localdb/epkgs-x86_64-musl/foo.tar");</p>
+		<p>}</p>
+	</div>
 	<p><cil>prepare_pkg</cil> returns the following values:</p>
 	<ul>
 		<li><p>0 on success</p></li>
 		<li><p>1 on package does not exist, or error untarring</p></li>
 	</ul>
-	<bigcodehead><strong>CODE:</strong> prepare_pkg used in a program</bigcodehead>
-	<div class="bigcode">
-		<p>#include &lt;glacier_pkgops.h&gt;</p>
-		<p>&nbsp;</p>
-		<p>int</p>
-		<p>main()</p>
-		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepare_pkg("/glacier/localdb/epkgs-x86_64-musl/foo.tar");</p>
-		<p>}</p>
-	</div>
-	<p>&nbsp;</p>
 	<cautionhead><strong>CAUTION:</strong></cautionhead>
 	<div class="caution">
 		<p>This example presented is not the best. Instead of manually specifying the package directory, you should be calling the system profile.</p>
 	</div>
+	<hr>
 	<p><strong>7.3</strong> run_make_task</p>
 	<p><cil>run_make_task</cil> runs a specified make task in a package's current working directory.</p>
 	<p><cil>run_make_task</cil> accepts the following parameters:</p>
 	<ul>
 		<li><p><cil>char TASK[]</cil> (the make task to run</p></li>
 	</ul>
+	<bigcodehead><strong>CODE:</strong> run_make_task used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/pkgops.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>prepare_pkg("/glacier/localdb/epkgs-x86_64-musl/foo.tar");</p>
+		<p><span class="tab"></span>run_make_task("installpkg");</p>
+		<p>}</p>
+	</div>
 	<p><cil>run_make_task</cil> returns the following values:</p>
 	<ul>
 		<li><p>0 on success</p></li>
 		<li><p>1 on failure</p></li>
 	</ul>
-	<bigcodehead><strong>CODE:</strong> run_make_task used in a program</bigcodehead>
-	<div class="bigcode">
-		<p>#include &lt;glacier_pkgops.h&gt;</p>
-		<p>&nbsp;</p>
-		<p>int</p>
-		<p>main()</p>
-		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prepare_pkg("/glacier/localdb/epkgs-x86_64-musl/foo.tar");</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;run_make_task("installpkg");</p>
-
-		<p>}</p>
-	</div>
 	<h2>8 - Runtime Functions</h2>
 	<p>The functions described here are used for various runtime checks.</p>
 	<p><strong>8.1</strong> runtime_exists</p>
 	<p><cil>runtime_exists</cil> checks if necessary runtime files exist and are in their correct locations.</p>
-	<p><cil>runtime_exists</cil> accepts no parameters.
-	<p><cil>runtime_exists</cil> returns no values.</p>
+	<p><cil>runtime_exists</cil> accepts no parameters.</p>
 	<bigcodehead><strong>CODE:</strong> runtime_exists used in a program</bigcodehead>
 	<div class="bigcode">
-		<p>#include &lt;glacier_runtime.h&gt;</p>
-		<p>&nbsp;</p>
+		<p>#include &lt;glacier/runtime.h&gt;</p>
+		<p><span class="tab"></span></p>
 		<p>int</p>
 		<p>main()</p>
 		<p>{</p>
-		<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;runtime_exists();</p>
+		<p><span class="tab"></span>runtime_exists();</p>
 		<p>}</p>
 	</div>
-	<p><strong>8.2</strong>
+	<p><cil>runtime_exists</cil> returns no values.</p>
+	<hr>
+	<p><strong>8.2</strong> is_process_root</p>
+	<p><cil>is_process_root</cil> verifies if the process has root privileges to perform package operations.</p>
+	<p><cil>is_process_root</cil> accepts no parameters.</p>
+	<bigcodehead><strong>CODE:</strong> is_process_root used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/runtime.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>if (is_process_root() != 0) {</p>
+		<p><span class="tab"></span><span class="tab"></span>errlog("insufficient permissions to perform package operations");</p>
+		<p><span class="tab"></span><span class="tab"></span>return(EXIT_FAILURE);</p>
+		<p><span class="tab"></span>}</p>
+		<p>}</p>
+	</div>
+	<p><cil>is_process_root</cil> returns the following values:</p>
+	<ul>
+		<li><p>0 on sufficient permissions (process is root)</p></li>
+		<li><p>1 on insufficient permissions (process is not root)</p></li>
+	</ul>
+	<hr>
+	<p><strong>8.3</strong> get_system_profile</p>
+	<p><cil>get_system_profile</cil> fetches the system profile, which contains information about the architecture and libc implementation.</p>
+	<p><cil>get_system_profile</cil> accepts no parameters.</p>
+	<bigcodehead><strong>CODE:</strong> get_system_profile used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/runtime.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>char *profile = get_system_profile();</p>
+		<p><span class="tab"></span>infolog(profile);</p>
+		<p>}</p>
+	</div>
+	<p><cil>get_system_profile</cil> returns a pointer to a string containing the system profile (e.g., "x86_64-musl").</p>
+	<h2>9 - Security Functions</h2>
+	<p>These functions provide security checks for package integrity and signatures.</p>
+	<p><strong>9.1</strong> verify_signature</p>
+	<p><cil>verify_signature</cil> checks if a package's signature is valid against the trusted keyring.</p>
+	<notehead><strong>UPCOMING FEATURE</strong></notehead>
+	<div class="note">
+		<p>This function is planned for a future release and is not yet implemented in the current version of libglacier.</p>
+	</div>
+	<p><cil>verify_signature</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>char PACKAGE[]</cil> (the package file to verify)</p></li>
+		<li><p><cil>char SIGNATURE[]</cil> (the signature file to check against)</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> verify_signature used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/security.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>if (verify_signature("package.tar", "package.tar.sig") != 0) {</p>
+		<p><span class="tab"></span><span class="tab"></span>errlog("invalid package signature");</p>
+		<p><span class="tab"></span><span class="tab"></span>return(EXIT_FAILURE);</p>
+		<p><span class="tab"></span>}</p>
+		<p><span class="tab"></span>return(EXIT_SUCCESS);</p>
+		<p>}</p>
+	</div>
+	<p><cil>verify_signature</cil> returns the following values:</p>
+	<ul>
+		<li><p>0 on valid signature</p></li>
+		<li><p>1 on invalid signature</p></li>
+		<li><p>2 on file not found</p></li>
+	</ul>
+	<hr>
+	<p><strong>9.2</strong> check_integrity</p>
+	<p><cil>check_integrity</cil> verifies a package's SHA256 checksum against the expected value.</p>
+	<notehead><strong>UPCOMING FEATURE</strong></notehead>
+	<div class="note">
+		<p>This function is planned for a future release and is not yet implemented in the current version of libglacier.</p>
+		<p>Note that the underlying functions for calculating file hashes (<cil_inv>hash_file()</cil_inv>, <cil_inv>stash_hash()</cil_inv>, <cil_inv>print_hash()</cil_inv>) are already implemented.</p>
+	</div>
+	<p><cil>check_integrity</cil> accepts the following parameters:</p>
+	<ul>
+		<li><p><cil>char PACKAGE[]</cil> (the package file to check)</p></li>
+		<li><p><cil>char EXPECTED_HASH[]</cil> (the expected SHA256 hash)</p></li>
+	</ul>
+	<bigcodehead><strong>CODE:</strong> check_integrity used in a program</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/security.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>char *expected = "d7a8fbb307d7809469ca9abcb0082e4f8d5651e46d3cdb762d02d0bf37c9e592";</p>
+		<p><span class="tab"></span>if (check_integrity("package.tar", expected) != 0) {</p>
+		<p><span class="tab"></span><span class="tab"></span>errlog("package integrity check failed");</p>
+		<p><span class="tab"></span><span class="tab"></span>return(EXIT_FAILURE);</p>
+		<p><span class="tab"></span>}</p>
+		<p><span class="tab"></span>return(EXIT_SUCCESS);</p>
+		<p>}</p>
+	</div>
+	<p><cil>check_integrity</cil> returns the following values:</p>
+	<ul>
+		<li><p>0 on hash match</p></li>
+		<li><p>1 on hash mismatch</p></li>
+		<li><p>2 on file not found or hash calculation error</p></li>
+	</ul>
+	<h2>10 - Advanced Usage</h2>
+	<p>This section covers more advanced usage patterns for <cil>libglacier</cil>.</p>
+	<p><strong>10.1</strong> Custom dependency tree handling</p>
+	<p>While <cil>libglacier</cil> provides functions for creating and manipulating dependency trees, you might need to implement custom behaviors for resolving dependencies.</p>
+	<bigcodehead><strong>CODE:</strong> Custom dependency resolution</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/data.h&gt;</p>
+		<p>#include &lt;glacier/log.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>resolve_dependencies(struct node *root)</p>
+		<p>{</p>
+		<p><span class="tab"></span>/* Custom dependency resolution logic here */</p>
+		<p><span class="tab"></span>for (int i = 0; i < root->num_children; i++) {</p>
+		<p><span class="tab"></span><span class="tab"></span>infolog(root->children[i]->data);</p>
+		<p><span class="tab"></span><span class="tab"></span>/* Process child dependencies recursively */</p>
+		<p><span class="tab"></span><span class="tab"></span>resolve_dependencies(root->children[i]);</p>
+		<p><span class="tab"></span>}</p>
+		<p><span class="tab"></span>return(0);</p>
+		<p>}</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>struct node *root = create_node("base-package");</p>
+		<p><span class="tab"></span>struct node *dep1 = create_node("dependency1");</p>
+		<p><span class="tab"></span>struct node *dep2 = create_node("dependency2");</p>
+		<p><span class="tab"></span>add_child(root, dep1);</p>
+		<p><span class="tab"></span>add_child(root, dep2);</p>
+		<p><span class="tab"></span>resolve_dependencies(root);</p>
+		<p><span class="tab"></span>return(EXIT_SUCCESS);</p>
+		<p>}</p>
+	</div>
+	<hr>
+	<p><strong>10.2</strong> Error handling best practices</p>
+	<p>When using <cil>libglacier</cil>, it's important to implement proper error handling. All functions that return integer status codes should be checked.</p>
+	<bigcodehead><strong>CODE:</strong> Proper error handling</bigcodehead>
+	<div class="bigcode">
+		<p>#include &lt;glacier/config.h&gt;</p>
+		<p>#include &lt;glacier/log.h&gt;</p>
+		<p>#include &lt;glacier/pkgops.h&gt;</p>
+		<p><span class="tab"></span></p>
+		<p>int</p>
+		<p>main()</p>
+		<p>{</p>
+		<p><span class="tab"></span>/* Initialize configuration */</p>
+		<p><span class="tab"></span>if (init_config() != 0) {</p>
+		<p><span class="tab"></span><span class="tab"></span>errlog("failed to initialize configuration");</p>
+		<p><span class="tab"></span><span class="tab"></span>return(EXIT_FAILURE);</p>
+		<p><span class="tab"></span>}</p>
+		<p><span class="tab"></span></p>
+		<p><span class="tab"></span>/* Create workspace */</p>
+		<p><span class="tab"></span>if (mkworkspace() != 0) {</p>
+		<p><span class="tab"></span><span class="tab"></span>errlog("failed to create workspace");</p>
+		<p><span class="tab"></span><span class="tab"></span>die_config();</p>
+		<p><span class="tab"></span><span class="tab"></span>return(EXIT_FAILURE);</p>
+		<p><span class="tab"></span>}</p>
+		<p><span class="tab"></span></p>
+		<p><span class="tab"></span>/* Always clean up resources */</p>
+		<p><span class="tab"></span>die_config();</p>
+		<p><span class="tab"></span>return(EXIT_SUCCESS);</p>
+		<p>}</p>
+	</div>
+	<p></p>
+	<notehead><strong>NOTE:</strong></notehead>
+	<div class="note">
+		<p>Always free resources and clean up configurations when your program exits, even on error paths.</p>
+		<p>This prevents memory leaks and ensures consistent behavior.</p>
+	</div>
 </div>
 <footer>
-<p>Page last updated MM/DD/YY @ HH:MM</p>
+<p>Page last updated 03/22/25 @ 15:45</p>
 <p>Page licensed under GNU Free Documentation License 1.3 or later</p>
 <p>--------------------</p>
 <p>Copyright (C) 2021-2025 Everest Linux</p>
