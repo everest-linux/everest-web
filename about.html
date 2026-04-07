@@ -4,20 +4,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Everest Linux - About</title>
-	<link type="text/css" rel="stylesheet" href="css/nord.css"/>
+	<link type="text/css" rel="stylesheet" href="css/k2.css"/>
 	<link rel="icon" type="image/x-icon" href="img/favicon.svg"/>
 </head>
 <body>
 <!-- Navbar -->
 <div class="sidenav">
-	<img src="img/everest-nord.svg" alt="everest-logo">
+	<img src="img/everest-k2.svg" alt="everest-logo" style="width: 185px; height: 185px;">
 	<a href="index.html">Home</a>
 	<a href="about.html">About</a>
 	<a href="install.html">Install</a>
 	<a href="packages.html">Packages</a>
 	<a href="download.html">Downloads</a>
-	<a href="docs/home.html">Docs</a>
-	<a href="errata.html">Errata</a>
+	<a href="docs/home.html">Documentation</a>
+	<a href="errata.html">Security</a>
+	<a href="https://shop.everestlinux.org">Store ↗</a>
 	<a href="https://git.everestlinux.org">Git ↗</a>
 </div>
 
@@ -43,11 +44,13 @@
 	<p>April 2023 - ecrypy, pm, and nc released.</p>
 	<p>December 2023 - Glacier C rewrite announced</p>
 	<h2>Design Principles</h2>
-	<p>Our design principles heavily influence and guide development. You may notice we share many of these with Arch.</p>
+	<p>Our design principles heavily influence and guide development.</p>
+	<strong>Security</strong>
+	<p>Everest Linux is designed with security in mind. Security settings are sensible by default, and features such as full-disk encryption are supported out of the box. Glacier verifies all programs installed to ensure they are not malicious.</p>
 	<strong>Simplicity</strong>
 	<p>We follow the UNIX philosphy when possible. Programs should do one thing, and do it right. Our packages have almost zero modifications from upstream. The base system contains only what you need to start building your system. The base Everest system also weighs in at around 100 MB</p>
 	<strong>Flexibility</strong>
-	<p>Everest is designed with flexibility in mind. Any modification can be achieved if the user has enough knowledge. For example, it is possible to replace Busybox with sbase, or use runit as your init system, all without breakage.</p>
+	<p>Everest is designed with flexibility in mind. Any component of a system can be swapped out with another, assuming the user knows how.</p>
 	<strong>Functionality versus Ideology</strong>
 	<p>The developers of Everest are strong advocates of free software, but understand that it cannot be implemented 100% of the time, such as in the form of drivers. We also understand that some users may prefer proprietary software over libre counterparts. We take no steps to prevent proprietary software in our package database, only requiring it to be licensed as such. This is a very different approach from heavily ideological distributions, some of which remove support for certain programs on a purely ideological basis.</p>
 	<strong>User Centrality</strong>
@@ -69,10 +72,15 @@
 			<td>N/A</td>
 			<td>Developer</td>
 		</tr>
+                <tr>
+                        <td>Lucas Audette (luca-everestlinux)</td>
+                        <td>N/A</td>
+                        <td>Head of Security</td>
+                </tr>
 	</table>
 </div>
 <footer>
-<p>Copyright (C) 2021-2025 Everest Linux</p>
+<p>Copyright (C) 2021-2026 Everest Linux</p>
 <p>Linux (R) is a registered trademark of Linus Torvalds.</p>
 <p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
 </footer>

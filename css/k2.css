@@ -1,23 +1,14 @@
-/* css/everest.css - stylesheet for everest-web */
-/* 
-   Copyright (C)  2023  Everest Linux.
-   Permission is granted to copy, distribute and/or modify this document
-   under the terms of the GNU Free Documentation License, Version 1.3
-   or any later version published by the Free Software Foundation;
-   with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.
-   A copy of the license is included in the section entitled "GNU
-   Free Documentation License".
-*/
+/* css/k2.css - stylesheet for everest-web */
 
 /* Sidebar menu */
 .sidenav {
 	height: 100%;
-	width: 160px;
+	width: 200px;
 	position: fixed;
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background-color: #131313;
+	background-color: #1a2030;
 	overflow-x: hidden;
 	padding-top: 20px;
 }
@@ -27,201 +18,239 @@
 	padding: 6px 8px 6px 16px;
 	text-decoration: none;
 	font-size: 20px;
-	color: #818181;
+	color: #a0b4cc;
 	display: block;
 }
 
 .sidenav a:hover {
-	color: #4a86e8ff;
+	color: #4a86e8;
 }
 
 html {
-	background-color: #1E1E1E;
-	color: #bfbfbf;
+	background-color: #1e2535;
+	color: #a0b4cc;
 }
 
 .main {
-	margin-left: 160px;
+	margin-left: 200px;
 	padding: 0px 10px;
-	background-color: #1E1E1E;
+	background-color: #1e2535;
 }
 
 .file {
 	font-family: monospace;
-	background-color: #0F0F0F;
-	border-left-style: solid;
-	border-left-color: MediumSeaGreen;
-	border-width: 4px;
+	background-color: #141820;
+	border-left: 4px solid #3a9e78;
 	border-radius: 2px;
 	padding: 4px;
-	width: 50%;
-	color: #bfbfbf;
+	/*width: 50%;*/
+	color: #a0b4cc;
 }
 
 .kernel {
 	font-family: monospace;
-	background-color: #0F0F0F;
-	border-left-style: solid;
-	border-left-color: SlateBlue;
-	border-width: 4px;
+	background-color: #141820;
+	border-left: 4px solid #7a6eda;
 	border-radius: 2px;
 	padding: 4px;
-	width: 50%;
-	color: #bfbfbf;
+	/*width: 50%;*/
+	color: #a0b4cc;
+}
+
+.note {
+	background-color: #141c2e;
+	border-left: 4px solid #4a86e8;
+	border-radius: 2px;
+	padding: 4px;
+	/*width: 50%;*/
+	color: #a0b4cc;
+}
+
+.caution {
+	background-color: #2a1e00;
+	border-left: 4px solid #e8a83a;
+	border-radius: 2px;
+	padding: 4px;
+	/*width: 50%;*/
+	color: #e8a83a;
 }
 
 .warning {
-	background-color: #330000;
-	border-left-style: solid;
-	border-left-color: #e60000;
-	border-width: 4px;
+	background-color: #2a0e08;
+	border-left: 4px solid #e85a4a;
 	border-radius: 2px;
 	padding: 4px;
-	width: 50%;
-	color: #e60000;
+	/*width: 50%;*/
+	color: #e85a4a;
 }
 
 .news {
-	background-color: #131313;
-	border-left-style: solid;
-	border-left-color: #4a86e8ff;
-	border-width: 4px;
+	background-color: #1a2030;
+	border-left: 4px solid #4a86e8;
 	border-radius: 2px;
 	padding: 4px;
+	/*width: 50%;*/
+	color: #a0b4cc;
+}
+
+table, td {
+	border: 2px solid #a0b4cc;
+	border-collapse: collapse;
+	padding: 4px;
+	background-color: #141820;
+	color: #a0b4cc;
+}
+
+th {
+	border: 2px solid #a0b4cc;
+	background-color: #252d3d;
+	color: #e8eef8;
+}
+
+notehead {
+	background-color: #141c2e;
+	border-left: 4px solid #4a86e8;
+	border-radius: 2px;
+	padding: 6px;
 	width: 50%;
-	color: #bfbfbf;
+	color: #4a86e8;
 }
 
 fhead {
-	background-color: #0F0F0F;
-	border-left-style: solid;
-	border-left-color: MediumSeaGreen;
-	border-width: 4px;
+	background-color: #141820;
+	border-left: 4px solid #3a9e78;
 	border-radius: 2px;
 	padding: 6px;
 	width: 50%;
-	color: MediumSeaGreen;
+	color: #3a9e78;
 }
 
 khead {
-	background-color: #0F0F0F;
-	border-left-style: solid;
-	border-left-color: SlateBlue;
-	border-width: 4px;
+	background-color: #141820;
+	border-left: 4px solid #7a6eda;
 	border-radius: 2px;
 	padding: 6px;
 	width: 50%;
-	color: Slateblue;
+	color: #7a6eda;
+}
+
+cautionhead {
+	background-color: #2a1e00;
+	border-left: 4px solid #e8a83a;
+	border-radius: 2px;
+	padding: 6px;
+	width: 50%;
+	color: #e8a83a;
 }
 
 warnhead {
-	background-color: #330000;
-	border-left-style: solid;
-	border-left-color: #e60000;
-	border-width: 4px;
+	background-color: #2a0e08;
+	border-left: 4px solid #e85a4a;
 	border-radius: 2px;
 	padding: 6px;
 	width: 50%;
-	color: #e60000;
+	color: #e85a4a;
 }
 
 newshead {
-	background-color: #131313;
-	border-left-style: solid;
-	border-left-color: #4a86e8ff;
-	border-width: 4px;
+	background-color: #1a2030;
+	border-left: 4px solid #4a86e8;
 	border-radius: 2px;
 	padding: 4px;
 	width: 50%;
-	color: #4a86e8ff;
+	color: #4a86e8;
 }
 
 wikihead {
-	border-left-style: solid;
-	border-left-color: Tomato;
-	border-width: 4px;
+	border-left: 4px solid #e86a9e;
 	border-radius: 2px;
 	padding: 6px;
-	color: Tomato;
+	color: #e86a9e;
 }
 
-@media screen and (max-height: 450px) {
-	.sidenav {padding-top: 15px;}
-	.sidenav a{font-size: 18px;}
+bigcodehead {
+	background-color: #141820;
+	border-left: 4px solid #a0b4cc;
+	border-radius: 2px;
+	padding: 4px;
+	width: 50%;
+	color: #a0b4cc;
 }
 
 body {
 	font-family: sans-serif;
-	background-color: #1E1E1E;
-	color: #bfbfbf;
+	background-color: #1e2535;
+	color: #a0b4cc;
 }
 
 code {
 	font-family: monospace;
-	background-color: #0F0F0F;
-	border-left-style: solid;
-	border-left-width: 4px;
+	background-color: #141820;
+	border-left: 4px solid #4a86e8;
 	border-radius: 2px;
 	padding: 2px;
-	color: #bfbfbf;
+	color: #a0b4cc;
+}
+
+.bigcode {
+	font-family: monospace;
+	background-color: #141820;
+	border-left: 4px solid #a0b4cc;
+	border-radius: 2px;
+	padding: 6px;
+}
+
+cil {
+	font-family: monospace;
+	background-color: #141820;
+	padding: 2px;
+}
+
+cil-inv {
+	font-family: monospace;
+	background-color: #141820;
+	color: #a0b4cc;
+	padding: 2px;
 }
 
 wiki {
-	border-left-style: solid;
-	border-left-width: 4px;
+	border-left: 4px solid #e86a9e;
 	border-radius: 2px;
 	padding: 6px;
-	border-color: Tomato;
 }
 
-/* file {
-	border-style: solid;
-	border-width: 4px;
-	border-radius: 2px;
-	padding: 2px;
-	border-color: black;
-} */
-
 h2 {
-	border-left-style: solid;
-	border-color: #4a86e8ff;
+	border-left: 6px solid #4a86e8;
 	padding-left: 4px;
-	border-left-width: 6px;
 	border-radius: 5px;
-	color: #bfbfbf;
+	color: #e8eef8;
 }
 
 button {
 	font-size: 24px;
-	border-style: none;
-	border-left-style: solid;
-	border-width: 8px;
+	border: none;
+	border-left: 8px solid #4a86e8;
 	padding: 12px 28px;
-	border-color: #4a86e8ff;
 	border-radius: 5px;
-	background-color: #2C2C2C;
-	color: #e6e6e6;
+	background-color: #252d3d;
+	color: #e8eef8;
 }
 
 button:hover {
-	background-color: #252525;
+	background-color: #2e3850;
 }
 
 hr.dotted {
-	border-top: 3px dotted #bbb;
+	border-top: 3px dotted #607080;
 }
 
-/* p {
-	color: #e6e6e6;
-} */
-
-/* strong {
-	color: #4a86e8ff;
-} */
-
-/* i {
-	color: #e6e6e6;
-} */
+hr {
+	color: #4a86e8;
+	width: 50%;
+	border-width: 4px;
+	border-radius: 5px;
+	margin-left: 0;
+}
 
 footer {
 	text-align: center;
@@ -233,11 +262,11 @@ footer {
 	width: 378px;
 	font-size: 16px;
 	padding: 10px;
-	border: 2px solid #4a86e8ff;
+	border: 2px solid #4a86e8;
 	border-radius: 2px;
 	margin-bottom: 12px;
-	background-color: #2C2C2C;
-	color: #e6e6e6;
+	background-color: #252d3d;
+	color: #e8eef8;
 }
 
 #myUL {
@@ -248,22 +277,70 @@ footer {
 }
 
 #myUL li a {
-	border-left-width: 2px;
-	border-left-style: solid;
-	border-left-color: #4a86e8ff;
+	border-left: 2px solid #4a86e8;
 	margin-top: -1px;
-	background-color: #2C2C2C;
+	background-color: #252d3d;
 	padding: 12px;
 	text-decoration: none;
 	font-size: 18px;
-	color: #e6e6e6;
+	color: #e8eef8;
 	display: block;
 }
 
 #myUL li a:hover:not(.header) {
-	background-color: #1E1E1E;
+	background-color: #1e2535;
 }
 
 img {
 	padding: 8px;
+}
+
+body, html {
+	height: 100%;
+}
+
+.hero-image {
+	background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("../img/banner.jpg");
+	height: 55%;
+	background-position: 50% 30%;
+	background-repeat: no-repeat;
+	background-size: cover;
+	position: relative;
+	padding-top: 0px;
+	padding-right: 0px;
+	margin-right: -8px;
+	margin-top: -8px;
+}
+
+.hero-text {
+	text-align: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	color: white;
+}
+
+.tab {
+	display: inline-block;
+	margin-left: 80px;
+}
+
+pre.bigcode {
+        margin-top: 0;
+        margin-bottom; 0;
+}
+
+.top-banner {
+    background-color: #4c566a;
+    color: #eceff4;
+    text-align: center;
+    padding: 11px 16px;
+    font-size: 0.9rem;
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #88c0d0;
 }
