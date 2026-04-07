@@ -4,20 +4,21 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Everest Linux - Install</title>
-	<link type="text/css" rel="stylesheet" href="css/nord.css"/>
+	<link type="text/css" rel="stylesheet" href="css/k2.css"/>
 	<link rel="icon" type="image/x-icon" href="img/favicon.svg"/>
 </head>
 <body>
 <!-- Navbar -->
 <div class="sidenav">
-	<img src="img/everest-nord.svg" alt="everest-logo">
+	<img src="img/everest-k2.svg" alt="everest-logo" style="width: 185px; height: 185px;">
 	<a href="index.html">Home</a>
 	<a href="about.html">About</a>
 	<a href="install.html">Install</a>
 	<a href="packages.html">Packages</a>
 	<a href="download.html">Downloads</a>
-	<a href="docs/home.html">Docs</a>
-	<a href="errata.html">Errata</a>
+	<a href="docs/home.html">Documentation</a>
+	<a href="errata.html">Security</a>
+	<a href="https://shop.everestlinux.org">Store ↗</a>
 	<a href="https://git.everestlinux.org">Git ↗</a>
 </div>
 
@@ -28,11 +29,19 @@
 	</div>
 </div>
 <div class="main">
+	<link rel="stylesheet" href="assets/js/styles/github-dark.css">
+	<script src="assets/js/highlight.min.js"></script>
+	<script>hljs.highlightAll();</script>
+
 	<h2>Installation Handbook</h2>
+        <notehead><strong>NOTE:</strong></notehead>
+        <div class="note">
+                <p>This page is currently being rewritten. As such, there may be inconsistencies in this guide.</p>
+        </div>
 	<p>This guide is the official installation handbook for Everest Linux.</p>
 	<warnhead><strong>PRELIMINARY WARNINGS:</strong></warnhead>
 	<div class="warning">
-		<p><strong>WARNING 1:</strong> Using unofficial guides is not recommended, as they may be outdated, or unreliable. The official guide is located at https://www.everestlinux.org/install.</p>
+		<p><strong>WARNING 1:</strong> The use of unofficial installation guides is <strong>not supported</strong>. Be prepared to fix any issues you encounter.</p>
 		<p><strong>WARNING 2:</strong> Simply copy and pasting commands from this guide won't cut it, and you'll likely end up with a broken installation. Ensure you know what each command does, and how to tailor it to your system, if necessary.</p>
 		<p><strong>WARNING 3:</strong> Everest is not for the faint of heart. There is absolutely no hand holding provided, you are on your own. If you have never touched Linux in your life, Everest is most certainly not for you. There are many distributions which provide a much better user experience for those new to Linux, we personally recommend Linux Mint.</p>
 		<p><strong>WARNING 4:</strong> Everest in its current state is highly experimental. Install at your own risk.</p>
@@ -42,10 +51,10 @@
 	<p>The following steps are required to complete an installation:</p>
 	<ol>
 		<li>Set up the build environment</li>
-		<li>Download a system image</li>
-		<li>Unpack the system image</li>
+		<li>Download a template index</li>
+		<li>Sync the build environment with the template index</li>
 		<li>Change root into the new system</li>
-		<li>Set up the Glacier system profile and package index</li>
+		<li>Initialize users</li>
 		<li>Install programs</li>
 		<li>Install the Linux kernel</li>
 		<li>Set up init scripts and services</li>
@@ -56,6 +65,12 @@
 	<p>Run commands prefixed with <code>(user)$</code> as an unprivileged user.</p>
 	<p>Run commands prefixed with <code>(root)#</code> as the root user.</p>
 	<p>Run commands prefixed with <code>(chroot)#</code> inside the chroot environment.</p>
+	<h2>Before you ask for help</h2>
+	<p>Please do not ask for help <strong>before</strong> you have done the following:</p>
+	<ol>
+		<li>Read the installation guide <strong>in its entirety</strong>, and ensure you have completed all necessary steps.</li>
+		<li>Verified hardware compatibility. If you are running bleeding-edge hardware, your system may be unsupported by older kernels.</li>
+  </ol>
 	<h2>Set up the environment</h2>
 	<p>On the host system being used to install Everest, a properly set up environment containing certain programs and directories must be set up to ensure the installation can take place. This section will go into detail on how to set up this environment.</p>
 	<p>A system mountpoint is where the new system's root (<cil>/</cil>) will be. Where you put this doesn't matter, as the host system used to build the system won't be included in the final installation. In this example, we will use <cil>/mnt/everest</cil>.</p>
@@ -78,13 +93,13 @@
 			<td>No smaller than 256 MB, no larger than 1 GB (minimum 1 GB if installing multiple kernels)</td>
 		</tr>
 		<tr>
-			<td>/mnt/everest/usr</td>
-			<td>User partition</td>
-			<td>No smaller than 25 GB, recommended size varies.</td>
+			<td>/mnt/everest/glacier (optional)</td>
+			<td>Optional Glacier partition</td>
+                        <td>No less than 15 GB</td>
 		</tr>
 		<tr>
-			<td>/mnt/everest/home</td>
-			<td>Home partition</td>
+			<td>/mnt/everest/home (optional)</td>
+			<td>Optional Home partition</td>
 			<td>It depends</td>
 		</tr>
 		<tr>
@@ -96,38 +111,40 @@
 	<p>Partition the target drive:</p>
 	<code>(root)# cfdisk /dev/sdX</code>
 	<p>A valid filesystem is required on the drive.</p>
-	<p>Most filesystems should work, however ensure the system has the corresponding package for whatever filesystem you choose.</p>
-	<p>For example, if XFS is used, when installing the system:</p>
-	<code>(chroot)# gpkg -f xfsprogs</code>
+	<p>Most filesystems should work, however ensure the system has the corresponding package for whatever filesystem you choose. For example:</p>
+        <bigcodehead><strong>COMMAND:</strong> Install filesystem support packages</bigcodehead>
+        <div class="bigcode">
+                <p>(chroot)# gpkg -f btrfsprogs # if using btrfs</p>
+                <p>(chroot)# gpkg -f xfsprogs # if using xfs</p>
+        </div>
 	<p></p>
 	<cautionhead><strong>CAUTION:</strong></cautionhead>
 	<div class="caution">
 		<p>Zfs is not officially supported by Everest, and requires a lot of configuration to work properly. Use Zfs at your own risk.</p>
 		<p>This stance may change at a later date, however currently there is no official Everest documentation for setting up Zfs.</p>
 	</div>
-	<p>In this example, Ext4 will be used.</p>
-	<p>Create a filesystem:</p>
-	<code>(root)# mkfs.ext4 /dev/root</code>
-	<p></p>
-	<code>(root)# mkfs.ext4 /dev/usr</code>
+	<p>Ext4 is the de-facto standard for Linux systems and thus will be used in this example.</p>
+ <bigcodehead><strong>COMMAND:</strong> Create filesystems</bigcodehead>
+	<div class="bigcode">
+			<p>(root)# mkfs.ext4 /dev/root</p>
+			<p>(root)# mkfs.ext4 /dev/usr</p>
+        </div>
 	<p>The EFI system partition (esp) must be formatted as FAT32.</p>
 	<code>(root)# mkfs.vfat -F32 /dev/boot</code>
 	<p>Mount the root partition to the system mountpoint:</p>
 	<code>(root)# mount /dev/root /mnt/everest</code>
-	<p>Some additional directories may need to be created.</p>
-	<p>Create extra needed directories:</p>
-	<code>(root)# mkdir /mnt/everest/boot</code>
-	<p></p>
-	<code>(root)# mkdir /mnt/everest/usr</code>
-	<p>Mount the remaining partitions:</p>
-	<code>(root)# mount /dev/boot /mnt/everest/boot</code>
-	<p></p>
-	<code>(root)# mount /dev/usr /mnt/everest/usr</code>
-	<p>Create remaining directories on /usr with mkusrskel:</p>
-	<code>(root)# mkusrskel -d /mnt/everest/usr</code>
-	<h2>Downloading a system image</h2>
-	<p>An Everest system image provides an incomplete root filesystem which users can build a system off of. This includes system programs, libraries, Glacier, among others.  Users should be careful of which image they choose, as switching in the future is arduous, time consuming, and requires rebuilding a lot of packages.</p>
-	<p>It's a lot better to get it right the first time, rather than trying to get it right later.</p>
+        <p>Additional directories must be created to continue the mounting process.</p>
+        <bigcodehead><strong>COMMAND:</strong> Create directories and mount remaining filesystems</bigcodehead>
+        <div class="bigcode">
+                <p>(root)# mkdir -p /mnt/everest/boot # Mandatory</p>
+                <p>(root)# mkdir -p /mnt/everest/{glacier,home} # Optional</p>
+                <p>(root)# mount /dev/boot /mnt/everest/boot # Mandatory</p>
+                <p>(root)# mount /dev/home /mnt/everest/home # Optional</p>
+                <p>(root)# mount /dev/glacier /mnt/everest/glacier # Optional</p>
+        </div>
+	<h2>Downloading a template index</h2>
+        <p>An Everest template index provides a list of packages which can be merged into a build environment, thereby creating a semi-functional system. Users should be careful of which template index they choose, as switching in the future requires a complete reinstall of <strong>every</strong> system package, and <strong>likely</strong> a complete reinstall of every user's packages.</p>
+        <p>It's a lot better to get this right the first time, rather than trying to fix it later.</p>
 	<p>Do some thorough planning to ensure you get the right system image. For instance, ask yourself a few questions, such as:</p>
 	<ol>
 		<li>Do I need 32 bit libraries?</li>
@@ -138,34 +155,40 @@
 	</ol>
 	<notehead><strong>NOTE:</strong></notehead>
 	<div class="note">
-		<p>Make sure you're happy with the system image you choose. While migrating in the future is possible, it requires rebuilding the majority of the system, takes a substantial amount of time, and may present other issues.</p>
+		<p>Make sure you're happy with the template index you choose. While migrating in the future is possible, it requires rebuilding the majority of the system, takes a substantial amount of time, and may present other issues.</p>
 	</div>
 	<p></p>
 	<warnhead><strong>WARNING:</strong></warnhead>
 	<div class="warning">
-		<p>As a beginner, under NO CIRCUMSTANCES should you use a system image omitting 32 bit libraries unless it is ABSOLUTELY NECESSARY.</p>
+		<p>As a beginner, under NO CIRCUMSTANCES should you use a template index omitting 32 bit libraries unless it is ABSOLUTELY NECESSARY.</p>
 	</div>
-	<p>Downloading a system image that is severely out of date is not recommended. Many programs, such as the kernel or SSL library will be vulnerable to attacks.</p>
-	<p>Download a system image with wget:</p>
-	<code>(user)$ wget https://git.everestlinux.org/EverestLinux/everest/raw/branch/main/releases/SYSTEM_IMAGE.tar.xz</code>
-	<h2>Unpacking the system image</h2>
-	<p>Now that a system image has been downloaded, we can unpack it.</p>
-	<p>Ensure the system image is inside the system mountpoint, otherwise you may run into trouble.</p>
-	<p>Since a Linux root filesystem is complex, and many different files need to be owned by certain users, or have certain permissions, simply running <cil>tar xf</cil> will result in a broken image, as the proper permissions are not carried over. A couple extra flags are needed to preserve these permissions in the unpacked image.</p>
-	<p>Unpack the system image:</p>
-	<code>(root)# tar -xpvf SYSTEM_IMAGE --xattrs-include='*.*' --numeric-owner</code>
-	<p>If this command was run correctly, you shouldn't need to edit any permissions manually.</p>
-	<p>In case permissions were changed, you can use the <cil>prep</cil> command from <cil>everest-build-tools</cil>.</p>
-	<cautionhead><strong>CAUTION:</strong></cautionhead>
-	<div class="caution">
-		<p>Caution should be exercised when running <cil-inv>prep</cil-inv> as it can mess with permissions already existing on the system.</p>
-	</div>
+        <p></p>
+        <warnhead><strong>WARNING:</strong></warnhead>
+        <div class="warning">
+	        <p>Downloading a template index that is severely out of date is not recommended, as many of the packages will be vulnerable to attacks.</p>
+        </div>
+        <p>A list of template indexes is provided at everestlinux.org/download.</p>
+	<h2>Syncing the Build Environment</h2>
+        <p>Now that a template index has been downloaded, it can be synced to the build environment.</p>
+        <bigcodehead><strong>COMMAND:</strong> Sync the build environment with the template index</bigcodehead>
+        <div class="bigcode">
+                <p>(root)# glacier-bootstrap PATH_TO_TEMPLATE_INDEX /mnt/everest</p>
+        </div>
+        <p>This command will take the specified template index, and bootstrap a system at the specified directory, using the packages listed within the template index as a guide.</p>
 	<h2>Chrooting into the system mountpoint</h2>
 	<p>Although we have a relatively complete root filesystem at this point, many essential programs are still missing. These include the kernel and bootloader. Without these, the system is unable to boot. At this point, we must chroot into the new system. This will allow us to complete the system's build process without booting into it.</p>
 	<p>Chroot into the new system:</p>
 	<code>(root)# everest-chroot /mnt/everest</code>
 	<p>Change the shell prompt to differentiate the two environments:</p>
 	<code>(chroot)# echo "export PS1='(chroot) ${PS1}'" &gt;&gt; /etc/profile && source /etc/profile</code>
+        <h2>Initialize Users</h2>
+        <p>A non-privileged user account should be set up at this point.</p>
+        <bigcodehead><strong>COMMAND:</strong> Initialize user account</bigcodehead>
+        <div class="bigcode">
+                <p>(chroot)# adduser NAME</p>
+                <p>(chroot)# id -u NAME # Verify the ID of the new user</p>
+                <p>(chroot)# gstore -n UID # Create Glacier directories for new user</p>
+        </div>
 	<h2>Install packages</h2>
 	<p>Any programs you wish to install, such as display servers, login managers, and desktop environments, should be installed now. The kernel can take multiple hours to compile on some hardware.</p>
 	<p>Glacier manages packages on the system, and it allows users to install, or 'merge' their own. It is recommended to get familiar with this system.</p>
@@ -365,7 +388,7 @@
 	<p>If you require assistance, reach out to the community on Discord (HJzJUwSmDf) or IRC (#everestlinux on libera.chat)</p>
 </div>
 <footer>
-<p>Copyright (C) 2021-2025 Everest Linux</p>
+<p>Copyright (C) 2021-2026 Everest Linux</p>
 <p>Linux (R) is a registered trademark of Linus Torvalds.</p>
 <p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
 </footer>

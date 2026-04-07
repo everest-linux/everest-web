@@ -4,20 +4,61 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Everest Linux - Home</title>
-	<link type="text/css" rel="stylesheet" href="css/nord.css"/>
+	<link type="text/css" rel="stylesheet" href="css/k2.css"/>
 	<link rel="icon" type="image/x-icon" href="img/favicon.svg"/>
+	<style>
+		/* Two-column layout for the main content area */
+		.main-columns {
+			display: flex;
+			gap: 2rem;
+			align-items: flex-start;
+		}
+
+		.col-content {
+			flex: 1 1 40%;
+			min-width: 0;
+		}
+
+		.col-news {
+			flex: 1 1 55%;
+			min-width: 0;
+		}
+
+		/* Make news column scrollable if content is very long */
+		.col-news-scroll {
+			max-height: 90vh;
+			overflow-y: auto;
+			padding-right: 0.5rem;
+		}
+
+		/* Responsive: stack on smaller screens */
+		@media (max-width: 900px) {
+			.main-columns {
+				flex-direction: column;
+			}
+		}
+	</style>
 </head>
+
+<script>
+	fetch('announcements.json')
+		.then(res => res.json())
+		.then(data => {
+			document.getElementById('banner-text').textContent = data.text;
+		});
+</script>
 <body>
 <!-- Navbar -->
 <div class="sidenav">
-	<img src="img/everest-nord.svg" alt="everest-logo">
+	<img src="img/everest-k2.svg" alt="everest-logo" style="width: 185px; height: 185px;">
 	<a href="index.html">Home</a>
 	<a href="about.html">About</a>
 	<a href="install.html">Install</a>
 	<a href="packages.html">Packages</a>
 	<a href="download.html">Downloads</a>
-	<a href="docs/home.html">Docs</a>
-	<a href="errata.html">Errata</a>
+	<a href="docs/home.html">Documentation</a>
+	<a href="errata.html">Security</a>
+	<a href="https://shop.everestlinux.org">Store ↗</a>
 	<a href="https://git.everestlinux.org">Git ↗</a>
 </div>
 
@@ -28,166 +69,229 @@
 	</div>
 </div>
 <div class="main">
-	<h2>Everest Linux</h2>
-	<p>A highly flexible, general purpose meta-distribution, built off of the monolithic Linux kernel and Glacier package manager.</p>
-	<h2>Advantages of Everest</h2>
-	<strong>Simple: </strong><p>Everest strives to be simple by design, coming with no pre-installed bloatware or spyware. Everest follows the UNIX philosophy whenever possible, and tries to avoid including large programs in its base system.</p>
-	<strong>Stable: </strong><p>Everest is designed to be as stable as possible. All base system programs are statically linked, and can be updated with git-controlled root filesystems.</p>
-	<strong>Fast: </strong><p>Glacier downloads program source code and compiles it locally on your system. The end result is an extremely fast and optimized package. Simply define CFLAGS, CXXFLAGS, and MAKEFLAGS, and you're ready to go.</p>
-	<strong>Lightweight: </strong><p>Everest uses Busybox for its userland tools and init system, and musl for its standard C library. All of these tools are designed to be as lightweight as possible.</p>
-	<strong>Flexible: </strong><p>Everest supports highly customized installations. Want to replace Busybox init with systemd, openrc, runit, dinit, or s6? Or replace musl with uClibc or Glibc? All of these are possible, and encouraged.</p>
-	<h2>Try Everest</h2>
-	<button onclick="window.location.href='install.html';">
-	Installation Guide
-	</button>
-	<h2>News</h2>
-	<newshead><strong>10/3/24 - libglacier v4.0.0rc out now</strong></newshead>
-	<div class="news">
-		<p>After 8 months of development, libglacier has been released as v4.0.0rc.</p>
-		<p>While this is technically an unstable development release, it has been tested vigorously and is only labeled as unstable due to the absence of configuration file parsing, which will be added in the next release.</p>
-		<p>This release means that progress on Glacier's frontend programs can finally progress.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>7/12/24 - Registration closed for git.everestlinux.org</strong></newshead>
-	<div class="news">
-		<p>Due to an influx of spam on our Git server, new account registration has been closed.</p>
-		<p>If, for any reason, you require an account, please email me at liamwaldron@everestlinux.org so I can set one up for you.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>4/4/24 - All new releases on hold indefinitely</strong></newshead>
-	<div class="news">
-		<p>While work has been done on releasing Everest and Glacier, these releases are on hold indefinitely.</p>
-		<p>I have decided to rewrite Glacier in C, which has added a significant amount of time needed for the release. This will ultimately be a good decision, since the rewritten Glacier will be much more portable than the Bash version.</p>
-		<p>Additionally, I have recently committed to Assumption University to study cybersecurity. Hopefully I will be able to integrate this project into my studies if possible.</p>
-		<p>Ultimately, this is a hobby project. I do not anticipate it to ever become big (or at least as big as some other distros), however if you are interested in helping out, shoot me a message at liamwaldron@everestlinux.org.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>12/20/23 - Everest v1.0.0 and Glacier v4.0.0 put on hold</strong></newshead>
-	<div class="news">
-		<p>Unfortunately, the releases scheduled for January 1st are being put on hold.</p>
-		<p>The past few months have been very busy in terms of college stuff. Thankfully, I have been accepted into multiple schools and have a good idea of where I'm going.</p>
-		<p>Since this stuff is clearing up, I now have more time to work on releasing Everest and Glacier. Most importantly, I now have a testbed to run everything on.</p>
-		<p>The new target release date is March 1st, 2024.</p>
-		<p>Once again, thank you for your continued support of this project.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>9/29/23 - Big news at Everest</strong></newshead>
-	<div class="news">
-		<p>Many things have been happening at Everest in the past few months.</p>
-		<p>Glacier v4 is almost complete, and is due for a release sometime before 2024.</p>
-		<p>Everest v1.0 is nearing its completion as well, and should be released before 2024.</p>
-		<p>We do not expect these dates to change, but if we need to polish things up more, we'll take that opportunity.</p>
-		<p>Finally, all Everest websites have transitioned to the nord colorscheme. We may bring back the k2 colorscheme at a later date.</p>
-		<p>Thank you for your continued support everyone!</p>
-		<p>-The Everest Team</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>6/8/23 - New Everest logo</strong></newshead>
-	<div class="news">
-		<p>The Everest logo has been slightly redesigned. This includes a darker color palette.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>4/25/23 - Announcing Glacier v4</strong></newshead>
-	<div class="news">
-		<p>Glacier v4 is another complete overhaul of Glacier. This new release includes dependency resolution, multiple downloads, and a new, concise package format.</p>
-		<p>Since Glacier v4 uses a completely different package format, it is thus <strong>incompatible</strong> with all previous releases.</p>
-		<p>No time estimate has been given for this release.</p>
-		<warnhead><strong>WARNING:</strong></warnhead>
-		<div class="warning">
-			<p>Glacier v4 is highly unstable and experimental. Use at your own risk.</p>
+	<div class="main-columns">
+
+		<!-- LEFT COLUMN: Info + CTA -->
+		<div class="col-content">
+                        <p></p>
+			<h2>Everest Linux</h2>
+			<p>A highly flexible, general purpose <strong>meta-distribution</strong>, built off of the monolithic Linux kernel and Glacier package manager.</p>
+			<h2>Advantages of Everest</h2>
+			<strong>Simple: </strong><p>Everest strives to be simple by design, coming with no pre-installed bloatware or spyware. Everest follows the UNIX philosophy whenever possible, and tries to avoid including large programs in its base system.</p>
+			<strong>Stable: </strong><p>Everest is designed to be as stable as possible. All base system programs are statically linked, and can be updated with git-controlled root filesystems.</p>
+			<strong>Fast: </strong><p>Glacier downloads program source code and compiles it locally on your system. The end result is an extremely fast and optimized package. Simply define CFLAGS, CXXFLAGS, and MAKEFLAGS, and you're ready to go.</p>
+			<strong>Lightweight: </strong><p>Everest uses Busybox for its userland tools and init system, and musl for its standard C library. All of these tools are designed to be as lightweight as possible.</p>
+			<strong>Flexible: </strong><p>Everest supports highly customized installations. Want to replace Busybox init with systemd, openrc, runit, dinit, or s6? Or replace musl with uClibc or Glibc? All of these are possible, and encouraged.</p>
+			<h2>Try Everest</h2>
+			<button onclick="window.location.href='install.html';">
+			Installation Guide
+			</button>
 		</div>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>2/1/23 - Manual intervention required for /etc/glacier.conf</strong></newshead>
-	<div class="news">
-		<p>With the new Glacier update, changes were made to the download backend. Please ensure your current configuration is overwritten while updating.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>1/26/23 - Website overhaul</strong></newshead>
-	<div class="news">
-		<p>The Everest website has been completely overhauled with a cleaner, sleeker look.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>1/26/23 - System image builds nearly complete</strong></newshead>
-	<div class="news">
-		<p>A system image is coming together. This includes the toolchain We are still ironing out issues with Busybox's wget implementation, which fails to support https.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>11/1/22 -  System image builds have begun</strong></newshead>
-	<div class="news">
-		<p>Today, the team has begun compiling system images. All programs have compiled correctly, with the exception of the system toolchain. This is a very important component, and the system cannot function without it.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>10/25/22 - Glacier v3 is released</strong></newshead>
-	<div class="news">
-		<p>After nearly 2 months of hard work, Glacier v3 is finally out. This release includes many stability improvements, changes to the codebase to improve readability, and a new build system.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>10/7/22 - Glacier v3 enters testing</strong></newshead>
-	<div class="news">
-		<p>Glacier v3 is now available for testing. Please note that this release is not stable and therefore should not be run on a production machine.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>8/31/22 - Announcing Glacier v3</strong></newshead>
-	<div class="news">
-		<p>Glacier v2, which was release back in June, functions great, however does not function like a typical package manager would.</p>
-		<p>Additionally, adding functionality is very difficult as the codebase is very complex and messy. Glacier v3 aims to fix these issues.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>6/21/22 - Registering everestlinux.org</strong></newshead>
-	<div class="news">
-		<p>Everest now owns a domain. This allows us to host our own website, rather than using GitHub (which is owned by Microsoft). This gives us more control over our work.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>5/31/22 - Glacier v2 is released</strong></newshead>
-	<div class="news">
-		<p>Glacier v2 has been released. This version provides several improvements to the codebase, such as condensing everything to a single executable.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>4/20/22 - Glacier v1 is released</strong></newshead>
-	<div class="news">
-		<p>Glacier has released a stable point in its development.</p>
-		<p>In addition, color and unicode support has been added.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>4/5/22 - Glacier v0.6rc</strong></newshead>
-	<div class="news">
-		<p>The package format has been updated to include timestamping capabilities.</p>
-		<p>These timestamps will be queried along with a package.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>3/28/22 - Glacier v0.5rc</strong></newshead>
-	<div class="news">
-		<p>Added a proper cleanup operation after a transaction finishes.</p>
-		<p>Additionally, caching support has been added.</p>
-	</div>
-	<hr>
-	<p></p>
-	<newshead><strong>3/10/22 - Glacier v0.2rc</strong></newshead>
-	<div class="news">
-		<p>Added proper error handling.</p>
-	</div>
+
+		<!-- RIGHT COLUMN: News -->
+		<div class="col-news">
+			<h2>News</h2>
+			<div class="col-news-scroll">
+                                <p></p>
+				<newshead><strong>3/25/26 - Non-compliance with mandated OS-level age verification</strong></newshead>
+				<div class="news">
+					<p>Multiple jurisdictions have recently either passed or proposed laws which mandate age verification at the operating system level. <strong>Everest Linux will not be complying with such laws.</strong></p>
+					<p>Our reasoning is as follows:</p>
+					<ul>
+						<li>Everest Linux is not a distribution but a <i>meta-distribution</i>. Many of these laws require <i>providers</i> of operating systems to comply with these laws, but we do not provide an operating system. Everest is simply a framework of sorts for building custom Linux distributions. This means the <strong>user</strong> becomes the operating system provider, and expecting end users to implement these features themselves is both an unrealistic and unenforceable demand.</li>
+						<li>Mandated OS-level age verification laws are unjust and enable mass-surveillance.</li>
+						<li>These laws are just another step in the alarming shift in how ownership is viewed. When you buy a computer, you no longer have control over it or even own it. Forcing ID checks (assuming the laws play out in this way) to use a computer in the same way somebody is ID'd when buying a beer is absurd.</li>
+						<li>These laws (either intentionally or unintentionally) quash small free software projects and funnel those users into big tech platforms.</li>
+					</ul>
+					<p>If you are a parent, then you should be policing your children's internet activity. <strong>The government is not your babysitter nor do they care about "the children".</strong></p>
+					<p>Our team will share updates on this if necessary.</p>
+				</div>
+				<p></p>
+				<newshead><strong>3/23/26 - Working prototype of Glacier</strong></newshead>
+				<div class="news">
+					<p>I am happy to announce that a working prototype of Glacier has been completed.</p>
+					<p>Three new programs (which are all part of the Glacier ecosystem) have been created to support the complete packaging system. They are as follows:</p>
+					<ul>
+						<li>gbuild - builds package archives from Git repositories</li>
+						<li>gstore - creates package index and store for a specified UID</li>
+						<li>gpkg - installs packages to a user's index and store, either locally or from a remote repository</li>
+					</ul>
+					<p>The following commands were run in the Docker testing image and resulted in an installed, working package:</p>
+					<bigcodehead><strong>COMMAND:</strong> Initialize and install a Glacier package:</bigcodehead>
+					<div class="bigcode">
+						<p>(docker) /app $ GLACIER_ID=$(id -u) # Get current user's UID</p>
+						<p>(docker) /app $ ./gstore -n $GLACIER_ID # Initialize UID's Glacier directories<p>
+						<p>(docker) /app $ kilo file.txt # I want to run the Kilo text editor but it's not installed...</p>
+						<p>(docker) /app $ ./gpkg --local pkgs/kilo-0.0.1.gpkg # Let's install Kilo.</p>
+						<p>(docker) /app $ kilo file.txt # Now it works!</p>
+					</div>
+					<p>The heavy lifting is done and now all of these processes just need to be automated.</p>
+					<p>I would like to thank everyone for their continued support, and I am looking forward to the future of this project.</p>
+					<p>-Liam</p>
+				</div>
+				<p></p>
+				<newshead><strong>11/17/25 - Libglacier update</strong></newshead>
+				<div class="news">
+					<p>Progress has been slow but steady for the past year.</p>
+					<p>Libglacier's development approach has changed significantly. Security is now the first consideration while implementing new features, and modularity is now being considered.</p>
+					<p>Libglacier's codebase is being reworked currently, and Glacier's frontend, while not complete, is now being implemented in Lua.
+					<p>Significant work is now being done on making Libglacier cryptographically secure.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>10/3/24 - libglacier v4.0.0rc out now</strong></newshead>
+				<div class="news">
+					<p>After 8 months of development, libglacier has been released as v4.0.0rc.</p>
+					<p>While this is technically an unstable development release, it has been tested vigorously and is only labeled as unstable due to the absence of configuration file parsing, which will be added in the next release.</p>
+					<p>This release means that progress on Glacier's frontend programs can finally progress.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>7/12/24 - Registration closed for git.everestlinux.org</strong></newshead>
+				<div class="news">
+					<p>Due to an influx of spam on our Git server, new account registration has been closed.</p>
+					<p>If, for any reason, you require an account, please email me at liamwaldron@everestlinux.org so I can set one up for you.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>4/4/24 - All new releases on hold indefinitely</strong></newshead>
+				<div class="news">
+					<p>While work has been done on releasing Everest and Glacier, these releases are on hold indefinitely.</p>
+					<p>I have decided to rewrite Glacier in C, which has added a significant amount of time needed for the release. This will ultimately be a good decision, since the rewritten Glacier will be much more portable than the Bash version.</p>
+					<p>Additionally, I have recently committed to Assumption University to study cybersecurity. Hopefully I will be able to integrate this project into my studies if possible.</p>
+					<p>Ultimately, this is a hobby project. I do not anticipate it to ever become big (or at least as big as some other distros), however if you are interested in helping out, shoot me a message at liamwaldron@everestlinux.org.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>12/20/23 - Everest v1.0.0 and Glacier v4.0.0 put on hold</strong></newshead>
+				<div class="news">
+					<p>Unfortunately, the releases scheduled for January 1st are being put on hold.</p>
+					<p>The past few months have been very busy in terms of college stuff. Thankfully, I have been accepted into multiple schools and have a good idea of where I'm going.</p>
+					<p>Since this stuff is clearing up, I now have more time to work on releasing Everest and Glacier. Most importantly, I now have a testbed to run everything on.</p>
+					<p>The new target release date is March 1st, 2024.</p>
+					<p>Once again, thank you for your continued support of this project.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>9/29/23 - Big news at Everest</strong></newshead>
+				<div class="news">
+					<p>Many things have been happening at Everest in the past few months.</p>
+					<p>Glacier v4 is almost complete, and is due for a release sometime before 2024.</p>
+					<p>Everest v1.0 is nearing its completion as well, and should be released before 2024.</p>
+					<p>We do not expect these dates to change, but if we need to polish things up more, we'll take that opportunity.</p>
+					<p>Finally, all Everest websites have transitioned to the nord colorscheme. We may bring back the k2 colorscheme at a later date.</p>
+					<p>Thank you for your continued support everyone!</p>
+					<p>-The Everest Team</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>6/8/23 - New Everest logo</strong></newshead>
+				<div class="news">
+					<p>The Everest logo has been slightly redesigned. This includes a darker color palette.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>4/25/23 - Announcing Glacier v4</strong></newshead>
+				<div class="news">
+					<p>Glacier v4 is another complete overhaul of Glacier. This new release includes dependency resolution, multiple downloads, and a new, concise package format.</p>
+					<p>Since Glacier v4 uses a completely different package format, it is thus <strong>incompatible</strong> with all previous releases.</p>
+					<p>No time estimate has been given for this release.</p>
+					<warnhead><strong>WARNING:</strong></warnhead>
+					<div class="warning">
+						<p>Glacier v4 is highly unstable and experimental. Use at your own risk.</p>
+					</div>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>2/1/23 - Manual intervention required for /etc/glacier.conf</strong></newshead>
+				<div class="news">
+					<p>With the new Glacier update, changes were made to the download backend. Please ensure your current configuration is overwritten while updating.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>1/26/23 - Website overhaul</strong></newshead>
+				<div class="news">
+					<p>The Everest website has been completely overhauled with a cleaner, sleeker look.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>1/26/23 - System image builds nearly complete</strong></newshead>
+				<div class="news">
+					<p>A system image is coming together. This includes the toolchain We are still ironing out issues with Busybox's wget implementation, which fails to support https.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>11/1/22 - System image builds have begun</strong></newshead>
+				<div class="news">
+					<p>Today, the team has begun compiling system images. All programs have compiled correctly, with the exception of the system toolchain. This is a very important component, and the system cannot function without it.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>10/25/22 - Glacier v3 is released</strong></newshead>
+				<div class="news">
+					<p>After nearly 2 months of hard work, Glacier v3 is finally out. This release includes many stability improvements, changes to the codebase to improve readability, and a new build system.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>10/7/22 - Glacier v3 enters testing</strong></newshead>
+				<div class="news">
+					<p>Glacier v3 is now available for testing. Please note that this release is not stable and therefore should not be run on a production machine.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>8/31/22 - Announcing Glacier v3</strong></newshead>
+				<div class="news">
+					<p>Glacier v2, which was release back in June, functions great, however does not function like a typical package manager would.</p>
+					<p>Additionally, adding functionality is very difficult as the codebase is very complex and messy. Glacier v3 aims to fix these issues.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>6/21/22 - Registering everestlinux.org</strong></newshead>
+				<div class="news">
+					<p>Everest now owns a domain. This allows us to host our own website, rather than using GitHub (which is owned by Microsoft). This gives us more control over our work.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>5/31/22 - Glacier v2 is released</strong></newshead>
+				<div class="news">
+					<p>Glacier v2 has been released. This version provides several improvements to the codebase, such as condensing everything to a single executable.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>4/20/22 - Glacier v1 is released</strong></newshead>
+				<div class="news">
+					<p>Glacier has released a stable point in its development.</p>
+					<p>In addition, color and unicode support has been added.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>4/5/22 - Glacier v0.6rc</strong></newshead>
+				<div class="news">
+					<p>The package format has been updated to include timestamping capabilities.</p>
+					<p>These timestamps will be queried along with a package.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>3/28/22 - Glacier v0.5rc</strong></newshead>
+				<div class="news">
+					<p>Added a proper cleanup operation after a transaction finishes.</p>
+					<p>Additionally, caching support has been added.</p>
+				</div>
+				<hr>
+				<p></p>
+				<newshead><strong>3/10/22 - Glacier v0.2rc</strong></newshead>
+				<div class="news">
+					<p>Added proper error handling.</p>
+				</div>
+			</div><!-- end col-news-scroll -->
+		</div><!-- end col-news -->
+
+	</div><!-- end main-columns -->
 </div>
 <footer>
-<p>Copyright (C) 2021-2025 Everest Linux</p>
+<p>Copyright (C) 2021-2026 Everest Linux</p>
 <p>Linux (R) is a registered trademark of Linus Torvalds.</p>
 <p>Everest Linux is provided AS IS, WITHOUT WARRANTY.</p>
 </footer>
+</body>
+</html>
